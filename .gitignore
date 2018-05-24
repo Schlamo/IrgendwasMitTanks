@@ -1,0 +1,13 @@
+# Temp Files
+Temp
+
+#Metadata
+Library/metadata
+*.meta
+
+
+#Visual Studio
+.vs/
+
+#Due to the current version
+Assets/Plugins/*.unitypackage
