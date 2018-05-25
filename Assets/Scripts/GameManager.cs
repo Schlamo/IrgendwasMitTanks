@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour {
 
     public Transform tempest;
     public Transform viking;
-    public Transform scythe;
+    public Transform reaper;
     public Transform prometheus;
 
     private float supplyTimer = 0.0f;
@@ -68,10 +68,10 @@ public class GameManager : MonoBehaviour {
     void Start () {
         Vector3 pos;
         /*** Tank Types:
-         * 1: Tempest
-         * 2: Viking
-         * 3: Lurker
-         * 4: Prometheus
+         * 1: M-Q6 Tempest
+         * 2: SP28 Viking
+         * 3: T-K3 Reaper
+         * 4: RY-7 Prometheus
          */
 
         /*** Tank Types:
@@ -137,7 +137,20 @@ public class GameManager : MonoBehaviour {
                     t.cam = cam;
                     c.tank = tank.gameObject;
 
-                    t.padNumber = i+1;
+                    t.padNumber = i + 1;
+                    t.Spawn(v_pos);
+                    players.Add(tank);
+
+                    break;
+                case 3:
+                    tank = Instantiate(prometheus, Vector3.zero, Quaternion.Euler(0, 0, 0));
+                    cam = Instantiate(tankCamera, Vector3.zero, Quaternion.Euler(0, 0, 0));
+                    t = tank.GetComponent<Tank>();
+                    c = cam.GetComponent<SmoothCamera>();
+                    t.cam = cam;
+                    c.tank = tank.gameObject;
+
+                    t.padNumber = i + 1;
                     t.Spawn(v_pos);
                     players.Add(tank);
 

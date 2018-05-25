@@ -100,7 +100,7 @@ public abstract class Tank : MonoBehaviour {
 
             if (GamePad.GetButton(GamePad.Button.X, idx) && nitro > 0)
             {
-                triggerDifference *= 2;
+                triggerDifference *= 1.5f;
                 nitro -= Time.deltaTime;
             }
 
@@ -173,13 +173,13 @@ public abstract class Tank : MonoBehaviour {
             }
         }
 
-        if (damage > defaultDamage)
+        if (armor > defaultArmor)
         {
-            damageGained += Time.deltaTime;
-            if (damageGained > powerUpDuration)
+            armorGained += Time.deltaTime;
+            if (armorGained > powerUpDuration)
             {
-                damage = defaultDamage;
-                damageGained = 0.0f;
+                armor = defaultArmor;
+                armorGained = 0.0f;
             }
         }
 
@@ -279,7 +279,7 @@ public abstract class Tank : MonoBehaviour {
         }
         else if (other.gameObject.tag == "Crate")
         {
-            TakeDamage(5);
+            TakeDamage(5*(ramDamage/100));
             other.gameObject.GetComponent<Crate>().Hit(currentSpeed);
             ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
             Rigidbody rb = this.gameObject.GetComponent<Rigidbody>();

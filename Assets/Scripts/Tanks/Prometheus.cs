@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Viking : Tank
+public class Prometheus : Tank
 {
 
     private bool specialReady = true;
-    private float specialCooldown = 10.0f;
+    private float specialCooldown = 30.0f;
     private float specialTimer = 0.0f;
 
     public override void UpdateSpecial(float dTime)

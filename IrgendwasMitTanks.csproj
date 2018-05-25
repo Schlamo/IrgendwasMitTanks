@@ -90,6 +90,7 @@
     <Compile Include="Assets\Scripts\ProjectileManager.cs" />
     <Compile Include="Assets\Scripts\SmoothCamera.cs" />
     <Compile Include="Assets\Scripts\Tank.cs" />
+    <Compile Include="Assets\Scripts\Tanks\Prometheus.cs" />
     <Compile Include="Assets\Scripts\Tanks\Tempest.cs" />
     <Compile Include="Assets\Scripts\Tanks\Viking.cs" />
     <Compile Include="Assets\Scripts\UiManager.cs" />

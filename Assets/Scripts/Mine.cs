@@ -6,6 +6,7 @@ public class Mine : MonoBehaviour
 {
 
     private int owner;
+    private float lifeTime = 60.0f;
 
     private void OnTriggerEnter(Collider other)
     {
