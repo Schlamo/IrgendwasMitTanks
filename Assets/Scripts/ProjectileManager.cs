@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProjectileManager : MonoBehaviour {
 
     public Transform Projectile;
+    public Transform FlameProjectile;
 
     public Transform mudExplosion;
     public Transform woodExplosion;
@@ -12,6 +13,7 @@ public class ProjectileManager : MonoBehaviour {
     public Transform explosion;
 
     public float projectileSpeed;
+    public float flameSpeed;
 
     public static ProjectileManager instance = null;
     void Awake()
@@ -28,8 +30,8 @@ public class ProjectileManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		
-	}
+
+    }
 
     public void createProjectile(Transform tank, Transform launch, float damage, int owner)
     {
@@ -48,9 +50,34 @@ public class ProjectileManager : MonoBehaviour {
         tPos.y = 0;
         lPos.y = 0;
 
-        Vector3 direction = lPos-tPos;
+        Vector3 direction = lPos - tPos;
 
-        rb.AddForce(direction*projectileSpeed, ForceMode.Impulse);
+        rb.AddForce(direction * projectileSpeed, ForceMode.Impulse);
+    }
+
+    public void createFlameProjectile(Transform tank, Transform launch, float damage, int owner)
+    {
+        var projectile = Instantiate(FlameProjectile, launch.position, launch.rotation);
+
+        var pScript = projectile.GetComponent<Projectile>();
+
+        pScript.Damage = damage;
+        pScript.Owner = owner;
+        pScript.Type = 1;
+
+        var rb = projectile.GetComponent<Rigidbody>();
+        projectile.transform.rotation = launch.rotation;
+        projectile.transform.Rotate(new Vector3(90, 0, 0));
+
+        Vector3 tPos = tank.position;
+        Vector3 lPos = launch.position;
+
+        tPos.y = 0;
+        lPos.y = 0;
+
+        Vector3 direction = lPos - tPos;
+
+        rb.AddForce(direction * projectileSpeed, ForceMode.Impulse);
     }
 
     public void createExplosion(Vector3 pos, int type = 0)

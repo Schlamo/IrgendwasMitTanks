@@ -50,16 +50,16 @@ public class LootManager : MonoBehaviour {
         switch(rnd)
         {
             case 1:
-                var speed = Instantiate(speedUp, pos, t.rotation);
+                Instantiate(speedUp, pos, t.rotation);
                 break;
             case 2:
-                var damage = Instantiate(damageUp, pos, t.rotation);
+                Instantiate(damageUp, pos, t.rotation);
                 break;
             case 3:
-                var armor = Instantiate(armorUp, pos, t.rotation);
+                Instantiate(armorUp, pos, t.rotation);
                 break;
             case 4:
-                var repair = Instantiate(repairUp, pos, t.rotation);
+                Instantiate(repairUp, pos, t.rotation);
                 break;
         }
     }

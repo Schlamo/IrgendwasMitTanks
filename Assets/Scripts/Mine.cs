@@ -6,7 +6,16 @@ public class Mine : MonoBehaviour
 {
 
     private int owner;
-    private float lifeTime = 60.0f;
+    private float lifeTime = 20.0f;
+
+    private void Update()
+    {
+        lifeTime -= Time.deltaTime;
+        if(lifeTime < 0.0f)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {

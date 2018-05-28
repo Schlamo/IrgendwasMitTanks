@@ -5,7 +5,8 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
 
     private int owner;
-    private float damage;
+    private float damage = 0.0f;
+    private int type = 0;
     // Use this for initialization
     void Start() {
 
@@ -21,11 +22,29 @@ public class Projectile : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Crate")
+        if(type == 0)
         {
-            ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
-            var crate = other.gameObject.GetComponent<Crate>();
-            crate.Hit(damage);
+            if (other.gameObject.tag == "Crate")
+            {
+                ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
+                var crate = other.gameObject.GetComponent<Crate>();
+                crate.Hit(damage);
+            }
+            else if (other.gameObject.tag == "Tree")
+            {
+                var tree = other.gameObject.GetComponent<Tree>();
+                tree.Hit(damage/3);
+                ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
+            }
+        }
+        else
+        {
+            if (other.gameObject.tag == "Tree")
+            {
+                var tree = other.gameObject.GetComponent<Tree>();
+                tree.Hit(damage);
+                tree.IsBurning = true;
+            }
         }
         Destroy(this.gameObject);
     }
@@ -34,28 +53,43 @@ public class Projectile : MonoBehaviour {
     {
         Vector3 pos = this.gameObject.transform.position;
 
-        if (collision.gameObject.tag == "Map")
+        if (type == 0)
         {
-            ProjectileManager.instance.createExplosion(pos, 1);
-        }else if(collision.gameObject.tag == "Tree")
-        {
-            ProjectileManager.instance.createExplosion(pos, 2);
-        }
-        else if(collision.gameObject.tag == "Tank")
-        {
-            ProjectileManager.instance.createExplosion(pos, 0);
-            try
+            
+            if (collision.gameObject.tag == "Map")
             {
+                ProjectileManager.instance.createExplosion(pos, 1);
+            }
+            else if (collision.gameObject.tag == "Tank")
+            {
+                ProjectileManager.instance.createExplosion(pos, 0);
                 var tank = collision.gameObject.GetComponent<Tank>();
                 tank.TakeDamage(this.damage);
+                if(Mathf.Round(tank.health) <= 0)
+                {
+                    tank.Explode();
+                    GameManager.instance.GiveKillToPlayer(this.owner);
+                }
             }
-            catch (System.Exception e) { Debug.LogError(e); }
+            else
+            {
+                ProjectileManager.instance.createExplosion(pos, 0);
+            }
+            Destroy(this.gameObject);
         }
-        else
+        else if(type == 1)
         {
-            ProjectileManager.instance.createExplosion(pos, 0);
+            if(collision.gameObject.tag == "Tank")
+            {
+                var tank = collision.gameObject.GetComponent<Tank>();
+                tank.TakeTrueDamage(this.damage);
+            }
+            ProjectileManager.instance.createExplosion(pos);
+            Destroy(this.gameObject.GetComponent<SphereCollider>());
+            Destroy(this.gameObject.GetComponent<Rigidbody>());
+            this.gameObject.GetComponent<ParticleSystem>().Stop();
+            Destroy(this.gameObject, this.gameObject.GetComponent<ParticleSystem>().startLifetime);
         }
-        Destroy(this.gameObject);
     }
 
     public float Damage
@@ -67,6 +101,18 @@ public class Projectile : MonoBehaviour {
         set
         {
             this.damage = value;
+        }
+    }
+
+    public int Type
+    {
+        get
+        {
+            return this.type;
+        }
+        set
+        {
+            this.type = value;
         }
     }
 

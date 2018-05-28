@@ -10,7 +10,7 @@ public class Tempest : Tank
     private float mineRefill = 10.0f;
     public Transform mine;
 
-    public override void UpdateSpecial(float dTime)
+    public override void UpdateSpecial(float dTime, GamePad.Index idx)
     {
         if (mineCount < maxMineCount)
         {

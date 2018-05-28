@@ -591,8 +591,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1219520284054034}
-  m_LocalRotation: {x: 0, y: 0.92387956, z: 0, w: 0.38268343}
-  m_LocalPosition: {x: 12.870184, y: 0, z: 8.840133}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.6222253, y: 0, z: 4.074427}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4255435663208914}
@@ -609,7 +609,7 @@ Transform:
   - {fileID: 4113878278086720}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 135, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4435911740612820
 Transform:
   m_ObjectHideFlags: 1
@@ -1330,12 +1330,12 @@ Rigidbody:
   m_GameObject: {fileID: 1219520284054034}
   serializedVersion: 2
   m_Mass: 4
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 2
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!65 &65751657684313008
 BoxCollider:
@@ -1362,13 +1362,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerUpDuration: 10
   ramDamage: 20
-  defaultSpeed: 100
-  speed: 100
+  defaultSpeed: 80
+  speed: 80
   maxSpeed: 120
   defaultShootDelay: 1
   shootDelay: 1
   minShootDelay: 0.5
-  defaultDamage: 20
+  defaultDamage: 15
   damage: 15
   maxDamage: 25
   health: 120

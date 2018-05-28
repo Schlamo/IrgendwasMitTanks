@@ -1,41 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Prometheus : Tank
 {
+    public float specialAccumulated = 1.0f;
 
-    private bool specialReady = true;
-    private float specialCooldown = 30.0f;
-    private float specialTimer = 0.0f;
+    public float specialMax = 3.0f;
 
-    public override void UpdateSpecial(float dTime)
+    public float flameDamage = 10.0f;
+
+    private int framesToFlame = 5;
+    private int specialFrames = 0;
+
+    private float delta = 0.0f;
+
+    public override void UpdateSpecial(float dTime, GamePad.Index idx)
     {
-        if(!specialReady)
+        delta = dTime;
+        specialAccumulated = specialAccumulated > specialMax ? specialMax : specialAccumulated + (delta / 10);
+
+        if (GamePad.GetButton(GamePad.Button.B, idx))
         {
-            specialTimer += dTime;
-            if(specialTimer >= specialCooldown)
-            {
-                specialReady = true;
-                specialTimer = 0.0f;
-            }
+            OnButtonSpecial();
+        }
+        if(specialFrames > 0)
+        {
+            specialFrames--;
         }
     }
 
     public override void Special()
     {
-        if(specialReady)
-        {
-            specialReady = false;
-            Transform t = launchPosition;
-            float launchY = launchPosition.position.y;
-            t.position = new Vector3(t.position.x, 0, t.position.z);
 
-            for(int i = 0; i < 12; i++)
+    }
+
+    public void OnButtonSpecial()
+    {
+        if (specialAccumulated > delta)
+        {
+            if(specialFrames == 0)
             {
-                t.RotateAround(this.transform.position, Vector3.up, 30);
-                t.position = new Vector3(t.position.x, launchY, t.position.z);
-                Shoot(t);
+                specialAccumulated -= delta * framesToFlame;
+                ProjectileManager.instance.createFlameProjectile(this.gameObject.transform, this.launchPosition, flameDamage * delta * framesToFlame, this.padNumber);
+                specialFrames = framesToFlame;
             }
         }
     }

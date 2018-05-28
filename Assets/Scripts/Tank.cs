@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class Tank : MonoBehaviour {
 
@@ -25,7 +26,6 @@ public abstract class Tank : MonoBehaviour {
 
     public float health = 100.0f;
     public float maxHealth = 100.0f;
-    private float healthGained = 0.0f;
 
     public float defaultArmor = 1.0f;
     public float armor = 1.0f;
@@ -38,6 +38,7 @@ public abstract class Tank : MonoBehaviour {
     public float nitro;
 
     public Transform cam;
+    public Transform canvas;
     public Transform launchPosition;
 
     private float canShoot = 0.0f;
@@ -52,17 +53,12 @@ public abstract class Tank : MonoBehaviour {
     private float timeToExplode = 0.0f;
 
     // Use this for initialization
-    void Start ()
-    {
-        UiManager.UpdateHP(this.padNumber, (int)Mathf.Round(health));
-    }
 
     private void PaintTank(int color){}
 	
 	// Update is called once per frame
 	void Update () {
-        UpdateSpecial(Time.deltaTime);
-
+        
         GamePad.Index idx;
 
         switch (padNumber)
@@ -77,6 +73,8 @@ public abstract class Tank : MonoBehaviour {
                 idx = GamePad.Index.Any;
                 break;
         }
+
+        UpdateSpecial(Time.deltaTime, idx);
 
         float rightTrigger = GamePad.GetTrigger(GamePad.Trigger.RightTrigger, idx);
         float leftTrigger = GamePad.GetTrigger(GamePad.Trigger.LeftTrigger, idx);
@@ -188,11 +186,13 @@ public abstract class Tank : MonoBehaviour {
             int particles = (int)Mathf.Sqrt(25 - health);
             this.transform.Find("BurningParticles").gameObject.GetComponent<ParticleSystem>().Emit(particles);
         }
+
+        UpdateStats();
     }
 
     public abstract void Special();
 
-    public abstract void UpdateSpecial(float dTime);
+    public abstract void UpdateSpecial(float dTime, GamePad.Index idx);
 
     public void Shoot(Transform pos)
     {
@@ -203,20 +203,22 @@ public abstract class Tank : MonoBehaviour {
     {
         float actualDamage = damage - this.armor;
         this.health -= Mathf.Max(actualDamage, 0.0f);
-        UpdateStats();
-        if(this.health <= 0.0f)
-        {
-            Explode();
-        }
     }
 
-    private void Explode()
+    public void TakeTrueDamage(float damage)
     {
-        Debug.Log("Player" + this.padNumber + " lost");
+        this.health -= damage;
+    }
+
+    public void Explode()
+    {
         ProjectileManager.instance.createExplosion(this.gameObject.transform.position, 3);
-        //Destroy(this.cam.gameObject);
-        Destroy(this.gameObject, 0.1f);
-        //GameManager.ShowEndScreen();
+        Invoke("Respawn", 0.5f);  
+    }
+
+    private void Respawn()
+    {
+        Spawn(GameManager.instance.GetSpawnPoint());
     }
 
     public void Spawn(Vector3 pos)
@@ -227,6 +229,11 @@ public abstract class Tank : MonoBehaviour {
         health = maxHealth;
         shootDelay = defaultShootDelay;
 
+        armorGained = 0.0f;
+        speedGained = 0.0f;
+        damageGained = 0.0f;
+        shootDelayGained = 0.0f;
+
         this.transform.position = new Vector3(pos.x, 0, pos.z);
         this.transform.rotation = Quaternion.Euler(0, pos.y, 0);
 
@@ -234,10 +241,11 @@ public abstract class Tank : MonoBehaviour {
         cam.transform.rotation = Quaternion.Euler(0, pos.y, 0);
     }
 
-    private void UpdateStats()
+    public void UpdateStats()
     {
-        UiManager.UpdateHP(this.padNumber, (int)Mathf.Round(health));
-        UiManager.UpdateKills(this.padNumber, kills);
+        var canvas = transform.Find("Canvas");
+        canvas.Find("Health").GetComponent<Text>().text = Mathf.Round(health).ToString();
+        canvas.Find("Kills").GetComponent<Text>().text = Mathf.Round(kills).ToString();
     }
 
     void OnTriggerEnter(Collider other)
@@ -274,16 +282,24 @@ public abstract class Tank : MonoBehaviour {
 
             }
 
-            UpdateStats();
             Destroy(other.gameObject);
         }
         else if (other.gameObject.tag == "Crate")
         {
-            TakeDamage(5*(ramDamage/100));
+            TakeDamage(10 * (ramDamage / 100));
             other.gameObject.GetComponent<Crate>().Hit(currentSpeed);
             ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
             Rigidbody rb = this.gameObject.GetComponent<Rigidbody>();
-            rb.velocity *= 0.25f;
+            rb.velocity *= 0.5f;
+        }
+        else if (other.gameObject.tag == "Tree")
+        {
+            var tree = other.gameObject.GetComponent<Tree>();
+            tree.Hit(currentSpeed);
+            TakeDamage(25 * (ramDamage / 100));
+            ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
+            Rigidbody rb = this.gameObject.GetComponent<Rigidbody>();
+            rb.velocity *= 0.5f;
         }
     }
 
@@ -305,11 +321,22 @@ public abstract class Tank : MonoBehaviour {
                 health -= totalSpeed * (ramDamage / 100);
             }
             catch (System.Exception) { }
-            UpdateStats();
         }
         else if(collision.gameObject.tag == "Map")
         {
             canDrive = true;
+        }
+    }
+
+    public int Kills
+    {
+        get
+        {
+            return kills;
+        }
+        set
+        {
+            kills = value;
         }
     }
 }

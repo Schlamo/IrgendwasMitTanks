@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour {
 
     public Transform tankCamera;
 
+    public Transform halfScreen;
+
     public Transform tempest;
     public Transform viking;
     public Transform reaper;
@@ -90,8 +92,8 @@ public class GameManager : MonoBehaviour {
 
         GameObject.Find("MapCam").GetComponent<Camera>().enabled = false;
 
-        int[] tankTypes = new int[] {0, 1};
-        int[] tankColors = new int[] {0, 1};
+        int[] tankTypes = new int[] {0, 0};
+        //int[] tankColors = new int[] {0, 1};
 
         List<int> usedPoints = new List<int>();
 
@@ -99,6 +101,7 @@ public class GameManager : MonoBehaviour {
         {
             Transform tank;
             Transform cam;
+            Transform canvas;
             Tank t;
             SmoothCamera c;
 
@@ -117,6 +120,13 @@ public class GameManager : MonoBehaviour {
                 case 0:
                     tank = Instantiate(tempest, Vector3.zero, Quaternion.Euler(0, 0, 0));
                     cam = Instantiate(tankCamera, Vector3.zero, Quaternion.Euler(0, 0, 0));
+
+                    canvas = Instantiate(halfScreen, Vector3.zero, Quaternion.Euler(0, 0, 0));
+                    canvas.GetComponent<Canvas>().worldCamera = cam.Find("Camera").GetComponent<Camera>();
+
+                    canvas.parent = tank;
+                    canvas.name = "Canvas";
+
                     t = tank.GetComponent<Tank>();
                     c = cam.GetComponent<SmoothCamera>();
                     t.cam = cam;
@@ -132,12 +142,15 @@ public class GameManager : MonoBehaviour {
                 case 1:
                     tank = Instantiate(viking, Vector3.zero, Quaternion.Euler(0, 0, 0));
                     cam = Instantiate(tankCamera, Vector3.zero, Quaternion.Euler(0, 0, 0));
+
                     t = tank.GetComponent<Tank>();
                     c = cam.GetComponent<SmoothCamera>();
                     t.cam = cam;
                     c.tank = tank.gameObject;
 
                     t.padNumber = i + 1;
+                    Camera camera1 = cam.Find("Camera").GetComponent<Camera>();
+                    setCameraViewport(camera1, i + 1);
                     t.Spawn(v_pos);
                     players.Add(tank);
 
@@ -145,12 +158,15 @@ public class GameManager : MonoBehaviour {
                 case 3:
                     tank = Instantiate(prometheus, Vector3.zero, Quaternion.Euler(0, 0, 0));
                     cam = Instantiate(tankCamera, Vector3.zero, Quaternion.Euler(0, 0, 0));
+
                     t = tank.GetComponent<Tank>();
                     c = cam.GetComponent<SmoothCamera>();
                     t.cam = cam;
                     c.tank = tank.gameObject;
 
                     t.padNumber = i + 1;
+                    Camera camera2 = cam.Find("Camera").GetComponent<Camera>();
+                    setCameraViewport(camera2, i + 1);
                     t.Spawn(v_pos);
                     players.Add(tank);
 
@@ -180,7 +196,6 @@ public class GameManager : MonoBehaviour {
                 {
                     int sort = Random.Range(2,5);
 
-                    Transform t_tree;
                     switch (sort)
                     {
                         case 1:
@@ -215,6 +230,17 @@ public class GameManager : MonoBehaviour {
         return new Vector3(x, r, z);
     }
 
+    public Vector3 GetSpawnPoint()
+    {
+        int spawn = Random.Range(0, 8);
+        return startingPoints[spawn].position;
+    }
+
+    public void GiveKillToPlayer(int owner)
+    {
+        var tank = players[owner-1].GetComponent<Tempest>();
+        tank.Kills++;
+    }
 
     private bool IsPositionValid(Vector3 position)
     {
@@ -271,6 +297,11 @@ public class GameManager : MonoBehaviour {
         this.crates.Remove(c.transform);
     }
 
+    public void DeleteTree(Tree t)
+    {
+        this.trees.Remove(t.transform);
+    }
+
     public void DeleteNitro(PowerUp n)
     {
         this.nitros.Remove(n.transform);
@@ -319,9 +350,7 @@ public class GameManager : MonoBehaviour {
 
     public void SpawnTreeAt(Transform type, Vector3 pos)
     {
-        float scale = Random.Range(0.75f, 1.0f);
         Transform t_tree = Instantiate(type, new Vector3(pos.x, 0, pos.z), Quaternion.Euler(0, pos.y, 0));
-        t_tree.localScale = new Vector3(scale, scale, scale);
         trees.Add(t_tree);
     }
 
