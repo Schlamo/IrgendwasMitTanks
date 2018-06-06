@@ -12,6 +12,7 @@ public class PowerUp : MonoBehaviour
      * 2: Damage
      * 3: Armor
      * 4: Repair
+     * 5: Nitro
      */
 
     public float rotationSpeed = 100.0f;
@@ -30,6 +31,10 @@ public class PowerUp : MonoBehaviour
             Destroy(this.gameObject);
         } else if(lifeTime > maxLifeTime && lifeTime > 0.0f)
         {
+            if(this.type == 5)
+            {
+                GameManager.instance.DeleteNitro(this);
+            }
             Destroy(this.gameObject);
         }
         this.transform.Rotate(new Vector3(0.0f, rotationSpeed * Time.deltaTime, 0.0f));

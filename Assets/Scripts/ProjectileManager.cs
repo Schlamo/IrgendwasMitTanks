@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#pragma warning disable 0618 // variable declared but not used.
+
 public class ProjectileManager : MonoBehaviour {
+    public static ProjectileManager instance = null;
 
     public Transform Projectile;
     public Transform FlameProjectile;
@@ -15,7 +18,6 @@ public class ProjectileManager : MonoBehaviour {
     public float projectileSpeed;
     public float flameSpeed;
 
-    public static ProjectileManager instance = null;
     void Awake()
     {
         if (instance == null)
@@ -77,7 +79,7 @@ public class ProjectileManager : MonoBehaviour {
 
         Vector3 direction = lPos - tPos;
 
-        rb.AddForce(direction * projectileSpeed, ForceMode.Impulse);
+        rb.AddForce(direction * flameSpeed, ForceMode.Impulse);
     }
 
     public void createExplosion(Vector3 pos, int type = 0)

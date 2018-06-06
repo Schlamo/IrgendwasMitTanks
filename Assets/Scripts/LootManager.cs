@@ -46,20 +46,19 @@ public class LootManager : MonoBehaviour {
          * 4: Repair
          * 5: Nitro
          */
-        Vector3 pos = new Vector3(t.position.x, 0.5f, t.position.z);
         switch(rnd)
         {
             case 1:
-                Instantiate(speedUp, pos, t.rotation);
+                Instantiate(speedUp, t.position, t.rotation);
                 break;
             case 2:
-                Instantiate(damageUp, pos, t.rotation);
+                Instantiate(damageUp, t.position, t.rotation);
                 break;
             case 3:
-                Instantiate(armorUp, pos, t.rotation);
+                Instantiate(armorUp, t.position, t.rotation);
                 break;
             case 4:
-                Instantiate(repairUp, pos, t.rotation);
+                Instantiate(repairUp, t.position, t.rotation);
                 break;
         }
     }

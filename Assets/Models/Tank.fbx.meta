@@ -1,0 +1,210 @@
+fileFormatVersion: 2
+guid: 8f0028c8cd576ce4b8f51285fa52a515
+timeCreated: 1526476451
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: Chain
+    100002: Chassis
+    100004: CINEMA_4D_Editor
+    100006: Cover
+    100008: Dome
+    100010: Extrudieren
+    100012: Extrudieren_3
+    100014: Left_Side
+    100016: Null
+    100018: Symmetrie
+    100020: //RootNode
+    100022: Tank
+    100024: "W\xFCrfel"
+    100026: Zylinder
+    100028: Zylinder_1
+    100030: Zylinder_10
+    100032: Zylinder_11
+    100034: Zylinder_1_2
+    100036: Zylinder_2
+    100038: Zylinder_2_2
+    100040: Zylinder_2_3
+    100042: Zylinder_3
+    100044: Zylinder_3_2
+    100046: Zylinder_4
+    100048: Zylinder_4_2
+    100050: Zylinder_5
+    100052: Zylinder_6
+    100054: Zylinder_7
+    100056: Zylinder_8
+    100058: Zylinder_9
+    400000: Chain
+    400002: Chassis
+    400004: CINEMA_4D_Editor
+    400006: Cover
+    400008: Dome
+    400010: Extrudieren
+    400012: Extrudieren_3
+    400014: Left_Side
+    400016: Null
+    400018: Symmetrie
+    400020: //RootNode
+    400022: Tank
+    400024: "W\xFCrfel"
+    400026: Zylinder
+    400028: Zylinder_1
+    400030: Zylinder_10
+    400032: Zylinder_11
+    400034: Zylinder_1_2
+    400036: Zylinder_2
+    400038: Zylinder_2_2
+    400040: Zylinder_2_3
+    400042: Zylinder_3
+    400044: Zylinder_3_2
+    400046: Zylinder_4
+    400048: Zylinder_4_2
+    400050: Zylinder_5
+    400052: Zylinder_6
+    400054: Zylinder_7
+    400056: Zylinder_8
+    400058: Zylinder_9
+    2000000: CINEMA_4D_Editor
+    2300000: Chassis
+    2300002: Cover
+    2300004: Extrudieren
+    2300006: Extrudieren_3
+    2300008: "W\xFCrfel"
+    2300010: Zylinder
+    2300012: Zylinder_1
+    2300014: Zylinder_10
+    2300016: Zylinder_11
+    2300018: Zylinder_1_2
+    2300020: Zylinder_2
+    2300022: Zylinder_2_2
+    2300024: Zylinder_2_3
+    2300026: Zylinder_3
+    2300028: Zylinder_3_2
+    2300030: Zylinder_4
+    2300032: Zylinder_4_2
+    2300034: Zylinder_5
+    2300036: Zylinder_6
+    2300038: Zylinder_7
+    2300040: Zylinder_8
+    2300042: Zylinder_9
+    3300000: Chassis
+    3300002: Cover
+    3300004: Extrudieren
+    3300006: Extrudieren_3
+    3300008: "W\xFCrfel"
+    3300010: Zylinder
+    3300012: Zylinder_1
+    3300014: Zylinder_10
+    3300016: Zylinder_11
+    3300018: Zylinder_1_2
+    3300020: Zylinder_2
+    3300022: Zylinder_2_2
+    3300024: Zylinder_2_3
+    3300026: Zylinder_3
+    3300028: Zylinder_3_2
+    3300030: Zylinder_4
+    3300032: Zylinder_4_2
+    3300034: Zylinder_5
+    3300036: Zylinder_6
+    3300038: Zylinder_7
+    3300040: Zylinder_8
+    3300042: Zylinder_9
+    4300000: Zylinder_2
+    4300002: Zylinder_1
+    4300004: Zylinder
+    4300006: Zylinder_2_2
+    4300008: Zylinder_3
+    4300010: "W\xFCrfel"
+    4300012: Extrudieren_3
+    4300014: Extrudieren
+    4300016: Zylinder_11
+    4300018: Zylinder_10
+    4300020: Zylinder_9
+    4300022: Zylinder_8
+    4300024: Zylinder_7
+    4300026: Zylinder_6
+    4300028: Zylinder_5
+    4300030: Zylinder_4
+    4300032: Zylinder_3_2
+    4300034: Zylinder_2_3
+    4300036: Zylinder_1_2
+    4300038: Zylinder_4_2
+    4300040: Cover
+    4300042: Chassis
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 0
+    normalImportMode: 1
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

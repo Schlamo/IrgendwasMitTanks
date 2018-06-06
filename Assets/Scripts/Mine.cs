@@ -26,6 +26,7 @@ public class Mine : MonoBehaviour
                 Tank tank = other.gameObject.GetComponent<Tank>();
                 if (tank.padNumber != owner)
                 {
+                    tank.LastDamage = owner;
                     tank.TakeDamage(25);
                     Vector3 forceDirection = tank.transform.position - transform.position;
                     forceDirection.Normalize();

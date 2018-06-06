@@ -11,7 +11,7 @@ public class Crate : MonoBehaviour {
     {
         health -= damage;
         float scale = (health+10) / (maxHealth+10);
-        transform.localScale = new Vector3(scale*2, 2, scale*2);
+        transform.localScale = new Vector3(scale*3, 3, scale*3);
         if(health <= 0)
         {
             GameManager.instance.DeleteCrate(this);

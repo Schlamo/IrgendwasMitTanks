@@ -9,6 +9,8 @@ TagManager:
   - Tank
   - PowerUp
   - Tree
+  - Rock
+  - Colorized
   layers:
   - Default
   - TransparentFX

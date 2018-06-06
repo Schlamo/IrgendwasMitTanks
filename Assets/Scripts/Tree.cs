@@ -13,12 +13,13 @@ public class Tree : MonoBehaviour {
     {
 		if(isBurning)
         {
-            this.transform.Find("BurningParticles").gameObject.GetComponent<ParticleSystem>().Emit(1);
+            try { 
+                this.transform.Find("BurningParticles").gameObject.GetComponent<ParticleSystem>().Emit(1);
+            }
+            catch(System.Exception) { }
             health -= Time.deltaTime*5;
         }
 
-        float scale = (health + 10) / (maxHealth + 10);
-        transform.localScale = new Vector3(scale, scale, scale);
         if (health < 0.0f)
         {
             ProjectileManager.instance.createExplosion(transform.position, 2);

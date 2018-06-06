@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#pragma warning disable 0618 // variable declared but not used.
+
 public class Projectile : MonoBehaviour {
 
     private int owner;
@@ -14,7 +16,7 @@ public class Projectile : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if(this.transform.position.y < -5)
+        if(this.transform.position.y < -15)
         {
             Destroy(this.gameObject);
         }
@@ -45,6 +47,12 @@ public class Projectile : MonoBehaviour {
                 tree.Hit(damage);
                 tree.IsBurning = true;
             }
+            else if (other.gameObject.tag == "Crate")
+            {
+                ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
+                var crate = other.gameObject.GetComponent<Crate>();
+                crate.Hit(damage);
+            }
         }
         Destroy(this.gameObject);
     }
@@ -65,11 +73,7 @@ public class Projectile : MonoBehaviour {
                 ProjectileManager.instance.createExplosion(pos, 0);
                 var tank = collision.gameObject.GetComponent<Tank>();
                 tank.TakeDamage(this.damage);
-                if(Mathf.Round(tank.health) <= 0)
-                {
-                    tank.Explode();
-                    GameManager.instance.GiveKillToPlayer(this.owner);
-                }
+                tank.LastDamage = owner;
             }
             else
             {
@@ -82,6 +86,7 @@ public class Projectile : MonoBehaviour {
             if(collision.gameObject.tag == "Tank")
             {
                 var tank = collision.gameObject.GetComponent<Tank>();
+                tank.LastDamage = owner;
                 tank.TakeTrueDamage(this.damage);
             }
             ProjectileManager.instance.createExplosion(pos);

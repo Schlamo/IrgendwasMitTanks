@@ -390,8 +390,8 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Intensity: 10
-  m_Range: 2
+  m_Intensity: 2
+  m_Range: 5
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
@@ -441,7 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ca562b201b4c0c4996eada89a690a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bonus: 5
+  bonus: 2
   type: 2
   maxLifeTime: 10
   rotationSpeed: 100
