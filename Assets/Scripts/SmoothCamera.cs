@@ -17,6 +17,6 @@ public class SmoothCamera : MonoBehaviour {
 
     void LateUpdate() {
         transform.position = tank.transform.position + offset;
-        transform.rotation = Quaternion.Slerp(transform.rotation, tank.transform.rotation, delay);
+        transform.rotation = Quaternion.Slerp(transform.rotation, tank.transform.rotation, Time.deltaTime*3);
     }
 }

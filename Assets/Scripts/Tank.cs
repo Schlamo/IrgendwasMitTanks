@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System;
 
 public abstract class Tank : MonoBehaviour {
+    public int padNumber;
 
     public float powerUpDuration = 30.0f;
     
@@ -15,10 +16,7 @@ public abstract class Tank : MonoBehaviour {
     public float maxSpeed = 30;
     private float speedGained = 0.0f;
 
-    public float defaultShootDelay = 0.5f;
     public float shootDelay = 0.5f;
-    public float minShootDelay = 0.1f;
-    private float shootDelayGained = 0.0f;
 
     public float defaultDamage = 10.0f;
     public float damage = 10.0f;
@@ -31,16 +29,18 @@ public abstract class Tank : MonoBehaviour {
     public float defaultArmor = 1.0f;
     public float armor = 1.0f;
     public float maxArmor = 5.0f;
+
     private float armorGained = 0.0f;
 
     public float rotationSpeed = 50.0F;
-    public int padNumber;
 
     public float nitro;
 
     public Transform cam;
     public Transform canvas;
     public Transform launchPosition;
+
+    public Sprite specialImage;
 
     private float canShoot = 0.0f;
 
@@ -59,6 +59,8 @@ public abstract class Tank : MonoBehaviour {
 
     private float timeToExplode = 0.0f;
 
+    GamePad.Index idx;
+    XInputDotNetPure.PlayerIndex xIdx;
     // Use this for initialization
 
     private void PaintTank(int color){}
@@ -66,6 +68,32 @@ public abstract class Tank : MonoBehaviour {
     void Start()
     {
         transform.GetComponent<Rigidbody>().centerOfMass = Vector3.zero;
+        SetSpecialImage();
+
+
+
+        switch (padNumber)
+        {
+            case 1:
+                idx = GamePad.Index.One;
+                xIdx = XInputDotNetPure.PlayerIndex.One;
+                break;
+            case 2:
+                idx = GamePad.Index.Two;
+                xIdx = XInputDotNetPure.PlayerIndex.Two;
+                break;
+            case 3:
+                idx = GamePad.Index.Three;
+                xIdx = XInputDotNetPure.PlayerIndex.Three;
+                break;
+            case 4:
+                idx = GamePad.Index.Four;
+                xIdx = XInputDotNetPure.PlayerIndex.Four;
+                break;
+            default:
+                idx = GamePad.Index.Any;
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -90,27 +118,6 @@ public abstract class Tank : MonoBehaviour {
             Explode();
             died = true;
             return;
-        }
-
-        GamePad.Index idx;
-
-        switch (padNumber)
-        {
-            case 1:
-                idx = GamePad.Index.One;
-                break;
-            case 2:
-                idx = GamePad.Index.Two;
-                break;
-            case 3:
-                idx = GamePad.Index.Three;
-                break;
-            case 4:
-                idx = GamePad.Index.Four;
-                break;
-            default:
-                idx = GamePad.Index.Any;
-                break;
         }
 
         UpdateSpecial(Time.deltaTime, idx);
@@ -230,6 +237,14 @@ public abstract class Tank : MonoBehaviour {
 
     public abstract void Special();
 
+    public void SetSpecialImage()
+    {
+        var canvas = transform.Find("Canvas");
+        canvas.Find("Image_Special").GetComponent<Image>().sprite = specialImage;
+    }
+
+    public abstract void UpdateSpecialStats();
+
     public abstract void UpdateSpecial(float dTime, GamePad.Index idx);
 
     public void Shoot(Transform pos)
@@ -239,12 +254,16 @@ public abstract class Tank : MonoBehaviour {
 
     public void TakeDamage(float damage)
     {
+        StartVibration();
+        Invoke("StopVibration", 0.25f);
         float actualDamage = damage - this.armor;
         this.health -= Mathf.Max(actualDamage, 0.0f);
     }
 
     public void TakeTrueDamage(float damage)
     {
+        StartVibration();
+        Invoke("StopVibration", 0.25f);
         this.health -= damage;
     }
 
@@ -272,12 +291,10 @@ public abstract class Tank : MonoBehaviour {
         armor = defaultArmor;
         damage = defaultDamage;
         speed = defaultSpeed;
-        shootDelay = defaultShootDelay;
         lastDamage = -1;
         armorGained = 0.0f;
         speedGained = 0.0f;
         damageGained = 0.0f;
-        shootDelayGained = 0.0f;
 
         this.transform.position = new Vector3(pos.x, 0, pos.z);
         this.transform.rotation = Quaternion.Euler(0, pos.y, 0);
@@ -295,6 +312,7 @@ public abstract class Tank : MonoBehaviour {
         canvas.Find("Nitro").GetComponent<Text>().text = Math.Round(nitro, 1).ToString();
         canvas.Find("Damage").GetComponent<Text>().text = Math.Round(damage, 0).ToString();
         canvas.Find("Armor").GetComponent<Text>().text = Math.Round(armor, 0).ToString();
+        UpdateSpecialStats();
     }
 
     void OnTriggerEnter(Collider other)
@@ -347,7 +365,7 @@ public abstract class Tank : MonoBehaviour {
             tree.Hit(currentSpeed);
             ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
             Rigidbody rb = this.gameObject.GetComponent<Rigidbody>();
-            TakeDamage((ramDamage / 100) * rb.velocity.magnitude * 0.4f);
+            TakeDamage((ramDamage / 100) * rb.velocity.magnitude * 0.5f);
             rb.velocity *= 0.5f;
         }
     }
@@ -360,9 +378,19 @@ public abstract class Tank : MonoBehaviour {
         }
     }
 
+    public void StartVibration()
+    {
+        XInputDotNetPure.GamePad.SetVibration(xIdx, 0.25f, 0.25f);
+    }
+
+    public void StopVibration()
+    {
+        XInputDotNetPure.GamePad.SetVibration(xIdx, 0.0f, 0.0f);
+    }
+
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Tank")
+        if (collision.gameObject.tag == "Tank")
         {
             try
             {
@@ -416,6 +444,18 @@ public abstract class Tank : MonoBehaviour {
         set
         {
             name = value;
+        }
+    }
+
+    public float CanShoot
+    {
+        get
+        {
+            return canShoot;
+        }
+        set
+        {
+            canShoot = value;
         }
     }
 

@@ -40,13 +40,8 @@ public class LootManager : MonoBehaviour {
     public void createLoot(Transform t)
     {
         int rnd = Random.Range(1,5);
-        /* 1: Speed
-         * 2: Damage
-         * 3: Armor
-         * 4: Repair
-         * 5: Nitro
-         */
-        switch(rnd)
+
+        switch (rnd)
         {
             case 1:
                 Instantiate(speedUp, t.position, t.rotation);

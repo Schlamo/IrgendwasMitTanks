@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour {
     public Transform crate;
     public Transform nitro;
 
-
     public Material meadowMat; //Type 0
     public Material desertMat; //Type 1
     public Material snowMat;   //Type 2
@@ -56,6 +55,7 @@ public class GameManager : MonoBehaviour {
 
     void Start()
     {
+        StartGame();
     }
 
     void Update()
@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour {
         }
         if (mapType == 2)
         {
-            GameObject.Find("Snow").GetComponent<ParticleSystem>().Emit(5);
+            GameObject.Find("Snow").GetComponent<ParticleSystem>().Emit(25);
         }
 
         time += Time.deltaTime;
@@ -172,7 +172,7 @@ public class GameManager : MonoBehaviour {
 
         for (int i = 0; i < playerAmount; i++)
         {
-            tankTypes[i] = Random.Range(0, 4);
+            tankTypes[i] = Random.Range(0, 5);
             tankColors[i] = colors[Random.Range(0, colors.Count)];
             colors.Remove(tankColors[i]);
 
@@ -241,6 +241,9 @@ public class GameManager : MonoBehaviour {
                     break;
                 case 3:
                     path += "Reaper";
+                    break;
+                case 4:
+                    path += "Cthulu";
                     break;
             }
 
@@ -444,24 +447,25 @@ public class GameManager : MonoBehaviour {
             playerKills[i] = players[i].GetComponent<Tank>().Kills;
         }
 
-        if (playerAmount == 2)
-        {
-            for (int rank = 1; rank < 3; rank++)
-            {
-                int maxKills = 0;
-                int idx = -1;
+        int range;
 
-                for (int i = 0; i < playerAmount; i++)
+        range = playerAmount == 2 ? 3 : 4;
+
+        for (int rank = 1; rank < range; rank++)
+        {
+            int maxKills = 0;
+            int idx = -1;
+
+            for (int i = 0; i < playerAmount; i++)
+            {
+                if (playerKills[i] > maxKills && playerRanks[i] == 0)
                 {
-                    if (playerKills[i] > maxKills && playerRanks[i] == 0)
-                    {
-                        maxKills = playerKills[i];
-                        idx = i;
-                    }
+                    maxKills = playerKills[i];
+                    idx = i;
                 }
-                if (idx != -1)
-                    playerRanks[idx] = rank;
             }
+            if (idx != -1)
+                playerRanks[idx] = rank;
         }
 
         Transform canvas  = transform.Find("GameStats");
@@ -649,19 +653,20 @@ public class GameManager : MonoBehaviour {
             switch(mapType)
             {
                 case 0:
-                    path += "Meadow/Large_1";
+                    path += "Meadow/Large_";
                     break;
                 case 1:
-                    path += "Desert/Large_1";
+                    path += "Desert/Large_";
                     break;
                 case 2:
-                    path += "Snow/Large_1";
+                    path += "Snow/Large_";
                     break;
             }
+            path += Random.Range(1, 5);
 
             pos = Quaternion.Euler(0, (float)360 / steps, 0) * pos;
             var rock = Instantiate(Resources.Load(path), pos, Quaternion.Euler(-90, rotation, 0)) as GameObject;
-            rock.transform.localScale = new Vector3(Random.Range(5.0f, 7.0f), Random.Range(5.0f, 7.0f), Random.Range(5.0f, 10.0f));
+            rock.transform.localScale = new Vector3(Random.Range(5.0f, 7.0f), Random.Range(5.0f, 7.0f), Random.Range(5.0f, 7.0f));
         }
     }
 

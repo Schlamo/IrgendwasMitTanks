@@ -458,7 +458,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1409344581214490}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -72.47316, y: -3.1898239, z: 7.972466}
+  m_LocalPosition: {x: -34.231503, y: -5.112936, z: -46.13002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4350641702076046}
@@ -1105,16 +1105,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd2b8cb45d85733448f7a7a29b86aae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  padNumber: 0
   powerUpDuration: 30
   ramDamage: 60
   defaultSpeed: 300
   speed: 300
   maxSpeed: 400
-  defaultShootDelay: 1
   shootDelay: 1
-  minShootDelay: 0.5
-  defaultDamage: 10
-  damage: 10
+  defaultDamage: 15
+  damage: 15
   maxDamage: 20
   health: 100
   maxHealth: 100
@@ -1122,15 +1121,15 @@ MonoBehaviour:
   armor: 1
   maxArmor: 10
   rotationSpeed: 125
-  padNumber: 0
   nitro: 5
   cam: {fileID: 0}
   canvas: {fileID: 0}
   launchPosition: {fileID: 4814912721705750}
+  specialImage: {fileID: 21300000, guid: f76d187ca0beabf4f8f688d84e3a6406, type: 3}
   canDrive: 0
   nitroAmp: 1.5
-  specialAccumulated: 5
-  specialMax: 10
+  specialAccumulated: 2.5
+  specialMax: 5
   flameDamage: 30
 --- !u!136 &136003046650896738
 CapsuleCollider:

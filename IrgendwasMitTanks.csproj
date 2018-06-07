@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -78,6 +76,9 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
+    <Reference Include="XInputDotNetPure">
+      <HintPath>Assets\XInputDotNet\Plugins\x86_64\XInputDotNetPure.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GamePadInput\Demo\DemoScript.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Assets\Scripts\ProjectileManager.cs" />
     <Compile Include="Assets\Scripts\SmoothCamera.cs" />
     <Compile Include="Assets\Scripts\Tank.cs" />
+    <Compile Include="Assets\Scripts\Tanks\Cthulu.cs" />
     <Compile Include="Assets\Scripts\Tanks\Prometheus.cs" />
     <Compile Include="Assets\Scripts\Tanks\Reaper.cs" />
     <Compile Include="Assets\Scripts\Tanks\Tempest.cs" />
@@ -105,7 +107,6 @@
   <ItemGroup>
     <None Include="Assets\LowPolyWater_Pack\LowPoly Island\Credits.txt" />
     <None Include="Assets\LowPolyWater_Pack\Shaders\WaterShaded.shader" />
-    <None Include="Assets\Plugins\LowPolyRocksPack\Examples\Materials\Scene\Licence.txt" />
     <None Include="Assets\Shader\SnowShader.shader" />
     <None Include="Assets\Shader\TerrainShader.shader" />
   </ItemGroup>

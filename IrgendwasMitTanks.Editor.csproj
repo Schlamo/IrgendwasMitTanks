@@ -115,6 +115,9 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="XInputDotNetPure">
+      <HintPath>Assets\XInputDotNet\Plugins\x86_64\XInputDotNetPure.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="IrgendwasMitTanks.csproj">
@@ -128,7 +131,6 @@
   <ItemGroup>
     <None Include="Assets\LowPolyWater_Pack\LowPoly Island\Credits.txt" />
     <None Include="Assets\LowPolyWater_Pack\Shaders\WaterShaded.shader" />
-    <None Include="Assets\Plugins\LowPolyRocksPack\Examples\Materials\Scene\Licence.txt" />
     <None Include="Assets\Shader\SnowShader.shader" />
     <None Include="Assets\Shader\TerrainShader.shader" />
   </ItemGroup>

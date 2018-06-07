@@ -1684,10 +1684,10 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1482217891
+  randomSeed: 854230361
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -2083,7 +2083,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 10000
+    maxNumParticles: 1000000
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -4945,27 +4945,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e1d1abd4f761874fa4f8702831c5718, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAmount: 2
-  mapType: 2
+  startingAreaRadius: 15
+  supplyRefill: 15
+  playerAmount: 4
+  borderSteps: 72
+  nitroAmount: 20
+  crateAmount: 20
+  rocksAmount: 25
+  treeAmount: 75
   mapSize: 100
+  mapType: 2
+  tankCamera: {fileID: 4601123519842626, guid: 46400eea955aa2847a928a686054474d, type: 2}
+  halfScreen: {fileID: 224579849544281516, guid: 8ff0cf4fff8e6e347b110461baf5c608,
+    type: 2}
   crate: {fileID: 4471575615656100, guid: fec315ef5cb64c944b6414884a653080, type: 2}
   nitro: {fileID: 4770890933936848, guid: 60dd5fff89207d749b4a1e6879d13e4d, type: 2}
   meadowMat: {fileID: 2100000, guid: a659fdade0e3dff4b8353801f6c34f0c, type: 2}
   desertMat: {fileID: 2100000, guid: ac7efab3c05d3834dbc778b461db8d54, type: 2}
   snowMat: {fileID: 2100000, guid: 5082fa57c9f4c55449bdc275ece29351, type: 2}
-  tankCamera: {fileID: 4601123519842626, guid: 46400eea955aa2847a928a686054474d, type: 2}
-  halfScreen: {fileID: 224579849544281516, guid: 8ff0cf4fff8e6e347b110461baf5c608,
-    type: 2}
-  tempest: {fileID: 4243433142267904, guid: cd035e261fb2b1b4781e9af9177156d0, type: 2}
-  viking: {fileID: 4361208827700764, guid: 9515e7d8b28116f4787408d51e2ef84a, type: 2}
-  reaper: {fileID: 4341768787635284, guid: 0237f7475c21a374e937f115faf6e2b3, type: 2}
-  prometheus: {fileID: 4405931879096174, guid: aa3b32c1cab31bb4fa9604fbd1ad4e2f, type: 2}
-  startingAreaRadius: 5
-  borderSteps: 72
-  treeAmount: 75
-  nitroAmount: 20
-  crateAmount: 20
-  rocksAmount: 25
 --- !u!4 &2047949051
 Transform:
   m_ObjectHideFlags: 0

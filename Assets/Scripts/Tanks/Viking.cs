@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System;
 
 public class Viking : Tank
 {
@@ -8,6 +10,19 @@ public class Viking : Tank
     private bool specialReady = true;
     private float specialCooldown = 10.0f;
     private float specialTimer = 0.0f;
+
+    public override void UpdateSpecialStats()
+    {
+        var canvas = transform.Find("Canvas");
+        if (specialReady)
+        {
+            canvas.Find("Special").GetComponent<Text>().text = "Ready";
+        }
+        else
+        {
+            canvas.Find("Special").GetComponent<Text>().text = (specialCooldown - specialTimer).ToString("F1") + "s";
+        }
+    }
 
     public override void UpdateSpecial(float dTime, GamePad.Index idx)
     {

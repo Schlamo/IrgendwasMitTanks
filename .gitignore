@@ -7,6 +7,9 @@ Temp
 #Due to the current version
 Assets/Plugins/*.unitypackage
 
-#Build Files
-
+#Build-Files
 Build/
+
+#Meta-Files
+
+Library/metadata/

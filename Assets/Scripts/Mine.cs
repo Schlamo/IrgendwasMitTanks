@@ -31,6 +31,7 @@ public class Mine : MonoBehaviour
                     Vector3 forceDirection = tank.transform.position - transform.position;
                     forceDirection.Normalize();
                     forceDirection.y = 1;
+                    other.gameObject.GetComponent<Rigidbody>().AddForce(forceDirection);
 
                     other.gameObject.GetComponent<Rigidbody>().velocity*=0.5f;
                     ProjectileManager.instance.createExplosion(transform.position);

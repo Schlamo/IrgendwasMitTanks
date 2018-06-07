@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System;
 public class Prometheus : Tank
 {
     public float specialAccumulated = 1.0f;
@@ -14,10 +16,16 @@ public class Prometheus : Tank
 
     private float delta = 0.0f;
 
+    public override void UpdateSpecialStats()
+    {
+        var canvas = transform.Find("Canvas");
+        canvas.Find("Special").GetComponent<Text>().text = Mathf.Max(0.0f, specialAccumulated).ToString("F2") + "s";
+    }
+
     public override void UpdateSpecial(float dTime, GamePad.Index idx)
     {
         delta = dTime;
-        specialAccumulated = specialAccumulated > specialMax ? specialMax : specialAccumulated + (delta / 10);
+        specialAccumulated = specialAccumulated > specialMax ? specialMax : specialAccumulated + (delta / 5);
 
         if (GamePad.GetButton(GamePad.Button.B, idx))
         {

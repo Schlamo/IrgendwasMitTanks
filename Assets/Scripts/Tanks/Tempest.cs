@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System;
 
 public class Tempest : Tank
 {
@@ -9,6 +11,12 @@ public class Tempest : Tank
     private float currentMineTimer = 0.0f;
     private float mineRefill = 10.0f;
     public Transform mine;
+
+    public override void UpdateSpecialStats()
+    {
+        var canvas = transform.Find("Canvas");
+        canvas.Find("Special").GetComponent<Text>().text = mineCount + "/" + maxMineCount + " (" + (mineRefill-currentMineTimer).ToString("F1") + "s)";
+    }
 
     public override void UpdateSpecial(float dTime, GamePad.Index idx)
     {
