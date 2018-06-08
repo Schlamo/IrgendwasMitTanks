@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour {
     private List<Transform> players         = new List<Transform>();
     private List<Transform> startingPoints  = new List<Transform>();
 
+
     void Awake()
     {
         if (instance == null)
@@ -139,7 +140,9 @@ public class GameManager : MonoBehaviour {
         Transform cratesParent = GameObject.Find("Crates").transform;
         GameObject.Find("MapCam").GetComponent<Camera>().enabled = false;
 
-        mapType = Random.Range(0, 3);
+        if(mapType > 2 || mapType < 0)
+            mapType = Random.Range(0, 3);
+
         GenerateBorder(borderSteps);
 
         /*** Tank Types:
@@ -158,7 +161,45 @@ public class GameManager : MonoBehaviour {
          * 6: Black
          * 7: White
         ***/
+        int grassDensity = 500;
 
+        Transform light = GameObject.Find("LightWrapper").transform;
+
+        switch (mapType)
+        {
+            case 0:
+                grassDensity *= 2;
+                light.rotation = Quaternion.Euler(60, 60, 0);
+                break;
+            case 1:
+                light.rotation = Quaternion.Euler(80, 80, 0);
+                grassDensity /= 5;
+                break;
+            case 2:
+                light.rotation = Quaternion.Euler(20, 20, 0);
+                grassDensity /= 10;
+                break;
+        }
+        for (int i = 0; i < grassDensity; i++)
+        {
+            Vector3 position = GeneratePosition();
+            GameObject grass = Instantiate(Resources.Load("Grass"), GetFixedPosition(position), Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f)) as GameObject;
+            grass.transform.localScale = new Vector3(Random.Range(1.0f, 2), Random.Range(1.0f, 2), Random.Range(1.0f, 2));
+            string path = "Grass/";
+            switch(mapType)
+            {
+                case 0:
+                    path += "Meadow";
+                    break;
+                case 1:
+                    path += "Desert";
+                    break;
+                case 2:
+                    path += "Snow";
+                    break;
+            }
+            grass.transform.GetComponent<MeshRenderer>().material = Resources.Load(path) as Material;
+        } 
 
         for (int i = 0; i < 8; i++)
         {

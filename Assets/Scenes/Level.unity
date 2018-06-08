@@ -454,6 +454,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 453264934}
+  - component: {fileID: 453264935}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -480,6 +481,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &453264935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 453264933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf3938d107fda3d45b705b855b384379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &457632407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1687,7 +1699,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 854230361
+  randomSeed: -271953571
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -1777,7 +1789,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.66176474, g: 0.66176474, b: 0.66176474, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4947,14 +4959,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingAreaRadius: 15
   supplyRefill: 15
-  playerAmount: 4
+  playerAmount: 2
   borderSteps: 72
   nitroAmount: 20
   crateAmount: 20
   rocksAmount: 25
   treeAmount: 75
   mapSize: 100
-  mapType: 2
+  mapType: 0
   tankCamera: {fileID: 4601123519842626, guid: 46400eea955aa2847a928a686054474d, type: 2}
   halfScreen: {fileID: 224579849544281516, guid: 8ff0cf4fff8e6e347b110461baf5c608,
     type: 2}
