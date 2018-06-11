@@ -24,14 +24,13 @@ public class Mine : MonoBehaviour
             try
             {
                 Tank tank = other.gameObject.GetComponent<Tank>();
+
                 if (tank.padNumber != owner)
                 {
+                    AudioManager.instance.PlayMineDetonationSound();
+
                     tank.LastDamage = owner;
                     tank.TakeDamage(25);
-                    Vector3 forceDirection = tank.transform.position - transform.position;
-                    forceDirection.Normalize();
-                    forceDirection.y = 1;
-                    other.gameObject.GetComponent<Rigidbody>().AddForce(forceDirection);
 
                     other.gameObject.GetComponent<Rigidbody>().velocity*=0.5f;
                     ProjectileManager.instance.createExplosion(transform.position);

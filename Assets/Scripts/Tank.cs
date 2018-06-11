@@ -133,8 +133,6 @@ public abstract class Tank : MonoBehaviour {
             actualRotSpeed *= 0.5f;
         }
 
-        /* Tank Movements */
-
         if (canDrive && transform.position.y > -10 && Mathf.Abs((transform.rotation.eulerAngles.x+22.5f)%360) < 45.0f && Mathf.Abs((transform.rotation.eulerAngles.z + 22.5f) % 360) < 45.0f)
         {
 
@@ -175,10 +173,10 @@ public abstract class Tank : MonoBehaviour {
             ParticleSystem left = this.transform.Find("TracksParticlesLeft").gameObject.GetComponent<ParticleSystem>();
             ParticleSystem right = this.transform.Find("TracksParticlesRight").gameObject.GetComponent<ParticleSystem>();
 
-            left.Emit((int)currentSpeed / 20);
-            right.Emit((int)currentSpeed / 20);
-
-        } else
+            left.Emit((int)currentSpeed / 10);
+            right.Emit((int)currentSpeed / 10);
+        }
+        else
         {
             timeToExplode += Time.deltaTime;
             if(timeToExplode > 3.0f)
@@ -321,6 +319,7 @@ public abstract class Tank : MonoBehaviour {
         {
             PowerUp powerUp = other.gameObject.GetComponent<PowerUp>();
 
+            AudioManager.instance.PlayPowerUpSound(powerUp.type);
             switch (powerUp.type)
             {
                 case 1:
@@ -339,7 +338,8 @@ public abstract class Tank : MonoBehaviour {
                     armor = armor > maxArmor ? maxArmor : armor;
                     break;
                 case 4:
-                    this.health += powerUp.bonus;
+                    Debug.Log("Healed by: " + (powerUp.bonus / 100) * (maxHealth-health));
+                    this.health += (powerUp.bonus / 100) * (maxHealth - health);
                     health = health > maxHealth ? maxHealth : health;
                     break;
                 case 5:
@@ -353,7 +353,8 @@ public abstract class Tank : MonoBehaviour {
         }
         else if (other.gameObject.tag == "Crate")
         {
-            other.gameObject.GetComponent<Crate>().Hit(currentSpeed);
+            AudioManager.instance.PlayCrateCollisionSound();
+            other.gameObject.GetComponent<Crate>().Hit(currentSpeed, GetPercentageHealth());
             ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
             Rigidbody rb = this.gameObject.GetComponent<Rigidbody>();
             TakeDamage((ramDamage / 100) * rb.velocity.magnitude *0.2f);
@@ -361,6 +362,7 @@ public abstract class Tank : MonoBehaviour {
         }
         else if (other.gameObject.tag == "Tree")
         {
+            AudioManager.instance.PlayCrateCollisionSound();
             var tree = other.gameObject.GetComponent<Tree>();
             tree.Hit(currentSpeed);
             ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
@@ -392,6 +394,7 @@ public abstract class Tank : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Tank")
         {
+            AudioManager.instance.PlayTankCollisionSound();
             try
             {
                 collision.transform.GetComponent<Tank>().LastDamage = padNumber;
@@ -406,6 +409,7 @@ public abstract class Tank : MonoBehaviour {
         }
         else if(collision.gameObject.tag == "Rock")
         {
+            AudioManager.instance.PlayRockCollisionSound();
             Rigidbody rb = this.gameObject.GetComponent<Rigidbody>();
             TakeTrueDamage((ramDamage / 100) * rb.velocity.magnitude);
         }
@@ -499,5 +503,10 @@ public abstract class Tank : MonoBehaviour {
                 child.GetComponent<Renderer>().material = mat;
             }
         }
+    }
+
+    public float GetPercentageHealth()
+    {
+        return (health / maxHealth)*100.0f;
     }
 }

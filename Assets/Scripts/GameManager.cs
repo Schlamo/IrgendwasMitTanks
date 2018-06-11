@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour {
                 grassDensity /= 5;
                 break;
             case 2:
-                light.rotation = Quaternion.Euler(20, 20, 0);
+                light.rotation = Quaternion.Euler(44, 44, 0);
                 grassDensity /= 10;
                 break;
         }
@@ -648,6 +648,11 @@ public class GameManager : MonoBehaviour {
             var tank = players[owner-1].GetComponent<Tank>();
             tank.Kills++;
         }
+    }
+
+    public Tank GetPlayerByIdx(int idx)
+    {
+        return players[idx - 1].GetComponent<Tank>();
     }
 
     public void DeleteCrate(Crate c)

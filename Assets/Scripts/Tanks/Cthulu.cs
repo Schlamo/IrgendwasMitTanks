@@ -57,6 +57,7 @@ public class Cthulu : Tank
             {
                 try
                 {
+                    AudioManager.instance.PlayInvisibilitySound();
                     var renderer = child.GetComponent<MeshRenderer>();
                     renderer.enabled = false;
                 }

@@ -10,11 +10,6 @@ public class ProjectileManager : MonoBehaviour {
     public Transform Projectile;
     public Transform FlameProjectile;
 
-    public Transform mudExplosion;
-    public Transform woodExplosion;
-    public Transform tankExplosion;
-    public Transform explosion;
-
     public float projectileSpeed;
     public float flameSpeed;
 
@@ -37,6 +32,7 @@ public class ProjectileManager : MonoBehaviour {
 
     public void createProjectile(Transform tank, Transform launch, float damage, int owner)
     {
+        AudioManager.instance.PlayShootSound();
         var projectile = Instantiate(Projectile, launch.position, launch.rotation);
 
         projectile.GetComponent<Projectile>().Damage = damage;
@@ -79,42 +75,42 @@ public class ProjectileManager : MonoBehaviour {
 
         Vector3 direction = lPos - tPos;
 
-        rb.AddForce(direction * flameSpeed, ForceMode.Impulse);
+        rb.AddForce(direction.normalized * flameSpeed, ForceMode.Impulse);
     }
 
     public void createExplosion(Vector3 pos, int type = 0)
     {
-        if(type == 1)
+        string path = "Explosions/";
+        if (type == 1)
         {
             //Mud
-            var e = Instantiate(mudExplosion, pos, new Quaternion(0, 0, 0, 0));
-            var p = e.GetComponent<ParticleSystem>();
-            p.Emit(2);
-            Destroy(e.gameObject, p.duration + p.startLifetime);
+            switch (GameManager.instance.mapType)
+            {
+                case 0:
+                    path += "MudExplosion";
+                    break;
+                case 1:
+                    path += "SandExplosion";
+                    break;
+                case 2:
+                    path += "SnowExplosion";
+                    break;
+            }
         }
         else if(type == 2)
         {
-            //Wood
-            var e = Instantiate(woodExplosion, pos, new Quaternion(0, 0, 0, 0));
-            var p = e.GetComponent<ParticleSystem>();
-            p.Emit(2);
-            Destroy(e.gameObject, p.duration + p.startLifetime);
+            path += "WoodExplosion";
         }
         else if( type == 3)
         {
-            //Tank
-            var e = Instantiate(tankExplosion, pos, new Quaternion(0, 0, 0, 0));
-            var p = e.GetComponent<ParticleSystem>();
-            p.Emit(2);
-            Destroy(e.gameObject, p.duration + p.startLifetime);
+            path += "TankExplosion";
         }
         else
         {
-            //Default
-            var e = Instantiate(explosion, pos, new Quaternion(0, 0, 0, 0));
-            var p = e.GetComponent<ParticleSystem>();
-            p.Emit(2);
-            Destroy(e.gameObject, p.duration + p.startLifetime);
+            path += "Explosion";
         }
+
+        GameObject explosion = Instantiate(Resources.Load(path), pos, new Quaternion(0, 0, 0, 0)) as GameObject;
+        Destroy(explosion, 0.5f);
     }
 }

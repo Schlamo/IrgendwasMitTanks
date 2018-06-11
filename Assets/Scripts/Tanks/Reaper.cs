@@ -48,8 +48,9 @@ public class Reaper : Tank
 
     public override void Special()
     {
-        if(specialTimer >= specialCooldown)
+        if (specialTimer >= specialCooldown)
         {
+            AudioManager.instance.PlayInvulnerabilitySound();
             specialTimer = 0.0f;
             specialActive = true;
             armor = maxArmor;

@@ -16,6 +16,8 @@ public class Prometheus : Tank
 
     private float delta = 0.0f;
 
+    float time;
+
     public override void UpdateSpecialStats()
     {
         var canvas = transform.Find("Canvas");
@@ -24,6 +26,7 @@ public class Prometheus : Tank
 
     public override void UpdateSpecial(float dTime, GamePad.Index idx)
     {
+        time += dTime;
         delta = dTime;
         specialAccumulated = specialAccumulated > specialMax ? specialMax : specialAccumulated + (delta / 5);
 
@@ -48,6 +51,10 @@ public class Prometheus : Tank
         {
             if(specialFrames == 0)
             {
+                if(time % 0.5 > 0.25)
+                {
+                    AudioManager.instance.PlayFlameSound();
+                }
                 specialAccumulated -= delta * framesToFlame;
                 ProjectileManager.instance.createFlameProjectile(this.gameObject.transform, this.launchPosition, flameDamage * delta * framesToFlame, this.padNumber);
                 specialFrames = framesToFlame;

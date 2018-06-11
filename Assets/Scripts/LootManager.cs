@@ -9,6 +9,7 @@ public class LootManager : MonoBehaviour {
     public Transform damageUp;
     public Transform armorUp;
     public Transform repairUp;
+    public Transform mine;
 
     void Awake()
     {
@@ -37,24 +38,67 @@ public class LootManager : MonoBehaviour {
         set { instance = value; }
     }
 
-    public void createLoot(Transform t)
+    public void createLoot(Transform t, float health)
     {
-        int rnd = Random.Range(1,5);
-
-        switch (rnd)
+        int rnd = Random.Range(1, 100);
+        if(rnd < 10)
         {
-            case 1:
-                Instantiate(speedUp, t.position, t.rotation);
-                break;
-            case 2:
-                Instantiate(damageUp, t.position, t.rotation);
-                break;
-            case 3:
-                Instantiate(armorUp, t.position, t.rotation);
-                break;
-            case 4:
+            var m = Instantiate(mine, t.position, t.rotation);
+            m.transform.GetComponent<Mine>().Owner = -1;
+            m.transform.Translate(new Vector3(0, -1.5f, 0));
+            return;
+        }
+
+        //If HP is <10%, the powerUp is guaranteed to be a Repairkit
+        if (health < 10.0f)
+        {
+            Instantiate(repairUp, t.position, t.rotation);
+        }
+
+        //If HP is <=50%, the powerUp ist 1/2 a Repairkit and 1/6 another powerUp  
+        else if(health <= 50.0f)
+        {
+            rnd = Random.Range(1, 100);
+            if(rnd > 50)
+            {
                 Instantiate(repairUp, t.position, t.rotation);
-                break;
+            }
+            else
+            {
+                rnd = Random.Range(1, 4);
+
+                switch (rnd)
+                {
+                    case 1:
+                        Instantiate(speedUp, t.position, t.rotation);
+                        break;
+                    case 2:
+                        Instantiate(damageUp, t.position, t.rotation);
+                        break;
+                    case 3:
+                        Instantiate(armorUp, t.position, t.rotation);
+                        break;
+                }
+            }
+        }
+
+        //If HP is >50%, the powerUp is 1/3 a speedUp/damageUp/armorUp
+        else
+        {
+            rnd = Random.Range(1, 4);
+            Debug.Log(rnd);
+            switch (rnd)
+            {
+                case 1:
+                    Instantiate(speedUp, t.position, t.rotation);
+                    break;
+                case 2:
+                    Instantiate(damageUp, t.position, t.rotation);
+                    break;
+                case 3:
+                    Instantiate(armorUp, t.position, t.rotation);
+                    break;
+            }
         }
     }
 }

@@ -51,7 +51,6 @@ public class Viking : Tank
             {
                 t.RotateAround(this.transform.position, Vector3.up, 10);
                 t.position = new Vector3(t.position.x, launchY, t.position.z);
-
                 ProjectileManager.instance.createProjectile(this.transform, t, this.damage / 2.0f, this.padNumber);
             }
             t.RotateAround(this.transform.position, Vector3.up, 340);

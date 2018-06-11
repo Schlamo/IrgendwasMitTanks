@@ -7,7 +7,7 @@ public class Crate : MonoBehaviour {
     private const float maxHealth = 10.0f;
     private float health = 10.0f;
 
-    public void Hit(float damage)
+    public void Hit(float damage, float percentageHealth)
     {
         health -= damage;
         float scale = (health+10) / (maxHealth+10);
@@ -15,7 +15,7 @@ public class Crate : MonoBehaviour {
         if(health <= 0)
         {
             GameManager.instance.DeleteCrate(this);
-            LootManager.Instance.createLoot(this.transform);
+            LootManager.Instance.createLoot(this.transform, percentageHealth);
             Destroy(this.gameObject);
         }
     }

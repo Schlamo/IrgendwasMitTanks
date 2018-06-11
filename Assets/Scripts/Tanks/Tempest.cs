@@ -33,7 +33,8 @@ public class Tempest : Tank
 
     public override void Special()
     {
-        if(mineCount > 0) {
+        if (mineCount > 0) {
+            AudioManager.instance.PlayMinePlacedSound();
             mineCount--;
             var m = Instantiate(mine, transform.position, transform.rotation);
             m.transform.GetComponent<Mine>().Owner = padNumber;

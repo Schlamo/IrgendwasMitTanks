@@ -28,12 +28,14 @@ public class Projectile : MonoBehaviour {
         {
             if (other.gameObject.tag == "Crate")
             {
+                AudioManager.instance.PlayCrateImpactSound();
                 ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
                 var crate = other.gameObject.GetComponent<Crate>();
-                crate.Hit(damage);
+                crate.Hit(damage, GameManager.instance.GetPlayerByIdx(owner).GetPercentageHealth());
             }
             else if (other.gameObject.tag == "Tree")
             {
+                AudioManager.instance.PlayCrateImpactSound();
                 var tree = other.gameObject.GetComponent<Tree>();
                 tree.Hit(damage/3);
                 ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
@@ -51,7 +53,7 @@ public class Projectile : MonoBehaviour {
             {
                 ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
                 var crate = other.gameObject.GetComponent<Crate>();
-                crate.Hit(damage);
+                crate.Hit(damage, GameManager.instance.GetPlayerByIdx(owner).GetPercentageHealth());
             }
         }
         Destroy(this.gameObject);
@@ -66,10 +68,12 @@ public class Projectile : MonoBehaviour {
             
             if (collision.gameObject.tag == "Map")
             {
+                AudioManager.instance.PlayMapImpactSound();
                 ProjectileManager.instance.createExplosion(pos, 1);
             }
             else if (collision.gameObject.tag == "Tank")
             {
+                AudioManager.instance.PlayTankImpactSound();
                 ProjectileManager.instance.createExplosion(pos, 0);
                 var tank = collision.gameObject.GetComponent<Tank>();
                 tank.TakeDamage(this.damage);
