@@ -10,6 +10,7 @@ public class Prometheus : Tank
     public float specialMax = 3.0f;
 
     public float flameDamage = 10.0f;
+    public float timeToMaxDamage = 2.0f;
 
     private int framesToFlame = 5;
     private int specialFrames = 0;
@@ -28,12 +29,18 @@ public class Prometheus : Tank
     {
         time += dTime;
         delta = dTime;
-        specialAccumulated = specialAccumulated > specialMax ? specialMax : specialAccumulated + (delta / 5);
+        specialAccumulated = specialAccumulated > specialMax ? specialMax : specialAccumulated + (delta / 10);
 
         if (GamePad.GetButton(GamePad.Button.B, idx))
         {
+            timeToMaxDamage += dTime;
             OnButtonSpecial();
         }
+        else
+        {
+            timeToMaxDamage = 0.0f;
+        }
+
         if(specialFrames > 0)
         {
             specialFrames--;
@@ -55,8 +62,10 @@ public class Prometheus : Tank
                 {
                     AudioManager.instance.PlayFlameSound();
                 }
+                float amplifier = 1.0f;
+                amplifier += Mathf.Min(timeToMaxDamage, 2.0f);
                 specialAccumulated -= delta * framesToFlame;
-                ProjectileManager.instance.createFlameProjectile(this.gameObject.transform, this.launchPosition, flameDamage * delta * framesToFlame, this.padNumber);
+                ProjectileManager.instance.createFlameProjectile(this.gameObject.transform, this.launchPosition, flameDamage * delta * framesToFlame * amplifier, this.padNumber);
                 specialFrames = framesToFlame;
             }
         }

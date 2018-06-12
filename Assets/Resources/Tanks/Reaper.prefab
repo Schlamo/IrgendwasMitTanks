@@ -59,10 +59,6 @@ GameObject:
   - component: {fileID: 136233084585640208}
   - component: {fileID: 136389386469309362}
   - component: {fileID: 54799263962906164}
-  - component: {fileID: 65107801845619206}
-  - component: {fileID: 65219392432395712}
-  - component: {fileID: 136402916410520470}
-  - component: {fileID: 136856272917060226}
   m_Layer: 0
   m_Name: Reaper
   m_TagString: Tank
@@ -1327,30 +1323,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &65107801845619206
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1070726016618958}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.5, y: 0.7, z: 2}
-  m_Center: {x: 0, y: 2.15, z: -0.5}
---- !u!65 &65219392432395712
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1070726016618958}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.4, y: 1.5, z: 5}
-  m_Center: {x: 0, y: 1.05, z: 0}
 --- !u!65 &65648514410937652
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1427,32 +1399,6 @@ CapsuleCollider:
   m_Direction: 2
   m_Center: {x: 1.3, y: 0.3, z: 0}
 --- !u!136 &136389386469309362
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1070726016618958}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 5
-  m_Direction: 2
-  m_Center: {x: -1.3, y: 0.3, z: 0}
---- !u!136 &136402916410520470
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1070726016618958}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 5
-  m_Direction: 2
-  m_Center: {x: 1.3, y: 0.3, z: 0}
---- !u!136 &136856272917060226
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

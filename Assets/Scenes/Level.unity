@@ -2095,14 +2095,14 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -687744353
+  randomSeed: 2009570898
   InitialModule:
     serializedVersion: 3
     enabled: 1
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 4
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -2183,9 +2183,9 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 0
-      minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.66176474, g: 0.66176474, b: 0.66176474, a: 1}
+      minMaxState: 2
+      minColor: {r: 1, g: 0.9450981, b: 0.9686275, a: 1}
+      maxColor: {r: 0.6666667, g: 0.6039216, b: 0.62352943, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -2247,8 +2247,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.5
-      minScalar: 0.25
+      scalar: 0.3
+      minScalar: 0.15
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5356,13 +5356,13 @@ MonoBehaviour:
   startingAreaRadius: 15
   supplyRefill: 15
   playerAmount: 2
-  borderSteps: 0
+  borderSteps: 72
   nitroAmount: 20
   crateAmount: 20
-  rocksAmount: 0
-  treeAmount: 0
+  rocksAmount: 25
+  treeAmount: 75
   mapSize: 100
-  mapType: 2
+  mapType: 0
   tankCamera: {fileID: 4601123519842626, guid: 46400eea955aa2847a928a686054474d, type: 2}
   halfScreen: {fileID: 224579849544281516, guid: 8ff0cf4fff8e6e347b110461baf5c608,
     type: 2}

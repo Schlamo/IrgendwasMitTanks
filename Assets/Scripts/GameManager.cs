@@ -182,7 +182,13 @@ public class GameManager : MonoBehaviour {
         }
         for (int i = 0; i < grassDensity; i++)
         {
-            Vector3 position = GeneratePosition();
+            Vector3 position;
+            do
+            {
+                position = GeneratePosition();
+            }
+            while (!IsPositionValid(position));
+
             GameObject grass = Instantiate(Resources.Load("Grass"), GetFixedPosition(position), Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f)) as GameObject;
             grass.transform.localScale = new Vector3(Random.Range(1.0f, 2), Random.Range(1.0f, 2), Random.Range(1.0f, 2));
             string path = "Grass/";
@@ -322,8 +328,18 @@ public class GameManager : MonoBehaviour {
             while (!IsPositionValid(pos));
 
             int type = Random.Range(2, 5);
+            if(mapType == 0)
+            {
+                int t = Random.Range(0,5);
 
-            SpawnTreeAt(type, pos, treesParent);
+                if(t == 0) {
+                    SpawnGeneratedTree(type, pos, treesParent);
+                }
+                else
+                {
+                    SpawnTreeAt(type, pos, treesParent);
+                }
+            }
         }
 
         for (int i = 0; i < nitroAmount; i++)
@@ -428,8 +444,10 @@ public class GameManager : MonoBehaviour {
 
             path += type;
 
-            var d_rock = Instantiate(Resources.Load(path), GetFixedPosition(pos, -1.0f), Quaternion.Euler(-90, rotation, 0)) as GameObject;
-            d_rock.transform.localScale = new Vector3(Random.Range(1, 4), Random.Range(1, 4), Random.Range(1, 4));
+            GameObject rock = Instantiate(Resources.Load(path), GetFixedPosition(pos, -1.0f), Quaternion.Euler(-90, rotation, 0)) as GameObject;
+            rock.transform.parent = GameObject.Find("Rocks").transform;
+            rocks.Add(rock.transform);
+            rock.transform.localScale = new Vector3(Random.Range(1, 4), Random.Range(1, 4), Random.Range(1, 4));
         }
     }
 
@@ -560,6 +578,16 @@ public class GameManager : MonoBehaviour {
         nitros.Add(t_nitro);
     }
 
+    private void SpawnGeneratedTree(int type, Vector3 pos, Transform parent)
+    {
+        GameObject tree = TreeGenerator.instance.GenerateTree();
+        tree.transform.parent = parent;
+        tree.transform.position = GetFixedPosition(pos);
+        float scale = Random.Range(0.5f, 1.0f);
+        tree.transform.localScale = new Vector3(scale, scale, scale);
+        tree.transform.rotation = Quaternion.Euler(0, pos.y, 0);
+    }
+
     private void SpawnTreeAt(int type, Vector3 pos, Transform parent)
     {
         string path = "Trees/";
@@ -595,7 +623,8 @@ public class GameManager : MonoBehaviour {
             do
             {
                 pos = GeneratePosition();
-            } while (!IsPositionValid(pos));
+            }
+            while (!IsPositionValid(pos));
             SpawnCrateAt(pos, GameObject.Find("Crates").transform);
         }
 

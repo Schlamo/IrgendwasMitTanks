@@ -21,7 +21,6 @@ public class TreeGenerator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //GenerateTree();
     }
 
     // Update is called once per frame
@@ -30,22 +29,25 @@ public class TreeGenerator : MonoBehaviour
 
     }
 
-    public Transform GenerateTree()
+    public GameObject GenerateTree()
     {
+        GameObject tree = new GameObject();
         var root = Instantiate(Resources.Load("TreeGen/Meadow/Trunk"), Vector3.zero, new Quaternion(0,0,0,0)) as GameObject;
-        float xzScale = Random.Range(5.0f,7.5f);
-        float yScale = Random.Range(2.5f, 7.5f);
+        float xzScale = Random.Range(3.0f,6f);
+        float yScale = Random.Range(3.0f, 6f);
         root.transform.localScale = new Vector3(xzScale, yScale, xzScale);
-
+        root.transform.parent = tree.transform;
         int branches = Random.Range(2, 4);
+        root.gameObject.name = "Root";
         for (int i = 0; i < branches; i++)
         {
-            float angleRange = 50.0f;
-            var branch = Instantiate(Resources.Load("TreeGen/Meadow/Trunk"), root.transform.Find("Socket").transform.position, Quaternion.Euler(Random.Range(-angleRange, angleRange), 0, Random.Range(-angleRange, angleRange))) as GameObject;
+            float yRotation = Random.Range(0, (360 / branches)) + (i * (360/branches));
+            float angleRange = 90.0f; 
+            var branch = Instantiate(Resources.Load("TreeGen/Meadow/Trunk"), root.transform.Find("Socket").transform.position, Quaternion.Euler(Random.Range(angleRange/3, angleRange*2/3), yRotation, 0)) as GameObject;
             branch.transform.Translate(new Vector3(0.0f, -0.25f, 0.0f));
-            xzScale = Random.Range(0.25f, 0.5f);
-            yScale = Random.Range(0.25f, 0.6f);
-            branch.transform.parent = root.transform;
+            xzScale = Random.Range(5.0f, 6.0f);
+            yScale = Random.Range(4.0f, 6.0f);
+            branch.transform.parent = tree.transform;
             branch.transform.localScale = new Vector3(xzScale, yScale, xzScale);
         }
 
@@ -54,10 +56,11 @@ public class TreeGenerator : MonoBehaviour
         var leafs = Instantiate(Resources.Load(objPath), root.transform.Find("Socket").transform.position, Quaternion.Euler(Vector3.zero)) as GameObject;
         leafs.GetComponent<MeshRenderer>().material = Resources.Load(matPath) as Material;
 
-        leafs.transform.parent = root.transform;
-        float leafScale = Random.Range(0.5f, 1.0f);
+        leafs.transform.parent = tree.transform;
+        float leafScale = Random.Range(2.0f, 3.0f);
+        leafs.transform.localScale = new Vector3(leafScale, leafScale, leafScale);
 
-        foreach (Transform branch in root.transform)
+        foreach (Transform branch in tree.transform)
         {
             if(branch.name == "Socket")
             {
@@ -65,12 +68,16 @@ public class TreeGenerator : MonoBehaviour
             }
             objPath = "TreeGen/Meadow/Leafs/Leafs_" + Random.Range(0, 4).ToString();
             matPath = "TreeGen/Meadow/Materials/Leafs_" + Random.Range(0, 4).ToString();
-            leafs = Instantiate(Resources.Load(objPath), branch.transform.Find("Socket").transform.position, Quaternion.Euler(Vector3.zero)) as GameObject;
-            leafs.GetComponent<MeshRenderer>().material = Resources.Load(matPath) as Material;
-            leafScale = Random.Range(1.0f, leafScale);
-            leafs.transform.localScale = new Vector3(leafScale, leafScale, leafScale);
-            leafs.transform.parent = root.transform;
+            try
+            {
+                leafs = Instantiate(Resources.Load(objPath), branch.transform.Find("Socket").transform.position, Quaternion.Euler(Vector3.zero)) as GameObject;
+                leafs.GetComponent<MeshRenderer>().material = Resources.Load(matPath) as Material;
+                leafScale = Random.Range(2.0f, 4.0f);
+                leafs.transform.localScale = new Vector3(leafScale, leafScale, leafScale);
+                leafs.transform.parent = tree.transform;
+            }
+            catch(System.Exception e) { }
         }
-        return root.transform;
+        return tree;
     }
 }
