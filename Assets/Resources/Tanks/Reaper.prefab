@@ -1382,7 +1382,7 @@ MonoBehaviour:
   canDrive: 0
   nitroAmp: 2
   specialCooldown: 20
-  specialDuration: 3
+  specialDuration: 4
   specialTimer: 20
   currentSpecialTime: 0
 --- !u!136 &136233084585640208

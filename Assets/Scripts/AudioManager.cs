@@ -5,6 +5,8 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour {
 
     public AudioSource ingameMusic;
+	public AudioSource flames;
+	private bool playFlames = false;
     public static AudioManager instance = null;
 
     void Awake()
@@ -15,9 +17,22 @@ public class AudioManager : MonoBehaviour {
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
-
+		flames.volume = 0.0f;
         ingameMusic.Play();
     }        
+
+	void Update() {
+		if (playFlames == true) {
+			flames.volume += Time.deltaTime;
+			flames.volume = Mathf.Min (flames.volume, 1.0f);
+		} 
+		else 
+		{
+			flames.volume -= Time.deltaTime;
+			flames.volume = Mathf.Max (flames.volume, 0.0f);
+		}
+		//playFlames = false;
+	}
     
     public void PlayMusic(AudioClip clip)
     {
@@ -33,8 +48,8 @@ public class AudioManager : MonoBehaviour {
         AudioSource shoot = gameObject.AddComponent<AudioSource>();
 
         shoot.clip = Resources.Load<AudioClip>("Audio/Effects/Shoot");
-        shoot.pitch = Random.Range(1.0f, 1.25f);
-        shoot.volume = 0.25f;
+        shoot.pitch = Random.Range(0.5f, 1.5f);
+        shoot.volume = 1.0f;
         shoot.Play();
         Destroy(shoot, 1.0f);
     }
@@ -42,10 +57,26 @@ public class AudioManager : MonoBehaviour {
     public void PlayPowerUpSound(int type)
     {
         AudioSource powerUp = gameObject.AddComponent<AudioSource>();
-
-        powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp");
+		switch (type) 
+		{
+		case 1:
+			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/SpeedUp");
+			break;
+		case 2:
+			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/DamageUp");
+			break;
+		case 3:
+			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/ArmorUp");
+			break;
+		case 4:
+			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/RepairKit");
+			break;
+		case 5:
+			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/Nitro");
+			break;
+		}
         powerUp.Play();
-        Destroy(powerUp, 1.0f);
+        Destroy(powerUp, 3.0f);
     }
 
     public void PlayCrateCollisionSound()
@@ -79,7 +110,7 @@ public class AudioManager : MonoBehaviour {
     {
         AudioSource impact = gameObject.AddComponent<AudioSource>();
 
-        impact.clip = Resources.Load<AudioClip>("Audio/Effects/Impact/Map");
+        impact.clip = Resources.Load<AudioClip>("Audio/Effects/ImpactEnvironment");
         impact.Play();
         Destroy(impact, 1.0f);
     }
@@ -88,7 +119,7 @@ public class AudioManager : MonoBehaviour {
     {
         AudioSource impact = gameObject.AddComponent<AudioSource>();
 
-        impact.clip = Resources.Load<AudioClip>("Audio/Effects/Impact/Tank");
+        impact.clip = Resources.Load<AudioClip>("Audio/Effects/ImpactTank");
         impact.Play();
         Destroy(impact, 1.0f);
     }
@@ -97,7 +128,7 @@ public class AudioManager : MonoBehaviour {
     {
         AudioSource impact = gameObject.AddComponent<AudioSource>();
 
-        impact.clip = Resources.Load<AudioClip>("Audio/Effects/Impact/Crate");
+		impact.clip = Resources.Load<AudioClip>("Audio/Effects/ImpactEnvironment");
         impact.Play();
         Destroy(impact, 1.0f);
     }
@@ -106,7 +137,7 @@ public class AudioManager : MonoBehaviour {
     {
         AudioSource impact = gameObject.AddComponent<AudioSource>();
 
-        impact.clip = Resources.Load<AudioClip>("Audio/Effects/Impact/Rock");
+		impact.clip = Resources.Load<AudioClip>("Audio/Effects/ImpactEnvironment");
         impact.Play();
         Destroy(impact, 1.0f);
     }
@@ -126,7 +157,7 @@ public class AudioManager : MonoBehaviour {
 
         mineDetonation.clip = Resources.Load<AudioClip>("Audio/Effects/MineDetonation");
         mineDetonation.Play();
-        Destroy(mineDetonation, 1.0f);
+        Destroy(mineDetonation, 5.0f);
     }
 
     public void PlayInvulnerabilitySound()
@@ -135,7 +166,8 @@ public class AudioManager : MonoBehaviour {
 
         invulnerability.clip = Resources.Load<AudioClip>("Audio/Effects/Invulnerability");
         invulnerability.Play();
-        Destroy(invulnerability, 1.0f);
+		invulnerability.volume = 0.5f;
+        Destroy(invulnerability, 6.0f);
     }
 
     public void PlayInvisibilitySound()
@@ -144,20 +176,17 @@ public class AudioManager : MonoBehaviour {
 
         invisibility.clip = Resources.Load<AudioClip>("Audio/Effects/Invisibility");
         invisibility.Play();
-        Destroy(invisibility, 1.0f);
+		invisibility.volume = 0.1f;
+        Destroy(invisibility, 5.0f);
     }
+
+	public void StopFlameSound()
+	{
+		playFlames = false;	
+	}	
 
     public void PlayFlameSound()
     {
-        AudioSource flames = gameObject.AddComponent<AudioSource>();
-
-        flames.clip = Resources.Load<AudioClip>("Audio/Effects/Flames");
-        flames.Play();
-        Destroy(flames, 1.0f);
+		playFlames = true;
     }
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
 }

@@ -159,7 +159,7 @@ public abstract class Tank : MonoBehaviour {
             }
 
             var rb = this.gameObject.GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * speed * triggerDifference, ForceMode.Force);
+			rb.AddForce(transform.forward * speed * triggerDifference * Time.deltaTime * 60, ForceMode.Force);
 
             this.currentSpeed = (rb.velocity.magnitude);
 

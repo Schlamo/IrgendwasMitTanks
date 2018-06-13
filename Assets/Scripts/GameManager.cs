@@ -145,6 +145,8 @@ public class GameManager : MonoBehaviour {
 
         GenerateBorder(borderSteps);
 
+
+		tankTypes = new int[]{0,4};
         /*** Tank Types:
          * 0:  Tempest
          * 1:  Viking
@@ -161,7 +163,7 @@ public class GameManager : MonoBehaviour {
          * 6: Black
          * 7: White
         ***/
-        int grassDensity = 500;
+        int grassDensity = 0;
 
         Transform light = GameObject.Find("LightWrapper").transform;
 
@@ -219,7 +221,7 @@ public class GameManager : MonoBehaviour {
 
         for (int i = 0; i < playerAmount; i++)
         {
-            tankTypes[i] = Random.Range(0, 5);
+            //tankTypes[i] = Random.Range(0, 5);
             tankColors[i] = colors[Random.Range(0, colors.Count)];
             colors.Remove(tankColors[i]);
 
@@ -328,18 +330,17 @@ public class GameManager : MonoBehaviour {
             while (!IsPositionValid(pos));
 
             int type = Random.Range(2, 5);
-            if(mapType == 0)
-            {
-                int t = Random.Range(0,5);
+			if (mapType == 0) {
+				int t = Random.Range (0, 5);
 
-                if(t == 0) {
-                    SpawnGeneratedTree(type, pos, treesParent);
-                }
-                else
-                {
-                    SpawnTreeAt(type, pos, treesParent);
-                }
-            }
+				if (t == 0) {
+					SpawnGeneratedTree (type, pos, treesParent);
+				} else {
+					SpawnTreeAt (type, pos, treesParent);
+				}
+			} else {
+				SpawnTreeAt (type, pos, treesParent);
+			}
         }
 
         for (int i = 0; i < nitroAmount; i++)
