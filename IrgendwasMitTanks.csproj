@@ -81,7 +81,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\GamePadInput\Demo\DemoScript.cs" />
     <Compile Include="Assets\LowPolyWater_Pack\Scripts\LowPolyWater.cs" />
     <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Crate.cs" />
@@ -96,12 +95,13 @@
     <Compile Include="Assets\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\ProjectileManager.cs" />
     <Compile Include="Assets\Scripts\SmoothCamera.cs" />
-    <Compile Include="Assets\Scripts\Tank.cs" />
     <Compile Include="Assets\Scripts\Tanks\Cthulu.cs" />
     <Compile Include="Assets\Scripts\Tanks\Prometheus.cs" />
     <Compile Include="Assets\Scripts\Tanks\Reaper.cs" />
+    <Compile Include="Assets\Scripts\Tanks\Tank.cs" />
     <Compile Include="Assets\Scripts\Tanks\Tempest.cs" />
     <Compile Include="Assets\Scripts\Tanks\Viking.cs" />
+    <Compile Include="Assets\Scripts\Tanks\WinningTank.cs" />
     <Compile Include="Assets\Scripts\Tree.cs" />
     <Compile Include="Assets\Scripts\TreeGenerator.cs" />
     <Compile Include="Assets\Test.cs" />

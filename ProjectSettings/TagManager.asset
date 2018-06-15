@@ -11,6 +11,7 @@ TagManager:
   - Tree
   - Rock
   - Colorized
+  - TankCam
   layers:
   - Default
   - TransparentFX

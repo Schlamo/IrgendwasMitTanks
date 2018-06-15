@@ -15,7 +15,7 @@ public class Tempest : Tank
     public override void UpdateSpecialStats()
     {
         var canvas = transform.Find("Canvas");
-        canvas.Find("Special").GetComponent<Text>().text = mineCount + "/" + maxMineCount + " (" + (mineRefill-currentMineTimer).ToString("F1") + "s)";
+        canvas.Find("Special").GetComponent<Text>().text = mineCount.ToString();
     }
 
     public override void UpdateSpecial(float dTime, GamePad.Index idx)

@@ -14,7 +14,7 @@ public class Prometheus : Tank
 
     private int framesToFlame = 5;
     private int specialFrames = 0;
-
+		
     private float delta = 0.0f;
 
     float time;
@@ -24,12 +24,19 @@ public class Prometheus : Tank
         var canvas = transform.Find("Canvas");
         canvas.Find("Special").GetComponent<Text>().text = Mathf.Max(0.0f, specialAccumulated).ToString("F2") + "s";
     }
+		
 
     public override void UpdateSpecial(float dTime, GamePad.Index idx)
     {
         time += dTime;
         delta = dTime;
         specialAccumulated = specialAccumulated > specialMax ? specialMax : specialAccumulated + (delta / 10);
+
+		if(GamePad.GetButtonUp(GamePad.Button.B, idx)) 
+		{
+			AudioManager.instance.StopFlameSound ();
+		}
+			
 
         if (GamePad.GetButton(GamePad.Button.B, idx))
         {
@@ -38,6 +45,7 @@ public class Prometheus : Tank
         }
         else
         {
+			//AudioManager.instance.StopFlameSound ();
             timeToMaxDamage = 0.0f;
         }
 
@@ -58,10 +66,7 @@ public class Prometheus : Tank
         {
             if(specialFrames == 0)
             {
-                if(time % 0.5 > 0.25)
-                {
-                    AudioManager.instance.PlayFlameSound();
-                }
+                AudioManager.instance.PlayFlameSound();
                 float amplifier = 1.0f;
                 amplifier += Mathf.Min(timeToMaxDamage, 2.0f);
                 specialAccumulated -= delta * framesToFlame;
