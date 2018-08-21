@@ -108,8 +108,6 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 3f32f08a64daf40b09ed864d96fe3840 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransform
 73843688b51256aed059f049c540bca8 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 528ea1fd7c01796fc60c4e2f172ea229 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
-7556318b1ae8d2357e788b6de279526e Assembly-CSharp.dll:LowPolyWater.LowPolyWater
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Test
 1873d1e8655d53950f0c74d0edbd1a9f Assembly-CSharp.dll:.Prometheus
 3620273845b8d6975fa710c98c904ed2 Assembly-CSharp.dll:.MenuController
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
@@ -119,7 +117,6 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingRenderer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Crate
 5d9ba9a677fb894d2c7f52855fb21998 Assembly-CSharp.dll:.Reaper
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.DemoScript
 de1e2ac3fd049790483aab93d491e402 Assembly-CSharp.dll:.Tempest
 b3e481219b52b3ff9c455ed4a12e8ecb Assembly-CSharp.dll:.Viking
 ac5f2f16752c51e80fb4310be78f2a04 Assembly-CSharp.dll:.ProjectileManager
@@ -149,5 +146,6 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Projectile
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Tree
 f980c9f1cb37c5b44d5480a66b345eb9 Assembly-CSharp.dll:.SmoothCamera
-ce194c2196a2c76a23622226148931f7 Assembly-CSharp.dll:.GameManager
+816547251e9a827e7f49aa03cd494e68 Assembly-CSharp.dll:.GameManager
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.WinningTank
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GameSettings

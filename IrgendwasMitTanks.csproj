@@ -81,7 +81,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\LowPolyWater_Pack\Scripts\LowPolyWater.cs" />
     <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Crate.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
@@ -104,12 +103,8 @@
     <Compile Include="Assets\Scripts\Tanks\WinningTank.cs" />
     <Compile Include="Assets\Scripts\Tree.cs" />
     <Compile Include="Assets\Scripts\TreeGenerator.cs" />
-    <Compile Include="Assets\Test.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\LowPolyWater_Pack\LowPoly Island\Credits.txt" />
-    <None Include="Assets\LowPolyWater_Pack\Shaders\WaterShaded.shader" />
-    <None Include="Assets\Shader\ImmunityShader.shader" />
     <None Include="Assets\Shader\TerrainShader.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

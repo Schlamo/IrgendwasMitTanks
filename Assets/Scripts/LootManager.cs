@@ -62,7 +62,6 @@ public class LootManager : MonoBehaviour {
             if(rnd > 50)
             {
                 Instantiate(repairUp, t.position, t.rotation);
-                repairUp.parent = GameObject.Find("PowerUps").transform;
             }
             else
             {
@@ -72,15 +71,12 @@ public class LootManager : MonoBehaviour {
                 {
                     case 1:
                         Instantiate(speedUp, t.position, t.rotation);
-                        speedUp.parent = GameObject.Find("PowerUps").transform;
                         break;
                     case 2:
                         Instantiate(damageUp, t.position, t.rotation);
-                        damageUp.parent = GameObject.Find("PowerUps").transform;
                         break;
                     case 3:
                         Instantiate(armorUp, t.position, t.rotation);
-                        armorUp.parent = GameObject.Find("PowerUps").transform;
                         break;
                 }
             }
@@ -94,15 +90,12 @@ public class LootManager : MonoBehaviour {
             {
                 case 1:
                     Instantiate(speedUp, t.position, t.rotation);
-                    speedUp.parent = GameObject.Find("PowerUps").transform;
                     break;
                 case 2:
                     Instantiate(damageUp, t.position, t.rotation);
-                    damageUp.parent = GameObject.Find("PowerUps").transform;
                     break;
                 case 3:
                     Instantiate(armorUp, t.position, t.rotation);
-                    armorUp.parent = GameObject.Find("PowerUps").transform;
                     break;
             }
         }

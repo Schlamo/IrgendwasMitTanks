@@ -169,8 +169,6 @@ public abstract class Tank : MonoBehaviour {
 
             this.currentSpeed = (rb.velocity.magnitude);
 
-
-
             Vector2 leftAxis = GamePad.GetAxis(GamePad.Axis.LeftStick, idx);
 
             float rot = leftAxis.x * actualRotSpeed * Time.deltaTime;
