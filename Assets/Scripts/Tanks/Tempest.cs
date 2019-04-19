@@ -1,5 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+<<<<<<< HEAD
+=======
+using System;
+
+public class Tempest : Tank
+{
+    private int mineCount = 5;
+    private int maxMineCount = 10;
+    private float currentMineTimer = 0.0f;
+    private float mineRefill = 10.0f;
+    public Transform mine;
+
+    public override void UpdateSpecialStats()
+    {
+        var canvas = transform.Find("Canvas");
+        canvas.Find("Special").GetComponent<Text>().text = mineCount.ToString();
+    }
+>>>>>>> 1059c7cecd707a3a31dfada716a182e31b89eb1c
 
 namespace Tanks {
     public class Tempest : Tank {

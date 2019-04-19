@@ -84,8 +84,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\GamePadInput\Demo\DemoScript.cs" />
-    <Compile Include="Assets\LowPolyWater_Pack\Scripts\LowPolyWater.cs" />
     <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Crate.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
@@ -102,22 +100,26 @@
     <Compile Include="Assets\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\ProjectileManager.cs" />
     <Compile Include="Assets\Scripts\SmoothCamera.cs" />
+<<<<<<< HEAD
     <Compile Include="Assets\Scripts\Tank.cs" />
     <Compile Include="Assets\Scripts\TankController\TankController.cs" />
+=======
+>>>>>>> 1059c7cecd707a3a31dfada716a182e31b89eb1c
     <Compile Include="Assets\Scripts\Tanks\Cthulu.cs" />
     <Compile Include="Assets\Scripts\Tanks\Prometheus.cs" />
     <Compile Include="Assets\Scripts\Tanks\Reaper.cs" />
+    <Compile Include="Assets\Scripts\Tanks\Tank.cs" />
     <Compile Include="Assets\Scripts\Tanks\Tempest.cs" />
     <Compile Include="Assets\Scripts\Tanks\Viking.cs" />
+<<<<<<< HEAD
     <Compile Include="Assets\Scripts\TankStats.cs" />
+=======
+    <Compile Include="Assets\Scripts\Tanks\WinningTank.cs" />
+>>>>>>> 1059c7cecd707a3a31dfada716a182e31b89eb1c
     <Compile Include="Assets\Scripts\Tree.cs" />
     <Compile Include="Assets\Scripts\TreeGenerator.cs" />
-    <Compile Include="Assets\Test.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\LowPolyWater_Pack\LowPoly Island\Credits.txt" />
-    <None Include="Assets\LowPolyWater_Pack\Shaders\WaterShaded.shader" />
-    <None Include="Assets\Shader\ImmunityShader.shader" />
     <None Include="Assets\Shader\TerrainShader.shader" />
   </ItemGroup>
   <ItemGroup />

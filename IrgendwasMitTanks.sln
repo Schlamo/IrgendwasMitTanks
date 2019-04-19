@@ -3,14 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrgendwasMitTanks", "Assembly-CSharp.csproj", "{3BE40AD2-C7BA-CE85-D449-5F8B8189AD4A}"
 EndProject
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrgendwasMitTanks", "Assembly-CSharp-Editor.csproj", "{F82AB4B7-B472-AEF7-68F9-48700092B657}"
 EndProject
+=======
+>>>>>>> 1059c7cecd707a3a31dfada716a182e31b89eb1c
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+<<<<<<< HEAD
 		{3BE40AD2-C7BA-CE85-D449-5F8B8189AD4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3BE40AD2-C7BA-CE85-D449-5F8B8189AD4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BE40AD2-C7BA-CE85-D449-5F8B8189AD4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -19,6 +23,12 @@ Global
 		{F82AB4B7-B472-AEF7-68F9-48700092B657}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F82AB4B7-B472-AEF7-68F9-48700092B657}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F82AB4B7-B472-AEF7-68F9-48700092B657}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{E7F1FD4E-BED8-5464-E984-3651469B7364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7F1FD4E-BED8-5464-E984-3651469B7364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7F1FD4E-BED8-5464-E984-3651469B7364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7F1FD4E-BED8-5464-E984-3651469B7364}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> 1059c7cecd707a3a31dfada716a182e31b89eb1c
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
