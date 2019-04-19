@@ -394,7 +394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bonus: 1
   type: 5
-  maxLifeTime: 60
+  maxLifeTime: 3600
   rotationSpeed: 250
 --- !u!135 &135996134396720472
 SphereCollider:

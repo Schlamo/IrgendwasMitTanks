@@ -76,7 +76,10 @@ public class TreeGenerator : MonoBehaviour
                 leafs.transform.localScale = new Vector3(leafScale, leafScale, leafScale);
                 leafs.transform.parent = tree.transform;
             }
-            catch(System.Exception e) { }
+            catch(System.Exception e)
+            {
+                Debug.LogError(e.StackTrace);
+            }
         }
         return tree;
     }

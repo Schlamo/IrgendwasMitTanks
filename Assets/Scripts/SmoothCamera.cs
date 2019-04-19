@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SmoothCamera : MonoBehaviour {
 
     public float delay = 0.05F;
     public GameObject tank;
 
-    
     private Vector3 offset;         
 
     // Use this for initialization

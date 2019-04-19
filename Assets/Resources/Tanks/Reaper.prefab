@@ -1358,27 +1358,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d7dd946c8f3d2f408db3e87a0311269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  canvas: {fileID: 0}
+  launchPosition: {fileID: 4828763732233858}
+  specialImage: {fileID: 21300000, guid: ecf49499c68319b4d8d1fe5fc0a9e806, type: 3}
   padNumber: 0
   powerUpDuration: 30
-  ramDamage: 20
+  ramDamage: 25
   defaultSpeed: 300
   speed: 300
-  maxSpeed: 400
+  maxSpeed: 666
   shootDelay: 0.75
   defaultDamage: 10
   damage: 10
   maxDamage: 20
   health: 100
   maxHealth: 100
-  defaultArmor: 1
-  armor: 1
+  defaultArmor: 2
+  armor: 2
   maxArmor: 99
   rotationSpeed: 125
   nitro: 5
-  cam: {fileID: 0}
-  canvas: {fileID: 0}
-  launchPosition: {fileID: 4828763732233858}
-  specialImage: {fileID: 21300000, guid: ecf49499c68319b4d8d1fe5fc0a9e806, type: 3}
   canDrive: 0
   nitroAmp: 2
   specialCooldown: 20

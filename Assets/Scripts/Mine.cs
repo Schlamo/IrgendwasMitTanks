@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+using Tanks;
 public class Mine : MonoBehaviour
 {
 
@@ -29,10 +28,11 @@ public class Mine : MonoBehaviour
                 {
                     AudioManager.instance.PlayMineDetonationSound();
 
-                    tank.LastDamage = owner;
+                    tank.lastDamage = owner;
                     tank.TakeDamage(25);
 
                     other.gameObject.GetComponent<Rigidbody>().velocity*=0.5f;
+                    other.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 100, 0), ForceMode.Impulse);
                     ProjectileManager.instance.createExplosion(transform.position);
                     Destroy(this.gameObject);
                 }

@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{C7E45AC5-E64D-261F-DF12-5BF4A531E67F}</ProjectGuid>
+    <ProjectGuid>{3BE40AD2-C7BA-CE85-D449-5F8B8189AD4A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -54,31 +54,39 @@
      <Compile Include="Assets\GamePadInput\Demo\DemoScript.cs" />
      <Compile Include="Assets\LowPolyWater_Pack\Scripts\LowPolyWater.cs" />
      <Compile Include="Assets\Scripts\AudioManager.cs" />
-     <Compile Include="Assets\Scripts\Crate.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GamePad.cs" />
-     <Compile Include="Assets\Scripts\LootManager.cs" />
-     <Compile Include="Assets\Scripts\Menu\GameSettings.cs" />
      <Compile Include="Assets\Scripts\Menu\MenuController.cs" />
      <Compile Include="Assets\Scripts\Menu\Wheel.cs" />
      <Compile Include="Assets\Scripts\Mine.cs" />
-     <Compile Include="Assets\Scripts\PowerUp.cs" />
+     <Compile Include="Assets\Scripts\Misc\Enumerator.cs" />
+     <Compile Include="Assets\Scripts\Misc\GameSettings.cs" />
+     <Compile Include="Assets\Scripts\Obstacles\Crate.cs" />
+     <Compile Include="Assets\Scripts\Obstacles\Obstacle.cs" />
+     <Compile Include="Assets\Scripts\Obstacles\Tree.cs" />
+     <Compile Include="Assets\Scripts\PowerUp\AnimatedPowerUp.cs" />
+     <Compile Include="Assets\Scripts\PowerUp\Nitro.cs" />
+     <Compile Include="Assets\Scripts\PowerUp\PowerUp.cs" />
      <Compile Include="Assets\Scripts\Projectile.cs" />
      <Compile Include="Assets\Scripts\ProjectileManager.cs" />
      <Compile Include="Assets\Scripts\SmoothCamera.cs" />
-     <Compile Include="Assets\Scripts\Tank.cs" />
+     <Compile Include="Assets\Scripts\TankController\GamepadController.cs" />
+     <Compile Include="Assets\Scripts\TankController\ITankController.cs" />
+     <Compile Include="Assets\Scripts\TankController\KeyboardController.cs" />
      <Compile Include="Assets\Scripts\Tanks\Cthulu.cs" />
      <Compile Include="Assets\Scripts\Tanks\Prometheus.cs" />
      <Compile Include="Assets\Scripts\Tanks\Reaper.cs" />
+     <Compile Include="Assets\Scripts\Tanks\Tank.cs" />
+     <Compile Include="Assets\Scripts\Tanks\TankStats.cs" />
      <Compile Include="Assets\Scripts\Tanks\Tempest.cs" />
      <Compile Include="Assets\Scripts\Tanks\Viking.cs" />
-     <Compile Include="Assets\Scripts\Tree.cs" />
      <Compile Include="Assets\Scripts\TreeGenerator.cs" />
      <Compile Include="Assets\Test.cs" />
      <None Include="Assets\LowPolyWater_Pack\LowPoly Island\Credits.txt" />
      <None Include="Assets\LowPolyWater_Pack\Shaders\WaterShaded.shader" />
      <None Include="Assets\Shader\TerrainShader.shader" />
      <None Include="Assets\Shader\ImmunityShader.shader" />
+     <None Include="Assets\Shader\TShader.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -101,7 +109,7 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
  </Reference>
  <Reference Include="XInputDotNetPure">
- <HintPath>C:/Users/Damo/Desktop/Tanks/Assets/XInputDotNet/Plugins/x86_64/XInputDotNetPure.dll</HintPath>
+ <HintPath>C:/Users/Damo/Desktop/IrgendwasMitTanks/Assets/XInputDotNet/Plugins/x86_64/XInputDotNetPure.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

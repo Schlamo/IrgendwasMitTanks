@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
+using Enumerators;
 
 public class AudioManager : MonoBehaviour {
 
@@ -16,8 +16,7 @@ public class AudioManager : MonoBehaviour {
         else if (instance != this)
             Destroy(gameObject);
 
-        DontDestroyOnLoad(gameObject);
-		flames.volume = 0.0f;
+        flames.volume = 0.0f;
         ingameMusic.Play();
     }        
 
@@ -54,24 +53,24 @@ public class AudioManager : MonoBehaviour {
         Destroy(shoot, 1.0f);
     }
 
-    public void PlayPowerUpSound(int type)
+    public void PlayPowerUpSound(PowerUpType type)
     {
         AudioSource powerUp = gameObject.AddComponent<AudioSource>();
 		switch (type) 
 		{
-		case 1:
+		case PowerUpType.SpeedUp:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/SpeedUp");
 			break;
-		case 2:
+		case PowerUpType.DamageUp:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/DamageUp");
 			break;
-		case 3:
+		case PowerUpType.ArmorUp:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/ArmorUp");
 			break;
-		case 4:
+		case PowerUpType.RepairKit:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/RepairKit");
 			break;
-		case 5:
+		case PowerUpType.Nitro:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/Nitro");
 			break;
 		}
