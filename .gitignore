@@ -9,7 +9,8 @@ Assets/Plugins/*.unitypackage
 
 #Build-Files
 Build/
-
+obj/
+Logs/
 #Meta-Files
-
-Library/metadata/
+Library/
+*.log
