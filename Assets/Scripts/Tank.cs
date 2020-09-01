@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System;
 
 public abstract class Tank : MonoBehaviour {
+    public TankStats stats;
     public int padNumber;
 
     public float powerUpDuration = 30.0f;
@@ -25,7 +26,6 @@ public abstract class Tank : MonoBehaviour {
 
     public float health = 100.0f;
     public float maxHealth = 100.0f;
-
     public float defaultArmor = 1.0f;
     public float armor = 1.0f;
     public float maxArmor = 5.0f;
@@ -70,8 +70,6 @@ public abstract class Tank : MonoBehaviour {
         transform.GetComponent<Rigidbody>().centerOfMass = Vector3.zero;
         SetSpecialImage();
 
-
-
         switch (padNumber)
         {
             case 1:
@@ -96,22 +94,9 @@ public abstract class Tank : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
     void Update () {
-        RaycastHit hit;
-        Ray ray = new Ray(transform.position, Vector3.down);
-        if (Physics.Raycast(ray, out hit))
-        {
-            if(Mathf.Abs(Vector3.Distance(hit.point, transform.position)) > 0.5f)
-            {
-                canDrive = false;
-            }
-            else
-            {
-                canDrive = true;
-            }
-        }
-
+        //canDrive = CheckDistanceToTheMap( 0.5f);
+        
 
         if (health <= 0.0f && !died)
         {
@@ -133,7 +118,9 @@ public abstract class Tank : MonoBehaviour {
             actualRotSpeed *= 0.5f;
         }
 
-        if (canDrive && transform.position.y > -10 && Mathf.Abs((transform.rotation.eulerAngles.x+22.5f)%360) < 45.0f && Mathf.Abs((transform.rotation.eulerAngles.z + 22.5f) % 360) < 45.0f)
+        if (canDrive && transform.position.y > -10 
+            && Mathf.Abs((transform.rotation.eulerAngles.x+22.5f)%360) < 45.0f 
+            && Mathf.Abs((transform.rotation.eulerAngles.z + 22.5f) % 360) < 45.0f)
         {
 
             timeToExplode = 0.0f;
@@ -185,13 +172,11 @@ public abstract class Tank : MonoBehaviour {
             }
         }
 
-
         /* Unique Abilities */
         if(GamePad.GetButtonDown(GamePad.Button.B, idx))
         {
             Special();
         }
-
 
         /* PowerUp Timers */
         if (speed > defaultSpeed)
@@ -235,15 +220,15 @@ public abstract class Tank : MonoBehaviour {
 
     public abstract void Special();
 
+    public abstract void UpdateSpecialStats();
+
+    public abstract void UpdateSpecial(float dTime, GamePad.Index idx);
+
     public void SetSpecialImage()
     {
         var canvas = transform.Find("Canvas");
         canvas.Find("Image_Special").GetComponent<Image>().sprite = specialImage;
     }
-
-    public abstract void UpdateSpecialStats();
-
-    public abstract void UpdateSpecial(float dTime, GamePad.Index idx);
 
     public void Shoot(Transform pos)
     {

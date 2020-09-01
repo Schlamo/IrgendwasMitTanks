@@ -1,4 +1,6 @@
-﻿Shader "Custom/ImmunityShader" {
+﻿// Upgrade NOTE: upgraded instancing buffer 'Props' to new syntax.
+
+Shader "Custom/ImmunityShader" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_Color2 ("Immunity Color", Color) = (1,1,1,1)
@@ -26,8 +28,8 @@
 		float4 _RimColor;
 		float _RimPower;
 
-		UNITY_INSTANCING_CBUFFER_START(Props)
-		UNITY_INSTANCING_CBUFFER_END
+		UNITY_INSTANCING_BUFFER_START(Props)
+		UNITY_INSTANCING_BUFFER_END(Props)
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
 			fixed4 immunity = tex2D (_ImmunityTex, IN.uv_ImmunityTex) * _Color2;

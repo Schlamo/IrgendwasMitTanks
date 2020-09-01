@@ -17,18 +17,15 @@ public class Prometheus : Tank
 		
     private float delta = 0.0f;
 
-    float time;
-
     public override void UpdateSpecialStats()
     {
         var canvas = transform.Find("Canvas");
-        canvas.Find("Special").GetComponent<Text>().text = Mathf.Max(0.0f, specialAccumulated).ToString("F2") + "s";
+        canvas.Find("Special").GetComponent<Text>().text = Mathf.Max(0.0f, specialAccumulated).ToString("F1") + "s";
     }
 		
 
     public override void UpdateSpecial(float dTime, GamePad.Index idx)
     {
-        time += dTime;
         delta = dTime;
         specialAccumulated = specialAccumulated > specialMax ? specialMax : specialAccumulated + (delta / 10);
 

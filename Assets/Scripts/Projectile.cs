@@ -9,10 +9,6 @@ public class Projectile : MonoBehaviour {
     private int owner;
     private float damage = 0.0f;
     private int type = 0;
-    // Use this for initialization
-    void Start() {
-
-    }
 
     // Update is called once per frame
     void Update() {

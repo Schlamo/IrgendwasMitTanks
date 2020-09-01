@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.14321226, g: 0.0819005, b: 0.16036317, a: 1}
+  m_IndirectSpecularColor: {r: 0.14283973, g: 0.081883036, b: 0.16008309, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -2127,7 +2127,7 @@ ParticleSystem:
   serializedVersion: 5
   lengthInSec: 1
   simulationSpeed: 1
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -2177,7 +2177,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 2009570898
+  randomSeed: -1646321136
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -2737,7 +2737,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 100
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -5437,14 +5437,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingAreaRadius: 15
   supplyRefill: 15
-  playerAmount: 2
+  amountOfPlayers: 2
   borderSteps: 72
   nitroAmount: 20
   crateAmount: 20
   rocksAmount: 25
-  treeAmount: 75
+  treeAmount: 200
   mapSize: 100
-  mapType: -1
+  snowIntensity: 100
+  useKeyboard: 0
+  dayNightCycle: 0
   tankCamera: {fileID: 4601123519842626, guid: 46400eea955aa2847a928a686054474d, type: 2}
   halfScreen: {fileID: 224579849544281516, guid: 8ff0cf4fff8e6e347b110461baf5c608,
     type: 2}
@@ -5453,6 +5455,7 @@ MonoBehaviour:
   meadowMat: {fileID: 2100000, guid: a659fdade0e3dff4b8353801f6c34f0c, type: 2}
   desertMat: {fileID: 2100000, guid: ac7efab3c05d3834dbc778b461db8d54, type: 2}
   snowMat: {fileID: 2100000, guid: 5082fa57c9f4c55449bdc275ece29351, type: 2}
+  mapType: -1
 --- !u!4 &2047949051
 Transform:
   m_ObjectHideFlags: 0

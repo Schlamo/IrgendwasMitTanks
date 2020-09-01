@@ -86,13 +86,13 @@ public class ProjectileManager : MonoBehaviour {
             //Mud
             switch (GameManager.instance.mapType)
             {
-                case 0:
+                case MapType.Meadow:
                     path += "MudExplosion";
                     break;
-                case 1:
+                case MapType.Desert:
                     path += "SandExplosion";
                     break;
-                case 2:
+                case MapType.Snow:
                     path += "SnowExplosion";
                     break;
             }

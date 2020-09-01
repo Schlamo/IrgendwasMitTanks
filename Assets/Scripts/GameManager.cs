@@ -13,14 +13,16 @@ public class GameManager : MonoBehaviour {
     public float startingAreaRadius = 5.0f;
     public float supplyRefill       = 15.0f;
 
-    public int playerAmount         = 2;
+    public int amountOfPlayers      = 2;
     public int borderSteps          = 72;
     public int nitroAmount          = 15;
     public int crateAmount          = 15;
-    public int rocksAmount          = 50;
+    public int rocksAmount          = 10;
     public int treeAmount           = 150;
     public int mapSize              = 100;
-    public int mapType              = 0;
+    public int snowIntensity        = 25;
+    public bool useKeyboard         = false;
+    public bool dayNightCycle       = false;
 
     public Transform tankCamera;
     public Transform halfScreen;
@@ -30,6 +32,8 @@ public class GameManager : MonoBehaviour {
     public Material meadowMat; //Type 0
     public Material desertMat; //Type 1
     public Material snowMat;   //Type 2
+
+    public MapType mapType = MapType.Meadow;
 
     private float supplyTimer = 0.0f;
     private float time = 0.0f;
@@ -70,119 +74,109 @@ public class GameManager : MonoBehaviour {
             SupplyDrop();
             supplyTimer -= supplyRefill;
         }
-        if (mapType == 2)
+        if (mapType == MapType.Snow)
         {
-            GameObject.Find("Snow").GetComponent<ParticleSystem>().Emit(25);
+            GameObject.Find("Snow").GetComponent<ParticleSystem>().Emit(snowIntensity);
         }
 
         time += Time.deltaTime;
     }
 
-    private void setCameraViewport(Camera cam, int player)
+    private void setCameraViewport(Camera camera, int playerId)
     {
-        if(playerAmount == 2)
+        if(amountOfPlayers == 2)
         {
-            if (player == 1)
+            if (playerId == 1)
             {
-                cam.rect = new Rect(0.0f, 0.5f, 1.0f, 0.5f);
+                camera.rect = new Rect(0.0f, 0.5f, 1.0f, 0.5f);
             }
-            else if (player == 2)
+            else if (playerId == 2)
             {
-                cam.rect = new Rect(0.0f, 0.0f, 1.0f, 0.5f);
+                camera.rect = new Rect(0.0f, 0.0f, 1.0f, 0.5f);
             }
         }
-        if (playerAmount == 3)
+        if (amountOfPlayers == 3)
         {
-            if (player == 1)
+            if (playerId == 1)
             {
-                cam.rect = new Rect(0.25f, 0.5f, 0.5f, 0.5f);
+                camera.rect = new Rect(0.25f, 0.5f, 0.5f, 0.5f);
             }
-            else if (player == 2)
+            else if (playerId == 2)
             {
-                cam.rect = new Rect(0.0f, 0.0f, 0.5f, 0.5f);
+                camera.rect = new Rect(0.0f, 0.0f, 0.5f, 0.5f);
             }
-            else if (player == 3)
+            else if (playerId == 3)
             {
-                cam.rect = new Rect(0.5f, 0.0f, 0.5f, 0.5f);
+                camera.rect = new Rect(0.5f, 0.0f, 0.5f, 0.5f);
             }
         }
-        if (playerAmount == 4)
+        if (amountOfPlayers == 4)
         {
-            if (player == 1)
+            if (playerId == 1)
             {
-                cam.rect = new Rect(0.0f, 0.5f, 0.5f, 0.5f);
+                camera.rect = new Rect(0.0f, 0.5f, 0.5f, 0.5f);
             }
-            else if (player == 2)
+            else if (playerId == 2)
             {
-                cam.rect = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
+                camera.rect = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
             }
-            else if (player == 3)
+            else if (playerId == 3)
             {
-                cam.rect = new Rect(0.0f, 0.0f, 0.5f, 0.5f);
+                camera.rect = new Rect(0.0f, 0.0f, 0.5f, 0.5f);
             }
-            else if (player == 4)
+            else if (playerId == 4)
             {
-                cam.rect = new Rect(0.5f, 0.0f, 0.5f, 0.5f);
+                camera.rect = new Rect(0.5f, 0.0f, 0.5f, 0.5f);
             }
         }
     }
 
-    private void StartGame()
+    private void SetupLighting()
     {
-        Vector3 pos;
-        List<int> usedPoints = new List<int>();
-        int[] tankTypes = new int[playerAmount];
-        int[] tankColors = new int[playerAmount];
-        string[] tankNames = new string[playerAmount];
-        List<int> colors = new List<int>();
-
-        Transform treesParent = GameObject.Find("Trees").transform;
-        Transform cratesParent = GameObject.Find("Crates").transform;
-        GameObject.Find("MapCam").GetComponent<Camera>().enabled = false;
-
-        if(mapType > 2 || mapType < 0)
-            mapType = Random.Range(0, 3);
-
-        GenerateBorder(borderSteps);
-
-
-		tankTypes = new int[]{0,4};
-        /*** Tank Types:
-         * 0:  Tempest
-         * 1:  Viking
-         * 2:  Reaper
-         * 3:  Prometheus
-        
-         *** Tank Colors:
-         * 0: Red
-         * 1: Blue
-         * 2: Green
-         * 3: Yellow
-         * 4: Pink
-         * 5: Orange
-         * 6: Black
-         * 7: White
-        ***/
-        int grassDensity = 0;
-
         Transform light = GameObject.Find("LightWrapper").transform;
+        switch (mapType)
+        {
+            case MapType.Meadow:
+                light.rotation = Quaternion.Euler(60, 60, 0);
+                break;
+            case MapType.Desert:
+                light.rotation = Quaternion.Euler(75, 75, 0);
+                break;
+            case MapType.Snow:
+                light.rotation = Quaternion.Euler(45, 45, 0);
+                break;
+        }
+    }
+
+    private void RandomizeMapType()
+    {
+        int type = Random.Range(0, 3);
+        if (type == 0) mapType = MapType.Meadow;
+        if (type == 1) mapType = MapType.Desert;
+        if (type == 2) mapType = MapType.Snow;
+    }
+
+    private void SetupGrass()
+    {
+        int density = 100;
+        string path      = "Grass/";
 
         switch (mapType)
         {
-            case 0:
-                grassDensity *= 2;
-                light.rotation = Quaternion.Euler(60, 60, 0);
+            case MapType.Meadow:
+                path += "Meadow";
                 break;
-            case 1:
-                light.rotation = Quaternion.Euler(80, 80, 0);
-                grassDensity /= 5;
+            case MapType.Desert:
+                density /= 2;
+                path += "Desert";
                 break;
-            case 2:
-                light.rotation = Quaternion.Euler(44, 44, 0);
-                grassDensity /= 10;
+            case MapType.Snow:
+                density *= 2;
+                path += "Snow";
                 break;
         }
-        for (int i = 0; i < grassDensity; i++)
+
+        for (int i = 0; i < density; i++)
         {
             Vector3 position;
             do
@@ -193,21 +187,32 @@ public class GameManager : MonoBehaviour {
 
             GameObject grass = Instantiate(Resources.Load("Grass"), GetFixedPosition(position), Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f)) as GameObject;
             grass.transform.localScale = new Vector3(Random.Range(1.0f, 2), Random.Range(1.0f, 2), Random.Range(1.0f, 2));
-            string path = "Grass/";
-            switch(mapType)
-            {
-                case 0:
-                    path += "Meadow";
-                    break;
-                case 1:
-                    path += "Desert";
-                    break;
-                case 2:
-                    path += "Snow";
-                    break;
-            }
             grass.transform.GetComponent<MeshRenderer>().material = Resources.Load(path) as Material;
-        } 
+        }
+    }
+
+    private void StartGame()
+    {
+        string[] tankNames   = new string[amountOfPlayers];
+        int[]    tankColors  = new int[amountOfPlayers];
+        int[]    tankTypes   = new int[amountOfPlayers];
+        List<int> usedPoints = new List<int>();
+        List<int> colors     = new List<int>();
+        Vector3 pos;
+
+        Transform treesParent = GameObject.Find("Trees").transform;
+        Transform cratesParent = GameObject.Find("Crates").transform;
+        GameObject.Find("MapCam").GetComponent<Camera>().enabled = false;
+
+        /* Setup the Map */
+        RandomizeMapType();
+        SetupBorder();
+        SetupGrass();
+        SetupLighting();
+
+
+        tankTypes = new int[]{0,4};
+
 
         for (int i = 0; i < 8; i++)
         {
@@ -219,9 +224,9 @@ public class GameManager : MonoBehaviour {
             startingPoints.Add(GameObject.Find("StartingPoints").transform.GetChild(i));
         }
 
-        for (int i = 0; i < playerAmount; i++)
+        for (int i = 0; i < amountOfPlayers; i++)
         {
-            //tankTypes[i] = Random.Range(0, 5);
+            tankTypes[i] = Random.Range(0, 4);
             tankColors[i] = colors[Random.Range(0, colors.Count)];
             colors.Remove(tankColors[i]);
 
@@ -254,7 +259,7 @@ public class GameManager : MonoBehaviour {
             }
         }
 
-        for (int i = 0; i < playerAmount; i++)
+        for (int i = 0; i < amountOfPlayers; i++)
         {
             GameObject tank;
             Transform cam;
@@ -368,7 +373,7 @@ public class GameManager : MonoBehaviour {
         var floor = GameObject.Find("Floor");
         switch (mapType)
         {
-            case 1:
+            case MapType.Desert:
                 floor.GetComponent<Renderer>().material = desertMat;
                 foreach (Transform tank in players)
                 {
@@ -392,7 +397,7 @@ public class GameManager : MonoBehaviour {
                 }
                 break;
 
-            case 2:
+            case MapType.Snow:
                 floor.GetComponent<Renderer>().material = snowMat;
                 foreach (Transform tank in players)
                 {
@@ -403,7 +408,7 @@ public class GameManager : MonoBehaviour {
                     var mainR = psR.main;
                     var colR = psR.colorOverLifetime;
 
-                    Color c = new Color(255, 255, 255);
+                    Color c = new Color(233, 233, 233);
                     mainL.startColor = c;
                     mainR.startColor = c;
                     Gradient grad = new Gradient();
@@ -432,10 +437,10 @@ public class GameManager : MonoBehaviour {
 
             switch (mapType)
             {
-                case 1:
+                case MapType.Desert:
                     path = "Rocks/Desert/Large_";
                     break;
-                case 2:
+                case MapType.Snow:
                     path = "Rocks/Snow/Large_";
                     break;
                 default:
@@ -457,41 +462,19 @@ public class GameManager : MonoBehaviour {
         Vector3 fixedPosition = position;
         fixedPosition.y = 0;
 
-        if (Vector3.Distance(Vector3.zero, fixedPosition) > mapSize - 5)
-        {
-            return false;
-        }
+        if (Vector3.Distance(Vector3.zero, fixedPosition) > mapSize - 5) return false;
+
+        List<Transform> blockedPositions = new List<Transform>();
+
+        blockedPositions.AddRange(startingPoints);
+
+        if (crates.Count > 0) blockedPositions.AddRange(crates);
+        if(trees.Count > 0)  blockedPositions.AddRange(trees);
+        if(rocks.Count > 0)  blockedPositions.AddRange(rocks);
 
         foreach (Transform t in startingPoints)
         {
-            if (Vector3.Distance(fixedPosition, new Vector3(t.position.x, 0, t.position.z)) < startingAreaRadius)
-            {
-                return false;
-            }
-        }
-
-        foreach (Transform c in crates)
-        {
-            if (Vector3.Distance(fixedPosition, new Vector3(c.position.x, 0, c.position.z)) < 5.0f)
-            {
-                return false;
-            }
-        }
-
-        foreach (Transform t in trees)
-        {
-            if (Vector3.Distance(fixedPosition, new Vector3(t.position.x, 0, t.position.z)) < 5.0f)
-            {
-                return false;
-            }
-        }
-
-        foreach (Transform t in rocks)
-        {
-            if (Vector3.Distance(fixedPosition, new Vector3(t.position.x, 0, t.position.z)) < 5.0f)
-            {
-                return false;
-            }
+            if (Vector3.Distance(fixedPosition, new Vector3(t.position.x, 0, t.position.z)) < startingAreaRadius) return false;
         }
 
         return true;
@@ -499,24 +482,24 @@ public class GameManager : MonoBehaviour {
 
     private void UpdateRanking()
     {
-        int[] playerRanks = new int[playerAmount];
-        int[] playerKills = new int[playerAmount];
+        int[] playerRanks = new int[amountOfPlayers];
+        int[] playerKills = new int[amountOfPlayers];
 
-        for (int i = 0; i < playerAmount; i++)
+        for (int i = 0; i < amountOfPlayers; i++)
         {
             playerKills[i] = players[i].GetComponent<Tank>().Kills;
         }
 
         int range;
 
-        range = playerAmount == 2 ? 3 : 4;
+        range = amountOfPlayers == 2 ? 3 : 4;
 
         for (int rank = 1; rank < range; rank++)
         {
             int maxKills = 0;
             int idx = -1;
 
-            for (int i = 0; i < playerAmount; i++)
+            for (int i = 0; i < amountOfPlayers; i++)
             {
                 if (playerKills[i] > maxKills && playerRanks[i] == 0)
                 {
@@ -537,7 +520,7 @@ public class GameManager : MonoBehaviour {
         canvas.Find("Second").GetComponent<Text>().text = "-";
         canvas.Find("Third").GetComponent<Text>().text = "-";
 
-        for (int i = 0; i < playerAmount; i++)
+        for (int i = 0; i < amountOfPlayers; i++)
         {
             if (playerRanks[i] == 1)
             {
@@ -596,13 +579,13 @@ public class GameManager : MonoBehaviour {
 
         switch (mapType)
         {
-            case 0:
+            case MapType.Meadow:
                 path += "Meadow/Tree_" + type;
                 break;
-            case 1:
+            case MapType.Desert:
                 path += "Desert/Tree_" + type;
                 break;
-            case 2:
+            case MapType.Snow:
                 path += "Snow/Tree_" + type;
                 break;
         }
@@ -718,31 +701,31 @@ public class GameManager : MonoBehaviour {
         SceneManager.LoadScene("EndScreen");
     }
 
-    public void GenerateBorder(int steps)
+    public void SetupBorder()
     {
-        Vector3 pos = new Vector3(mapSize, -5, 0);
+        Vector3 position = new Vector3(mapSize, -5, 0);
 
-        for (int i = 0; i < steps; i++)
+        for (int i = 0; i < this.borderSteps; i++)
         {
             int rotation = Random.Range(0, 360);
-            string path = "Rocks/";
+            string objPath = "Rocks/";
             switch(mapType)
             {
-                case 0:
-                    path += "Meadow/Large_";
+                case MapType.Meadow:
+                    objPath += "Meadow/Large_";
                     break;
-                case 1:
-                    path += "Desert/Large_";
+                case MapType.Desert:
+                    objPath += "Desert/Large_";
                     break;
-                case 2:
-                    path += "Snow/Large_";
+                case MapType.Snow:
+                    objPath += "Snow/Large_";
                     break;
             }
-            path += Random.Range(1, 5);
+            objPath += Random.Range(1, 5);
 
-            pos = Quaternion.Euler(0, (float)360 / steps, 0) * pos;
-            var rock = Instantiate(Resources.Load(path), pos, Quaternion.Euler(-90, rotation, 0)) as GameObject;
-            rock.transform.localScale = new Vector3(Random.Range(5.0f, 7.0f), Random.Range(5.0f, 7.0f), Random.Range(5.0f, 7.0f));
+            position = Quaternion.Euler(0, (float)360 / this.borderSteps, 0) * position;
+            var newRock = Instantiate(Resources.Load(objPath), position, Quaternion.Euler(-90, rotation, 0)) as GameObject;
+            newRock.transform.localScale = new Vector3(Random.Range(5.0f, 7.0f), Random.Range(5.0f, 7.0f), Random.Range(5.0f, 7.0f));
         }
     }
 
