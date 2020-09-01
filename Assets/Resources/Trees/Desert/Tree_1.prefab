@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 4332582314175312}
   - component: {fileID: 33979807409926274}
   - component: {fileID: 23331197171483860}
-  - component: {fileID: 114096974884354680}
   - component: {fileID: 136193277801616284}
+  - component: {fileID: 114232162621526796}
   m_Layer: 0
   m_Name: Tree_1
   m_TagString: Tree
@@ -82,7 +82,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1630645792339860}
   m_Mesh: {fileID: 4300000, guid: 31a88e1d53d08bb4987b2ed31fb086bc, type: 3}
---- !u!114 &114096974884354680
+--- !u!114 &114232162621526796
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1630645792339860}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e99a27dcadc93724bb069b4cccddc4a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 3587ce2d9760a934987121d5577435eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!136 &136193277801616284

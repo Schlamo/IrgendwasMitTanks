@@ -11,6 +11,11 @@ TagManager:
   - Tree
   - Rock
   - Colorized
+<<<<<<< HEAD
+  - Obstacle
+=======
+  - TankCam
+>>>>>>> 1059c7cecd707a3a31dfada716a182e31b89eb1c
   layers:
   - Default
   - TransparentFX

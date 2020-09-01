@@ -500,7 +500,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1070726016618958}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25.71479, y: -3.3756733, z: -67.04405}
+  m_LocalPosition: {x: 28.994307, y: -8.359846, z: -9.130454}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4555437094905324}
@@ -1358,27 +1358,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d7dd946c8f3d2f408db3e87a0311269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  canvas: {fileID: 0}
+  launchPosition: {fileID: 4828763732233858}
+  specialImage: {fileID: 21300000, guid: ecf49499c68319b4d8d1fe5fc0a9e806, type: 3}
   padNumber: 0
   powerUpDuration: 30
-  ramDamage: 20
+  ramDamage: 25
   defaultSpeed: 300
   speed: 300
-  maxSpeed: 400
+  maxSpeed: 666
   shootDelay: 0.75
   defaultDamage: 10
   damage: 10
   maxDamage: 20
   health: 100
   maxHealth: 100
-  defaultArmor: 1
-  armor: 1
+  defaultArmor: 2
+  armor: 2
   maxArmor: 99
   rotationSpeed: 125
   nitro: 5
-  cam: {fileID: 0}
-  canvas: {fileID: 0}
-  launchPosition: {fileID: 4828763732233858}
-  specialImage: {fileID: 21300000, guid: ecf49499c68319b4d8d1fe5fc0a9e806, type: 3}
   canDrive: 0
   nitroAmp: 2
   specialCooldown: 20
@@ -4682,7 +4682,7 @@ ParticleSystem:
   serializedVersion: 5
   lengthInSec: 5
   simulationSpeed: 1
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -4826,7 +4826,7 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 0.5704869, g: 1, b: 0.43382353, a: 1}
+        key1: {r: 1, g: 1, b: 1, a: 1}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -4884,8 +4884,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1
-      minScalar: 0.5
+      scalar: 0.4
+      minScalar: 0.2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5374,7 +5374,7 @@ ParticleSystem:
     m_BurstCount: 0
     m_Bursts: []
   SizeModule:
-    enabled: 0
+    enabled: 1
     curve:
       serializedVersion: 2
       minMaxState: 1
@@ -5385,19 +5385,19 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 2
           time: 0
-          value: 0
+          value: 1
           inSlope: 0
-          outSlope: 1
+          outSlope: 0
           tangentMode: 0
         - serializedVersion: 2
-          time: 1
-          value: 1
+          time: 0.97561646
+          value: 0
           inSlope: 1
-          outSlope: 0
+          outSlope: 1
           tangentMode: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
-        m_RotationOrder: 4
+        m_RotationOrder: 0
       minCurve:
         serializedVersion: 2
         m_Curve:

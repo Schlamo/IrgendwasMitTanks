@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
+using Enumerators;
 
 public class AudioManager : MonoBehaviour {
 
@@ -16,9 +16,14 @@ public class AudioManager : MonoBehaviour {
         else if (instance != this)
             Destroy(gameObject);
 
+<<<<<<< HEAD
+        flames.volume = 0.0f;
+        ingameMusic.Play();
+=======
         DontDestroyOnLoad(gameObject);
 		flames.volume = 0.0f;
-        ingameMusic.Play();
+        //ingameMusic.Play();
+>>>>>>> 1059c7cecd707a3a31dfada716a182e31b89eb1c
     }        
 
 	void Update() {
@@ -49,29 +54,42 @@ public class AudioManager : MonoBehaviour {
 
         shoot.clip = Resources.Load<AudioClip>("Audio/Effects/Shoot");
         shoot.pitch = Random.Range(0.5f, 1.5f);
-        shoot.volume = 1.0f;
+        shoot.volume = 0.5f;
         shoot.Play();
         Destroy(shoot, 1.0f);
     }
 
-    public void PlayPowerUpSound(int type)
+    public void PlayPowerUpSound(PowerUpType type)
     {
         AudioSource powerUp = gameObject.AddComponent<AudioSource>();
 		switch (type) 
 		{
-		case 1:
+		case PowerUpType.SpeedUp:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/SpeedUp");
+<<<<<<< HEAD
 			break;
+		case PowerUpType.DamageUp:
+=======
+                powerUp.volume = 0.5f;
+                break;
 		case 2:
+>>>>>>> 1059c7cecd707a3a31dfada716a182e31b89eb1c
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/DamageUp");
+                powerUp.volume = 2.0f;
 			break;
-		case 3:
+		case PowerUpType.ArmorUp:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/ArmorUp");
+<<<<<<< HEAD
 			break;
+		case PowerUpType.RepairKit:
+=======
+                powerUp.volume = 0.5f;
+                break;
 		case 4:
+>>>>>>> 1059c7cecd707a3a31dfada716a182e31b89eb1c
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/RepairKit");
 			break;
-		case 5:
+		case PowerUpType.Nitro:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/Nitro");
 			break;
 		}
@@ -83,7 +101,8 @@ public class AudioManager : MonoBehaviour {
     {
         AudioSource collision = gameObject.AddComponent<AudioSource>();
 
-        collision.clip = Resources.Load<AudioClip>("Audio/Effects/Collision/Crate");
+        collision.clip = Resources.Load<AudioClip>("Audio/Effects/ImpactEnvironment");
+        collision.volume = 0.25f;
         collision.Play();
         Destroy(collision, 1.0f);
     }
@@ -92,7 +111,8 @@ public class AudioManager : MonoBehaviour {
     {
         AudioSource collision = gameObject.AddComponent<AudioSource>();
 
-        collision.clip = Resources.Load<AudioClip>("Audio/Effects/Collision/Tank");
+        collision.clip = Resources.Load<AudioClip>("Audio/Effects/ImpactTank");
+        collision.volume = 0.2f;
         collision.Play();
         Destroy(collision, 1.0f);
     }
@@ -106,15 +126,6 @@ public class AudioManager : MonoBehaviour {
         Destroy(collision, 1.0f);
     }
 
-    public void PlayMapImpactSound()
-    {
-        AudioSource impact = gameObject.AddComponent<AudioSource>();
-
-        impact.clip = Resources.Load<AudioClip>("Audio/Effects/ImpactEnvironment");
-        impact.Play();
-        Destroy(impact, 1.0f);
-    }
-
     public void PlayTankImpactSound()
     {
         AudioSource impact = gameObject.AddComponent<AudioSource>();
@@ -124,11 +135,22 @@ public class AudioManager : MonoBehaviour {
         Destroy(impact, 1.0f);
     }
 
+    public void PlayMapImpactSound()
+    {
+        AudioSource impact = gameObject.AddComponent<AudioSource>();
+
+        impact.clip = Resources.Load<AudioClip>("Audio/Effects/ImpactEnvironment");
+        impact.Play();
+        impact.volume = 0.25f;
+        Destroy(impact, 1.0f);
+    }
+
     public void PlayCrateImpactSound()
     {
         AudioSource impact = gameObject.AddComponent<AudioSource>();
 
 		impact.clip = Resources.Load<AudioClip>("Audio/Effects/ImpactEnvironment");
+        impact.volume = 0.25f;
         impact.Play();
         Destroy(impact, 1.0f);
     }
@@ -138,6 +160,7 @@ public class AudioManager : MonoBehaviour {
         AudioSource impact = gameObject.AddComponent<AudioSource>();
 
 		impact.clip = Resources.Load<AudioClip>("Audio/Effects/ImpactEnvironment");
+        impact.volume = 0.25f;
         impact.Play();
         Destroy(impact, 1.0f);
     }
@@ -156,6 +179,7 @@ public class AudioManager : MonoBehaviour {
         AudioSource mineDetonation = gameObject.AddComponent<AudioSource>();
 
         mineDetonation.clip = Resources.Load<AudioClip>("Audio/Effects/MineDetonation");
+        mineDetonation.volume = 0.5f;
         mineDetonation.Play();
         Destroy(mineDetonation, 5.0f);
     }

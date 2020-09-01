@@ -1,0 +1,30 @@
+{
+
+	"useKeyboard":true,
+
+	"dayNightCycle":true,
+ 
+	"borderSteps":72,
+ 
+	"playerCount":2,
+ 
+	"nitroCount":15,
+ 
+	"crateCount":15,
+ 
+	"rocks":25,
+ 
+	"trees":75,
+	 
+	"mapSize":100,
+ 	
+	"snowIntensity":10,
+ 
+	"startingRadius":5,
+ 
+	"supplyRefill":15,
+ 
+	"supplyTimer":15,
+ 
+	"biome": 2		
+}

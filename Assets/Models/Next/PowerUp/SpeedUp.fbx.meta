@@ -1,0 +1,173 @@
+fileFormatVersion: 2
+guid: 46ba9078ac68693488f21adc2b495e45
+timeCreated: 1555435470
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: Icon
+    100002: Kugel
+    100004: Kugel_1
+    100006: Kugel_1_2
+    100008: Kugel_2
+    100010: Kugel_2_2
+    100012: Kugel_2_3
+    100014: Kugel_3
+    100016: Kugel_3_2
+    100018: Kugel_4
+    100020: Kugel_4_2
+    100022: Kugel_5
+    100024: Kugel_5_2
+    100026: Rotation_Axis_I
+    100028: Rotation_Axis_II
+    100030: //RootNode
+    100032: Icon_2
+    100034: Speed_Up
+    100036: Frame
+    400000: Icon
+    400002: Kugel
+    400004: Kugel_1
+    400006: Kugel_1_2
+    400008: Kugel_2
+    400010: Kugel_2_2
+    400012: Kugel_2_3
+    400014: Kugel_3
+    400016: Kugel_3_2
+    400018: Kugel_4
+    400020: Kugel_4_2
+    400022: Kugel_5
+    400024: Kugel_5_2
+    400026: Rotation_Axis_I
+    400028: Rotation_Axis_II
+    400030: //RootNode
+    400032: Icon_2
+    400034: Speed_Up
+    400036: Frame
+    2300000: Icon
+    2300002: Kugel
+    2300004: Kugel_1
+    2300006: Kugel_1_2
+    2300008: Kugel_2
+    2300010: Kugel_2_2
+    2300012: Kugel_2_3
+    2300014: Kugel_3
+    2300016: Kugel_3_2
+    2300018: Kugel_4
+    2300020: Kugel_4_2
+    2300022: Kugel_5
+    2300024: Kugel_5_2
+    2300026: Rotation_Axis_I
+    2300028: Rotation_Axis_II
+    2300030: Icon_2
+    2300032: Frame
+    3300000: Icon
+    3300002: Kugel
+    3300004: Kugel_1
+    3300006: Kugel_1_2
+    3300008: Kugel_2
+    3300010: Kugel_2_2
+    3300012: Kugel_2_3
+    3300014: Kugel_3
+    3300016: Kugel_3_2
+    3300018: Kugel_4
+    3300020: Kugel_4_2
+    3300022: Kugel_5
+    3300024: Kugel_5_2
+    3300026: Rotation_Axis_I
+    3300028: Rotation_Axis_II
+    3300030: Icon_2
+    3300032: Frame
+    4300000: Kugel_5
+    4300002: Kugel_4
+    4300004: Kugel_3
+    4300006: Kugel_2
+    4300008: Kugel_1
+    4300010: Kugel
+    4300012: Kugel_5_2
+    4300014: Kugel_4_2
+    4300016: Kugel_3_2
+    4300018: Kugel_2_2
+    4300020: Kugel_1_2
+    4300022: Kugel_2_3
+    4300024: Icon
+    4300026: Rotation_Axis_II
+    4300028: Rotation_Axis_I
+    4300030: Icon_2
+    4300032: Frame
+    7400000: Basis
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

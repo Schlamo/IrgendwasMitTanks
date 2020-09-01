@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-#pragma warning disable 0618 // variable declared but not used.
+using Enumerators;
 
 public class ProjectileManager : MonoBehaviour {
     public static ProjectileManager instance = null;
@@ -16,18 +14,9 @@ public class ProjectileManager : MonoBehaviour {
     void Awake()
     {
         if (instance == null)
-        {
             instance = this;
-        }
         else if (instance != this)
-        {
             Destroy(gameObject);
-        }
-    }
-
-    // Update is called once per frame
-    void Update () {
-
     }
 
     public void createProjectile(Transform tank, Transform launch, float damage, int owner)
@@ -80,11 +69,13 @@ public class ProjectileManager : MonoBehaviour {
 
     public void createExplosion(Vector3 pos, int type = 0)
     {
+        Debug.Log("Explosion");
         string path = "Explosions/";
         if (type == 1)
         {
+         
             //Mud
-            switch (GameManager.instance.mapType)
+            switch (GameManager.instance.Settings.biome)
             {
                 case MapType.Meadow:
                     path += "MudExplosion";
@@ -112,5 +103,38 @@ public class ProjectileManager : MonoBehaviour {
 
         GameObject explosion = Instantiate(Resources.Load(path), pos, new Quaternion(0, 0, 0, 0)) as GameObject;
         Destroy(explosion, 0.5f);
+    }
+
+    public void CreateExplosion(Vector3 position, Gradient[] colors, ExplosionSize size)
+    {
+        Debug.Log("Explosion");
+        try
+        {
+            GameObject explosion = Instantiate(Resources.Load("Explosions/Explosion"), position, new Quaternion(0, 0, 0, 0)) as GameObject;
+            ParticleSystem particleSystem = explosion.GetComponent<ParticleSystem>();
+            ParticleSystem.MainModule mainModule = particleSystem.main;
+            mainModule.startColor = new ParticleSystem.MinMaxGradient(colors[0], colors[1]);
+            switch(size)
+            {
+                case ExplosionSize.Small:
+                    mainModule.startLifetime = 0.75f;
+                    mainModule.startSpeed = 6.0f;
+                    break;
+                case ExplosionSize.Medium:
+                    mainModule.startLifetime = 2.0f;
+                    mainModule.startSpeed = 4.0f;
+                    break;
+                case ExplosionSize.Large:
+                    mainModule.startLifetime = 3.0f;
+                    mainModule.startSpeed = 3.0f;
+                    break;
+
+            }
+            Destroy(explosion, 3.0f);
+        }
+        catch
+        {
+            Debug.LogError("Explosion Instantiation failed");
+        }
     }
 }

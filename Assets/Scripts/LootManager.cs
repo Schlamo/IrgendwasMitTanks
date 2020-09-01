@@ -86,7 +86,6 @@ public class LootManager : MonoBehaviour {
         else
         {
             rnd = Random.Range(1, 4);
-            Debug.Log(rnd);
             switch (rnd)
             {
                 case 1:

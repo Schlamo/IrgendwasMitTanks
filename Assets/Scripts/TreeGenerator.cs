@@ -32,11 +32,16 @@ public class TreeGenerator : MonoBehaviour
     public GameObject GenerateTree()
     {
         GameObject tree = new GameObject();
+        tree.AddComponent<Tree>();
+        tree.tag = "Tree";
+        tree.AddComponent<CapsuleCollider>();
+        CapsuleCollider collider = tree.GetComponent<CapsuleCollider>();
         var root = Instantiate(Resources.Load("TreeGen/Meadow/Trunk"), Vector3.zero, new Quaternion(0,0,0,0)) as GameObject;
         float xzScale = Random.Range(3.0f,6f);
         float yScale = Random.Range(3.0f, 6f);
         root.transform.localScale = new Vector3(xzScale, yScale, xzScale);
         root.transform.parent = tree.transform;
+
         int branches = Random.Range(2, 4);
         root.gameObject.name = "Root";
         for (int i = 0; i < branches; i++)
@@ -76,8 +81,14 @@ public class TreeGenerator : MonoBehaviour
                 leafs.transform.localScale = new Vector3(leafScale, leafScale, leafScale);
                 leafs.transform.parent = tree.transform;
             }
-            catch(System.Exception e) { }
+            catch(System.Exception e)
+            {
+                Debug.LogError(e.StackTrace);
+            }
         }
+
+        collider.radius = 0.33f;
+        collider.height = 4.0f;
         return tree;
     }
 }

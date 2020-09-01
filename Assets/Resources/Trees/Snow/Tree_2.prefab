@@ -22,10 +22,10 @@ GameObject:
   - component: {fileID: 33426027515140112}
   - component: {fileID: 23078542128499770}
   - component: {fileID: 136236336205155554}
-  - component: {fileID: 114871437510159782}
+  - component: {fileID: 114809926112854048}
   m_Layer: 0
   m_Name: Tree_2
-  m_TagString: Tree
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -86,7 +86,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1802711532076494}
   m_Mesh: {fileID: 4300000, guid: 62470fa6ad6588c43ad892b83a7a66e5, type: 3}
---- !u!114 &114871437510159782
+--- !u!114 &114809926112854048
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -94,9 +94,71 @@ MonoBehaviour:
   m_GameObject: {fileID: 1802711532076494}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e99a27dcadc93724bb069b4cccddc4a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 3587ce2d9760a934987121d5577435eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionGradientA:
+    serializedVersion: 2
+    key0: {r: 0.77576065, g: 1, b: 0.75735295, a: 1}
+    key1: {r: 0.009634878, g: 0.2794118, b: 0, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  explosionGradientB:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  initialScaling: 0
+  initialHP: 30
+  isDestroyable: 1
+  isBurning: 0
 --- !u!136 &136236336205155554
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -104,7 +166,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1802711532076494}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1.5
   m_Height: 9
