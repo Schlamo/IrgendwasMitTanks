@@ -15,15 +15,6 @@ public class AudioManager : MonoBehaviour {
             instance = this;
         else if (instance != this)
             Destroy(gameObject);
-
-<<<<<<< HEAD
-        flames.volume = 0.0f;
-        ingameMusic.Play();
-=======
-        DontDestroyOnLoad(gameObject);
-		flames.volume = 0.0f;
-        //ingameMusic.Play();
->>>>>>> 1059c7cecd707a3a31dfada716a182e31b89eb1c
     }        
 
 	void Update() {
@@ -66,27 +57,21 @@ public class AudioManager : MonoBehaviour {
 		{
 		case PowerUpType.SpeedUp:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/SpeedUp");
-<<<<<<< HEAD
 			break;
 		case PowerUpType.DamageUp:
-=======
                 powerUp.volume = 0.5f;
                 break;
 		case 2:
->>>>>>> 1059c7cecd707a3a31dfada716a182e31b89eb1c
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/DamageUp");
                 powerUp.volume = 2.0f;
 			break;
 		case PowerUpType.ArmorUp:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/ArmorUp");
-<<<<<<< HEAD
 			break;
 		case PowerUpType.RepairKit:
-=======
                 powerUp.volume = 0.5f;
                 break;
 		case 4:
->>>>>>> 1059c7cecd707a3a31dfada716a182e31b89eb1c
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/RepairKit");
 			break;
 		case PowerUpType.Nitro:
