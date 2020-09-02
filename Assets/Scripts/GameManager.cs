@@ -218,7 +218,7 @@ public class GameManager : MonoBehaviour
             tank.Name     = tankColor.ToString();
             tank.playerId = playerId;
             tank.Paint(tankColor);
-            tank.Controller = new KeyboardController { Index = playerId };
+            tank.Controller = new KeyboardController(playerId);
 
             var position = StartingPoints[startingPoint];
             StartingPoints.Remove(position);
