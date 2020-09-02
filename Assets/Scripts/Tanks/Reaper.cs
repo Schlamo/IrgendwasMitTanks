@@ -50,7 +50,7 @@ namespace Tanks {
         public void Update() {
             base.Update();
 
-            if (controller.SpecialDown())
+            if (Controller.SpecialDown())
                 Special();
         }
     }

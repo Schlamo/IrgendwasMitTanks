@@ -11,6 +11,8 @@ public class ProjectileManager : MonoBehaviour {
     public float projectileSpeed;
     public float flameSpeed;
 
+    private readonly object explosion;
+
     void Awake()
     {
         if (instance == null)
@@ -19,7 +21,7 @@ public class ProjectileManager : MonoBehaviour {
             Destroy(gameObject);
     }
 
-    public void createProjectile(Transform tank, Transform launch, float damage, int owner)
+    public void CreateProjectile(Transform tank, Transform launch, float damage, int owner)
     {
         AudioManager.instance.PlayShootSound();
         var projectile = Instantiate(Projectile, launch.position, launch.rotation);
@@ -42,7 +44,7 @@ public class ProjectileManager : MonoBehaviour {
         rb.AddForce(direction * projectileSpeed, ForceMode.Impulse);
     }
 
-    public void createFlameProjectile(Transform tank, Transform launch, float damage, int owner)
+    public void CreateFlameProjectile(Transform tank, Transform launch, float damage, int owner)
     {
         var projectile = Instantiate(FlameProjectile, launch.position, launch.rotation);
 
@@ -67,15 +69,15 @@ public class ProjectileManager : MonoBehaviour {
         rb.AddForce(direction.normalized * flameSpeed, ForceMode.Impulse);
     }
 
-    public void createExplosion(Vector3 pos, int type = 0)
+    public void CreateExplosion(Vector3 pos, ExplosionType type = ExplosionType.Default)
     {
         Debug.Log("Explosion");
         string path = "Explosions/";
-        if (type == 1)
+        if (type == ExplosionType.Floor)
         {
          
             //Mud
-            switch (GameManager.instance.Settings.biome)
+            switch (MapType.Meadow)
             {
                 case MapType.Meadow:
                     path += "MudExplosion";
@@ -88,11 +90,11 @@ public class ProjectileManager : MonoBehaviour {
                     break;
             }
         }
-        else if(type == 2)
+        else if(type == ExplosionType.Wood)
         {
             path += "WoodExplosion";
         }
-        else if( type == 3)
+        else if( type == ExplosionType.Tank)
         {
             path += "TankExplosion";
         }

@@ -72,9 +72,6 @@
     <Compile Include="Assets\Scripts\Mine.cs" />
     <Compile Include="Assets\Scripts\Misc\Enumerator.cs" />
     <Compile Include="Assets\Scripts\Misc\GameSettings.cs" />
-    <Compile Include="Assets\Scripts\Misc\MapType.cs" />
-    <Compile Include="Assets\Scripts\Misc\TankColor.cs" />
-    <Compile Include="Assets\Scripts\Misc\TankType.cs" />
     <Compile Include="Assets\Scripts\Obstacles\Crate.cs" />
     <Compile Include="Assets\Scripts\Obstacles\Obstacle.cs" />
     <Compile Include="Assets\Scripts\Obstacles\Tree.cs" />

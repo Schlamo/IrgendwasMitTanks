@@ -3,7 +3,7 @@ namespace Obstacles {
     public class Crate : Obstacle {
         protected override void Destroy() {
             transform.Translate(new Vector3(0, 1, 0));
-            GameManager.CreateLoot(transform);
+            LootManager.CreateLoot(transform, 10.0f);
             Destroy(this.gameObject);
         }
 

@@ -5,28 +5,26 @@ namespace Obstacles {
         public Gradient explosionGradientA;
         public Gradient explosionGradientB;
 
-        public  float initialScaling;
-
-        public  float initialHP;
-        protected float currentHP;
+        public float initialScaling { get; set;}
+        public float initialHP;
+        protected float currentHP      { get; set;}
 
         public bool isDestroyable = true;
         public bool isBurning     = false;
 
-        private void Start() {
-            currentHP = initialHP;
-        }
+        protected void Start() 
+            => currentHP = initialHP;
 
         protected abstract void Destroy();
 
-        public void Hit(float damage) {
+        public virtual void Hit(float damage) {
             if (!isDestroyable)
                 return;
 
             currentHP -= damage;
         }
 
-        public void Update() {
+        protected virtual void Update() {
             if (isBurning)
                 currentHP -= Time.deltaTime * 2;
 

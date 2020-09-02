@@ -52,39 +52,35 @@ public class AudioManager : MonoBehaviour {
 
     public void PlayPowerUpSound(PowerUpType type)
     {
-        AudioSource powerUp = gameObject.AddComponent<AudioSource>();
-		switch (type) 
-		{
+        var powerUp = gameObject.AddComponent<AudioSource>();
+		switch (type) {
 		case PowerUpType.SpeedUp:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/SpeedUp");
 			break;
 		case PowerUpType.DamageUp:
-                powerUp.volume = 0.5f;
-                break;
-		case 2:
+            powerUp.volume = 0.5f;
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/DamageUp");
-                powerUp.volume = 2.0f;
+            powerUp.volume = 2.0f;
 			break;
 		case PowerUpType.ArmorUp:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/ArmorUp");
 			break;
 		case PowerUpType.RepairKit:
-                powerUp.volume = 0.5f;
-                break;
-		case 4:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/RepairKit");
-			break;
+            powerUp.volume = 0.5f;
+            break;
 		case PowerUpType.Nitro:
 			powerUp.clip = Resources.Load<AudioClip>("Audio/Effects/PowerUp/Nitro");
 			break;
 		}
+
         powerUp.Play();
         Destroy(powerUp, 3.0f);
     }
 
     public void PlayCrateCollisionSound()
     {
-        AudioSource collision = gameObject.AddComponent<AudioSource>();
+        var collision = gameObject.AddComponent<AudioSource>();
 
         collision.clip = Resources.Load<AudioClip>("Audio/Effects/ImpactEnvironment");
         collision.volume = 0.25f;

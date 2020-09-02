@@ -7,7 +7,7 @@
         }
 
         public float Rotation() {
-            return 0.0f;
+            return GamePad.GetAxis(GamePad.Axis.LeftStick, Index).x;
         }
 
         public bool Shoot() {
@@ -18,12 +18,10 @@
             return false;
         }
 
-        public bool Special() {
-            return false;
-        }
+        public bool Special() => GamePad.GetButton(GamePad.Button.X, Index);
 
-        public bool SpecialDown() {
-            return false;
-        }
-}
+        public bool SpecialDown() => GamePad.GetButtonDown(GamePad.Button.X, Index);
+
+        public bool SpecialUp() => GamePad.GetButtonUp(GamePad.Button.X, Index);
+    }
 }

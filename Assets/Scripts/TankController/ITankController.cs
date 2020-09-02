@@ -11,5 +11,6 @@
         bool Special();
 
         bool SpecialDown();
+        bool SpecialUp();
     }
 }

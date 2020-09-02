@@ -67,7 +67,7 @@ public class Prometheus : Tank
                 float amplifier = 1.0f;
                 amplifier += Mathf.Min(timeToMaxDamage, 2.0f);
                 specialAccumulated -= delta * framesToFlame;
-                ProjectileManager.instance.createFlameProjectile(this.gameObject.transform, this.launchPosition, flameDamage * delta * framesToFlame * amplifier, this.padNumber);
+                ProjectileManager.instance.CreateFlameProjectile(this.gameObject.transform, this.launchPosition, flameDamage * delta * framesToFlame * amplifier, this.playerId);
                 specialFrames = framesToFlame;
             }
         }

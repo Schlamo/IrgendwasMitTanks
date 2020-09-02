@@ -2,18 +2,18 @@
 
 public class GameSettings
 {
-    public int      playerCount;
-    public int      borderSteps;
-    public int      nitroCount;
-    public int      crateCount;
-    public int      rocks;
-    public int      trees;
-    public int      mapSize;
-    public int      snowIntensity;
-    public bool     useKeyboard;
-    public bool     dayNightCycle;
-    public float    startingRadius;
-    public float    supplyRefill;
-    public float    supplyTimer;
-    public MapType  biome;
+    public int      PlayerCount { get; set; }
+    public int      BorderSteps { get; set; }
+    public int      NitroCount { get; set; }
+    public int      CrateCount { get; set; }
+    public int      Rocks { get; set; }
+    public int      Trees { get; set; }
+    public int      MapSize { get; set; }
+    public int      SnowIntensity { get; set; }
+    public bool     UseKeyboard { get; set; }
+    public bool     DayNightCycle { get; set; }
+    public float    StartingRadius { get; set; }
+    public float    SupplyRefill { get; set; }
+    public float    SupplyTimer { get; set; }
+    public MapType  Biome { get; set; }
 }

@@ -44,4 +44,12 @@
         Medium = 1,
         Large = 2
     }
+
+    public enum ExplosionType
+    {
+        Default,
+        Floor,
+        Wood,
+        Tank
+    }
 }

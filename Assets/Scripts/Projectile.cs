@@ -10,6 +10,10 @@ public class Projectile : MonoBehaviour {
     private float damage = 0.0f;
     private int type = 0;
 
+    public float Damage { get; set; }
+    public int Type { get; set; }
+    public int Owner { get; set; }
+
     // Update is called once per frame
     void Update() {
         if(transform.position.y < -15)
@@ -17,14 +21,14 @@ public class Projectile : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        Vector3 pos = gameObject.transform.position;
+        var position = gameObject.transform.position;
 
-        if(collision.gameObject.tag == "Obstacle") {
+        if(collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("Tree")) {
             try {
                 Obstacle obstacle = collision.gameObject.GetComponent<Obstacle>();
 
                 if (obstacle.isDestroyable)
-                    obstacle.Hit(damage);
+                    obstacle.Hit(Damage);
 
                 ProjectileManager.instance.CreateExplosion(
                     collision.contacts[0].point,
@@ -34,18 +38,19 @@ public class Projectile : MonoBehaviour {
             catch(System.Exception) { }
         }
 
-        if (collision.gameObject.tag == "Map") {
+        if (collision.gameObject.CompareTag("Map")) {
             AudioManager.instance.PlayMapImpactSound();
-            ProjectileManager.instance.createExplosion(pos, 1);
+            ProjectileManager.instance.CreateExplosion(position, ExplosionType.Floor);
         }
-        else if (collision.gameObject.tag == "Tank") {
+        else if (collision.gameObject.CompareTag("Tank")) {
             AudioManager.instance.PlayTankImpactSound();
-            ProjectileManager.instance.createExplosion(pos, 0);
+            ProjectileManager.instance.CreateExplosion(position, ExplosionType.Tank);
             var tank = collision.gameObject.GetComponent<Tank>();
-            tank.TakeDamage(this.damage);
+            tank.TakeDamage(damage);
             tank.lastDamage = owner;
         }
-        Destroy(this.gameObject);
+
+        Destroy(gameObject);
         /*else if(type == 1)
         {
             if(collision.gameObject.tag == "Tank")
@@ -60,41 +65,5 @@ public class Projectile : MonoBehaviour {
             this.gameObject.GetComponent<ParticleSystem>().Stop();
             Destroy(this.gameObject, this.gameObject.GetComponent<ParticleSystem>().startLifetime);
         }*/
-    }
-
-    public float Damage
-    {
-        get
-        {
-            return this.damage;
-        }
-        set
-        {
-            this.damage = value;
-        }
-    }
-
-    public int Type
-    {
-        get
-        {
-            return this.type;
-        }
-        set
-        {
-            this.type = value;
-        }
-    }
-
-    public int Owner
-    {
-        get
-        {
-            return this.owner;
-        }
-        set
-        {
-            this.owner = value;
-        }
     }
 }

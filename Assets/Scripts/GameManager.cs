@@ -4,10 +4,17 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Obstacles;
+using PowerUps;
+using System.IO;
+using System;
+using Enumerators;
+using Controllers;
 
 #pragma warning disable 0618 // variable declared but not used.
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
     public static GameManager instance = null;
 
     public float startingAreaRadius = 5.0f;
@@ -24,9 +31,7 @@ public class GameManager : MonoBehaviour {
     public bool useKeyboard         = false;
     public bool dayNightCycle       = false;
 
-    public Transform tankCamera;
     public Transform halfScreen;
-    public Transform crate;
     public Transform nitro;
 
     public Material meadowMat; //Type 0
@@ -38,30 +43,35 @@ public class GameManager : MonoBehaviour {
     private float supplyTimer = 0.0f;
     private float time = 0.0f;
 
-    private List<Transform> trees           = new List<Transform>();
-    private List<Transform> rocks           = new List<Transform>();
-    private List<Transform> crates          = new List<Transform>();
-    private List<Transform> nitros          = new List<Transform>();
-    private List<Transform> players         = new List<Transform>();
-    private List<Transform> startingPoints  = new List<Transform>();
+    private Transform Camera { get; set; }
+    private Transform Crate { get; set; }
 
+    private List<Transform> Trees { get; set; } = new List<Transform>();
+    private List<Transform> Rocks { get; set; } = new List<Transform>();
+    private List<Transform> Crates { get; set; } = new List<Transform>();
+    private List<Transform> Nitros { get; set; } = new List<Transform>();
+    private List<Transform> Players { get; set; } = new List<Transform>();
+    private List<Transform> StartingPoints { get; set; } = new List<Transform>();
+
+    private readonly List<string> colors = new List<string> { "Red", "Blue", "Green", "Yellow", "Pinkt", "Orange", "Black", "White" };
 
     void Awake()
     {
         if (instance == null)
-        {
             instance = this;
-        }
         else if (instance != this)
-        {
             Destroy(gameObject);
-        }
+
+        RandomizeMapType();
+        SetupBorder();
+        SetupGrass();
+        SetupLighting();
+
+        Crate  = (Resources.Load("Obstacles/Crate") as GameObject).transform;
+        Camera = (Resources.Load("Utility/Camera") as GameObject).transform;
     }
 
-    void Start()
-    {
-        StartGame();
-    }
+    void Start() => StartGame();
 
     void Update()
     {
@@ -82,52 +92,34 @@ public class GameManager : MonoBehaviour {
         time += Time.deltaTime;
     }
 
-    private void setCameraViewport(Camera camera, int playerId)
+    private void SetCameraViewport(Camera camera, int playerId)
     {
-        if(amountOfPlayers == 2)
+        if (amountOfPlayers == 2)
         {
             if (playerId == 1)
-            {
                 camera.rect = new Rect(0.0f, 0.5f, 1.0f, 0.5f);
-            }
             else if (playerId == 2)
-            {
                 camera.rect = new Rect(0.0f, 0.0f, 1.0f, 0.5f);
-            }
         }
         if (amountOfPlayers == 3)
         {
             if (playerId == 1)
-            {
                 camera.rect = new Rect(0.25f, 0.5f, 0.5f, 0.5f);
-            }
             else if (playerId == 2)
-            {
                 camera.rect = new Rect(0.0f, 0.0f, 0.5f, 0.5f);
-            }
             else if (playerId == 3)
-            {
                 camera.rect = new Rect(0.5f, 0.0f, 0.5f, 0.5f);
-            }
         }
         if (amountOfPlayers == 4)
         {
             if (playerId == 1)
-            {
                 camera.rect = new Rect(0.0f, 0.5f, 0.5f, 0.5f);
-            }
             else if (playerId == 2)
-            {
                 camera.rect = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
-            }
             else if (playerId == 3)
-            {
                 camera.rect = new Rect(0.0f, 0.0f, 0.5f, 0.5f);
-            }
             else if (playerId == 4)
-            {
                 camera.rect = new Rect(0.5f, 0.0f, 0.5f, 0.5f);
-            }
         }
     }
 
@@ -150,7 +142,7 @@ public class GameManager : MonoBehaviour {
 
     private void RandomizeMapType()
     {
-        int type = Random.Range(0, 3);
+        int type = UnityEngine.Random.Range(0, 3);
         if (type == 0) mapType = MapType.Meadow;
         if (type == 1) mapType = MapType.Desert;
         if (type == 2) mapType = MapType.Snow;
@@ -158,21 +150,16 @@ public class GameManager : MonoBehaviour {
 
     private void SetupGrass()
     {
-        int density = 100;
-        string path      = "Grass/";
+        int density = 50;
+        string path = Path.Combine("Grass", MapType.Meadow.ToString());
 
         switch (mapType)
         {
-            case MapType.Meadow:
-                path += "Meadow";
-                break;
             case MapType.Desert:
                 density /= 2;
-                path += "Desert";
                 break;
             case MapType.Snow:
                 density *= 2;
-                path += "Snow";
                 break;
         }
 
@@ -180,202 +167,83 @@ public class GameManager : MonoBehaviour {
         {
             Vector3 position;
             do
-            {
                 position = GeneratePosition();
-            }
             while (!IsPositionValid(position));
 
-            GameObject grass = Instantiate(Resources.Load("Grass"), GetFixedPosition(position), Quaternion.Euler(0.0f, Random.Range(0.0f, 360.0f), 0.0f)) as GameObject;
-            grass.transform.localScale = new Vector3(Random.Range(1.0f, 2), Random.Range(1.0f, 2), Random.Range(1.0f, 2));
+            GameObject grass = Instantiate(Resources.Load("Grass/Grass"), GetFixedPosition(position), Quaternion.Euler(0.0f, UnityEngine.Random.Range(0.0f, 360.0f), 0.0f)) as GameObject;
+            grass.transform.localScale = new Vector3(UnityEngine.Random.Range(1.0f, 2), UnityEngine.Random.Range(1.0f, 2), UnityEngine.Random.Range(1.0f, 2));
             grass.transform.GetComponent<MeshRenderer>().material = Resources.Load(path) as Material;
         }
     }
 
     private void StartGame()
     {
-        string[] tankNames   = new string[amountOfPlayers];
-        int[]    tankColors  = new int[amountOfPlayers];
-        int[]    tankTypes   = new int[amountOfPlayers];
-        List<int> usedPoints = new List<int>();
-        List<int> colors     = new List<int>();
+        var tankTypes = new int[amountOfPlayers];
+        var tankNames = new string[amountOfPlayers];
+        var tankColors = new int[amountOfPlayers];
+        var usedPoints = new List<int>();
+        var treesParent = GameObject.Find("Trees").transform;
+        var cratesParent = GameObject.Find("Crates").transform;
+
+        GameObject.Find("MapCam").GetComponent<Camera>().enabled = false;
         Vector3 pos;
 
-        Transform treesParent = GameObject.Find("Trees").transform;
-        Transform cratesParent = GameObject.Find("Crates").transform;
-        GameObject.Find("MapCam").GetComponent<Camera>().enabled = false;
+        GameObject.FindGameObjectsWithTag("StartingPoint")
+            .ToList()
+            .ForEach(sp => StartingPoints.Add(sp.transform));
 
-        /* Setup the Map */
-        RandomizeMapType();
-        SetupBorder();
-        SetupGrass();
-        SetupLighting();
-
-
-        tankTypes = new int[]{0,4};
-
-
-        for (int i = 0; i < 8; i++)
+        Enumerable.Range(1, amountOfPlayers + 1).ToList().ForEach(playerId =>
         {
-            colors.Add(i);
-        }
+            //Initialize Player X
+            var startingPoint = GetValidStartingPoint(usedPoints);
+            var tankColor     = RandomTankColor();
+            var tankObject    = Instantiate(Resources.Load("Tanks/" + RandomTankType().ToString()), Vector3.zero, Quaternion.Euler(0, 0, 0)) as GameObject;
+            var camera        = Instantiate(Camera, Vector3.zero, Quaternion.Euler(0, 0, 0));
+            
+            var smoothCamera  = camera.GetComponent<SmoothCamera>();
+            smoothCamera      = camera.GetComponent<SmoothCamera>();
+            smoothCamera.tank = tankObject;
 
-        for (int i = 0; i < GameObject.Find("StartingPoints").transform.childCount; i++)
-        {
-            startingPoints.Add(GameObject.Find("StartingPoints").transform.GetChild(i));
-        }
+            var camObject     = camera.Find("Camera").GetComponent<Camera>();
+            SetCameraViewport(camObject, playerId);
 
-        for (int i = 0; i < amountOfPlayers; i++)
-        {
-            tankTypes[i] = Random.Range(0, 4);
-            tankColors[i] = colors[Random.Range(0, colors.Count)];
-            colors.Remove(tankColors[i]);
-
-            switch (tankColors[i])
-            {
-                case 0:
-                    tankNames[i] = "Red";
-                    break;
-                case 1:
-                    tankNames[i] = "Blue";
-                    break;
-                case 2:
-                    tankNames[i] = "Green";
-                    break;
-                case 3:
-                    tankNames[i] = "Yellow";
-                    break;
-                case 4:
-                    tankNames[i] = "Pink";
-                    break;
-                case 5:
-                    tankNames[i] = "Orange";
-                    break;
-                case 6:
-                    tankNames[i] = "Black";
-                    break;
-                case 7:
-                    tankNames[i] = "White";
-                    break;
-            }
-        }
-
-        for (int i = 0; i < amountOfPlayers; i++)
-        {
-            GameObject tank;
-            Transform cam;
-            Transform canvas;
-            Tank t;
-            SmoothCamera c;
-
-            int position;
-
-            do
-            {
-                position = Random.Range(0, startingPoints.Count);
-            }
-            while (usedPoints.Contains(position));
-
-            usedPoints.Add(position);
-
-            Transform t_pos = startingPoints[position];
-            Vector3 v_pos = new Vector3(t_pos.position.x, t_pos.eulerAngles.y, t_pos.position.z);
-
-            string path = "Tanks/";
-
-            switch (tankTypes[i])
-            {
-                case 0:
-                    path += "Tempest";
-                    break;
-                case 1:
-                    path += "Viking";
-                    break;
-                case 2:
-                    path += "Prometheus";
-                    break;
-                case 3:
-                    path += "Reaper";
-                    break;
-                case 4:
-                    path += "Cthulu";
-                    break;
-            }
-
-            tank = Instantiate(Resources.Load(path), Vector3.zero, Quaternion.Euler(0, 0, 0)) as GameObject;
-            cam = Instantiate(tankCamera, Vector3.zero, Quaternion.Euler(0, 0, 0));
-
-            canvas = Instantiate(halfScreen, Vector3.zero, Quaternion.Euler(0, 0, 0));
-            canvas.GetComponent<Canvas>().worldCamera = cam.Find("Camera").GetComponent<Camera>();
-
-            canvas.parent = tank.transform;
-            canvas.name = "Canvas";
+            var canvas                                  = Instantiate(halfScreen, Vector3.zero, Quaternion.Euler(0, 0, 0));
             canvas.GetComponent<Canvas>().planeDistance = 0.5f;
+            canvas.GetComponent<Canvas>().worldCamera   = camera.Find("Camera").GetComponent<Camera>();
+            canvas.parent                               = tankObject.transform;
+            canvas.name                                 = "Canvas";
 
-            t = tank.GetComponent<Tank>();
-            c = cam.GetComponent<SmoothCamera>();
-            t.cam = cam;
-            c.tank = tank;
+            var tank      = tankObject.GetComponent<Tank>();
+            tank.cam      = camera;
+            tank.Name     = tankColor.ToString();
+            tank.playerId = playerId;
+            tank.Paint(tankColor);
+            tank.Controller = new KeyboardController { Index = playerId };
 
-            t.padNumber = i + 1;
-            Camera camera = cam.Find("Camera").GetComponent<Camera>();
-            setCameraViewport(camera, i + 1);
-            t.Spawn(v_pos);
-            t.Paint(tankColors[i]);
-            players.Add(tank.transform);
-            t.Name = tankNames[i];
+            var position = StartingPoints[startingPoint];
+            StartingPoints.Remove(position);
+            tank.Spawn(new Vector3(position.position.x, position.eulerAngles.y, position.position.z));
+            Players.Add(tank.transform);
+        });
 
-        }
+        Enumerable.Range(0, treeAmount)
+            .ToList()
+            .ForEach(_ => SpawnTreeAt(UnityEngine.Random.Range(1, 5), GetValidPosition(), treesParent));
 
-        for (int i = 0; i < treeAmount; i++)
-        {
-            do
-            {
-                pos = GeneratePosition();
-            }
-            while (!IsPositionValid(pos));
+        Enumerable.Range(0, nitroAmount)
+            .ToList()
+            .ForEach(_ => SpawnNitroAt(GetValidPosition()));
 
-            int type = Random.Range(2, 5);
-			if (mapType == 0) {
-				int t = Random.Range (0, 5);
-
-				if (t == 0) {
-					SpawnGeneratedTree (type, pos, treesParent);
-				} else {
-					SpawnTreeAt (type, pos, treesParent);
-				}
-			} else {
-				SpawnTreeAt (type, pos, treesParent);
-			}
-        }
-
-        for (int i = 0; i < nitroAmount; i++)
-        {
-            do
-            {
-                pos = GeneratePosition();
-            }
-            while (!IsPositionValid(pos));
-
-            SpawnNitroAt(pos);
-        }
-
-        for (int i = 0; i < crateAmount; i++)
-        {
-            do
-            {
-                pos = GeneratePosition();
-            }
-            while (!IsPositionValid(pos));
-
-            SpawnCrateAt(pos, cratesParent);
-        }
+        Enumerable.Range(0, crateAmount)
+            .ToList()
+            .ForEach(_ => SpawnCrateAt(GetValidPosition(), cratesParent));
 
         var floor = GameObject.Find("Floor");
         switch (mapType)
         {
             case MapType.Desert:
                 floor.GetComponent<Renderer>().material = desertMat;
-                foreach (Transform tank in players)
+                foreach (Transform tank in Players)
                 {
                     var psL = tank.Find("TracksParticlesLeft").GetComponent<ParticleSystem>();
                     var mainL = psL.main;
@@ -399,7 +267,7 @@ public class GameManager : MonoBehaviour {
 
             case MapType.Snow:
                 floor.GetComponent<Renderer>().material = snowMat;
-                foreach (Transform tank in players)
+                foreach (Transform tank in Players)
                 {
                     var psL = tank.Find("TracksParticlesLeft").GetComponent<ParticleSystem>();
                     var mainL = psL.main;
@@ -422,63 +290,33 @@ public class GameManager : MonoBehaviour {
                 break;
         }
 
-        for (int i = 0; i < rocksAmount; i++)
-        {
-            do
-            {
-                pos = GeneratePosition();
-            }
-            while (!IsPositionValid(pos));
+        Enumerable.Range(0, rocksAmount).ToList().ForEach(_ => {
+            var rock = Instantiate(
+                Resources.Load("Rocks/" + mapType.ToString() + "/Large_" + UnityEngine.Random.Range(1, 5)),
+                GetFixedPosition(GetValidPosition(), -1.0f),
+                Quaternion.Euler(-90,
+                UnityEngine.Random.Range(0, 360), 0)) as GameObject;
 
-            int type = Random.Range(1, 5);
-            int rotation = Random.Range(0, 360);
-
-            string path = "";
-
-            switch (mapType)
-            {
-                case MapType.Desert:
-                    path = "Rocks/Desert/Large_";
-                    break;
-                case MapType.Snow:
-                    path = "Rocks/Snow/Large_";
-                    break;
-                default:
-                    path = "Rocks/Meadow/Large_";
-                    break;
-            }
-
-            path += type;
-
-            GameObject rock = Instantiate(Resources.Load(path), GetFixedPosition(pos, -1.0f), Quaternion.Euler(-90, rotation, 0)) as GameObject;
-            rock.transform.parent = GameObject.Find("Rocks").transform;
-            rocks.Add(rock.transform);
-            rock.transform.localScale = new Vector3(Random.Range(1, 4), Random.Range(1, 4), Random.Range(1, 4));
-        }
+            rock.transform.parent     = GameObject.Find("Rocks").transform;
+            rock.transform.localScale = new Vector3(UnityEngine.Random.Range(1, 4), UnityEngine.Random.Range(1, 4), UnityEngine.Random.Range(1, 4));
+            Rocks.Add(rock.transform);
+        });
     }
 
-    private bool IsPositionValid(Vector3 position)
+    private int GetValidStartingPoint(List<int> usedPoints)
     {
-        Vector3 fixedPosition = position;
-        fixedPosition.y = 0;
+        int position;
 
-        if (Vector3.Distance(Vector3.zero, fixedPosition) > mapSize - 5) return false;
-
-        List<Transform> blockedPositions = new List<Transform>();
-
-        blockedPositions.AddRange(startingPoints);
-
-        if (crates.Count > 0) blockedPositions.AddRange(crates);
-        if(trees.Count > 0)  blockedPositions.AddRange(trees);
-        if(rocks.Count > 0)  blockedPositions.AddRange(rocks);
-
-        foreach (Transform t in startingPoints)
-        {
-            if (Vector3.Distance(fixedPosition, new Vector3(t.position.x, 0, t.position.z)) < startingAreaRadius) return false;
-        }
-
-        return true;
+        do
+            position = UnityEngine.Random.Range(0, StartingPoints.Count);
+        while (usedPoints.Contains(position));
+        return position;
     }
+
+    private TankColor RandomTankColor() => (TankColor)UnityEngine.Random.Range(0, 8);
+
+    private TankType RandomTankType() => (TankType)UnityEngine.Random.Range(0, 4);
+
 
     private void UpdateRanking()
     {
@@ -486,9 +324,7 @@ public class GameManager : MonoBehaviour {
         int[] playerKills = new int[amountOfPlayers];
 
         for (int i = 0; i < amountOfPlayers; i++)
-        {
-            playerKills[i] = players[i].GetComponent<Tank>().Kills;
-        }
+            playerKills[i] = Players[i].GetComponent<Tank>().Kills;
 
         int range;
 
@@ -511,10 +347,10 @@ public class GameManager : MonoBehaviour {
                 playerRanks[idx] = rank;
         }
 
-        Transform canvas  = transform.Find("GameStats");
-        Transform first   = canvas.Find("First");
-        Transform second  = canvas.Find("Second");
-        Transform third   = canvas.Find("Third");
+        Transform canvas = transform.Find("GameStats");
+        Transform first = canvas.Find("First");
+        Transform second = canvas.Find("Second");
+        Transform third = canvas.Find("Third");
 
         canvas.Find("First").GetComponent<Text>().text = "-";
         canvas.Find("Second").GetComponent<Text>().text = "-";
@@ -523,177 +359,74 @@ public class GameManager : MonoBehaviour {
         for (int i = 0; i < amountOfPlayers; i++)
         {
             if (playerRanks[i] == 1)
-            {
-                first.GetComponent<Text>().text = players[i].GetComponent<Tank>().Name;
-            }
+                first.GetComponent<Text>().text = Players[i].GetComponent<Tank>().Name;
             else if (playerRanks[i] == 2)
-            {
-                second.GetComponent<Text>().text = players[i].GetComponent<Tank>().Name;
-            }
+                second.GetComponent<Text>().text = Players[i].GetComponent<Tank>().Name;
             else if (playerRanks[i] == 3)
-            {
-                third.GetComponent<Text>().text = players[i].GetComponent<Tank>().Name;
-            }
+                third.GetComponent<Text>().text = Players[i].GetComponent<Tank>().Name;
         }
     }
 
     private Vector3 GeneratePosition()
     {
         int offset = 10;
-        float x = Random.Range((-mapSize) + offset, mapSize - offset);
-        float z = Random.Range((-mapSize) + offset, mapSize - offset);
-        float r = Random.Range(0.0f, 360.0f);
+        float x = UnityEngine.Random.Range((-mapSize) + offset, mapSize - offset);
+        float z = UnityEngine.Random.Range((-mapSize) + offset, mapSize - offset);
+        float r = UnityEngine.Random.Range(0.0f, 360.0f);
 
         return new Vector3(x, r, z);
     }
 
     private void SpawnCrateAt(Vector3 pos, Transform parent)
-    {
-        var t_crate = Instantiate(crate, GetFixedPosition(pos, 1.5f), Quaternion.Euler(0, pos.y, 0));
-
-        t_crate.parent = parent;
-        crates.Add(t_crate);
-    }
+        => Crates.Add(Instantiate(Crate, GetFixedPosition(pos), Quaternion.Euler(0, pos.y, 0), parent));
 
     private void SpawnNitroAt(Vector3 pos)
-    {
-        var t_nitro = Instantiate(nitro, GetFixedPosition(pos, 1.0f), Quaternion.Euler(0, pos.y, 0));
-
-        nitros.Add(t_nitro);
-    }
-
-    private void SpawnGeneratedTree(int type, Vector3 pos, Transform parent)
-    {
-        GameObject tree = TreeGenerator.instance.GenerateTree();
-        tree.transform.parent = parent;
-        tree.transform.position = GetFixedPosition(pos);
-        float scale = Random.Range(0.5f, 1.0f);
-        tree.transform.localScale = new Vector3(scale, scale, scale);
-        tree.transform.rotation = Quaternion.Euler(0, pos.y, 0);
-    }
+        => Nitros.Add(Instantiate(nitro, GetFixedPosition(pos, 1.0f), Quaternion.Euler(0, pos.y, 0)));
 
     private void SpawnTreeAt(int type, Vector3 pos, Transform parent)
     {
-        string path = "Trees/";
-        float size = Random.Range(0.75f, 1.25f);
+        float size = UnityEngine.Random.Range(0.75f, 1.25f);
 
-        switch (mapType)
-        {
-            case MapType.Meadow:
-                path += "Meadow/Tree_" + type;
-                break;
-            case MapType.Desert:
-                path += "Desert/Tree_" + type;
-                break;
-            case MapType.Snow:
-                path += "Snow/Tree_" + type;
-                break;
-        }
-        var tree = Instantiate(Resources.Load(path), GetFixedPosition(pos), Quaternion.Euler(0, pos.y, 0)) as GameObject;
+        var treeObject = Instantiate(Resources.Load("Trees/" + mapType.ToString() + "/Tree_" + type), GetFixedPosition(pos), Quaternion.Euler(0, pos.y, 0)) as GameObject;
+        treeObject.transform.localScale = Vector3.one * size;
+        treeObject.transform.parent = parent;
 
-        tree.transform.localScale = new Vector3(size, size, size);
-        tree.transform.parent = parent;
-        trees.Add(tree.transform);
+        var tree = treeObject.GetComponent<Obstacles.Tree>();
+        tree.initialScaling = size;
+        Trees.Add(treeObject.transform);
     }
 
     private void SupplyDrop()
     {
-        int crateDifference = crateAmount - crates.Count;
-        int nitroDifference = nitroAmount - nitros.Count;
+        int crateDifference = crateAmount - Crates.Count;
+        int nitroDifference = nitroAmount - Nitros.Count;
 
         for (int i = 0; i < crateDifference / 2; i++)
-        {
-            Vector3 pos;
-            do
-            {
-                pos = GeneratePosition();
-            }
-            while (!IsPositionValid(pos));
-            SpawnCrateAt(pos, GameObject.Find("Crates").transform);
-        }
+            SpawnCrateAt(GetValidPosition(), GameObject.Find("Crates").transform);
 
         for (int i = 0; i < nitroDifference / 2; i++)
-        {
-            Vector3 pos;
-            do
-            {
-                pos = GeneratePosition();
-            } while (!IsPositionValid(pos));
-
-            SpawnNitroAt(pos);
-        }
-    }
-
-    public Vector3 GetSpawnPoint(int padNumber)
-    {
-        float[] dists = new float[startingPoints.Count];
-
-        for(int i = 0; i < startingPoints.Count; i++)
-        {
-            float dist = float.MaxValue;
-
-            for (int j = 0; j < players.Count; j++)
-            {
-                float tmp = Vector3.Distance(players[j].position, startingPoints[i].position);
-                dist = tmp < dist ? tmp : dist;
-            }
-            dists[i] = dist;
-        }
-
-        int idx = 0;
-        float maxDist = float.MinValue;
-        for(int i = 0; i < dists.Length; i++)
-        {
-            if(dists[i] > maxDist)
-            {
-                maxDist = dists[i];
-                idx = i;
-            } 
-        }
-
-        return startingPoints[idx].position;
+            SpawnNitroAt(GetValidPosition());
     }
 
     public void GiveKillToPlayer(int owner)
     {
-        if(owner != -1)
-        {
-            var tank = players[owner-1].GetComponent<Tank>();
-            tank.Kills++;
-        }
+        if (owner != -1)
+            Players[owner - 1].GetComponent<Tank>().GrantKill();
     }
 
-    public Tank GetPlayerByIdx(int idx)
-    {
-        return players[idx - 1].GetComponent<Tank>();
-    }
+    public Tank GetPlayerByIdx(int idx) 
+        => Players[idx - 1].GetComponent<Tank>();
 
-    public void DeleteCrate(Crate c)
-    {
-        this.crates.Remove(c.transform);
-    }
+    public void DeleteCrate(Crate c) => Crates.Remove(c.transform);
 
-    public void DeleteTree(Tree t)
-    {
-        this.trees.Remove(t.transform);
-    }
+    public void DeleteTree(Obstacles.Tree t) => Trees.Remove(t.transform);
 
-    public void DeleteNitro(PowerUp n)
-    {
-        this.nitros.Remove(n.transform);
-    }
+    public void DeleteNitro(PowerUp n) => Nitros.Remove(n.transform);
 
-    public Vector3 GetFixedPosition(Vector3 pos, float offset = 0.0f)
-    {
-        RaycastHit hit;
-        Ray ray = new Ray(new Vector3(pos.x, 0.0f, pos.z), Vector3.down);
-
-        if (Physics.Raycast(ray, out hit))
-        {
-            return new Vector3(hit.point.x, hit.point.y +offset, hit.point.z);
-        }
-        return pos;
-    }
+    public Vector3 GetFixedPosition(Vector3 pos, float offset = 0.0f) 
+        => (Physics.Raycast(new Ray(new Vector3(pos.x, 0.0f, pos.z), Vector3.down), out RaycastHit hit))
+            ? new Vector3(hit.point.x, hit.point.y + offset, hit.point.z)
+            : pos;
 
     public static void ShowEndScreen()
     {
@@ -703,13 +436,14 @@ public class GameManager : MonoBehaviour {
 
     public void SetupBorder()
     {
-        Vector3 position = new Vector3(mapSize, -5, 0);
+        var parent   = GameObject.Find("Rocks").transform;
+        var position = new Vector3(mapSize, -5, 0);
 
         for (int i = 0; i < this.borderSteps; i++)
         {
-            int rotation = Random.Range(0, 360);
+            int rotation = UnityEngine.Random.Range(0, 360);
             string objPath = "Rocks/";
-            switch(mapType)
+            switch (mapType)
             {
                 case MapType.Meadow:
                     objPath += "Meadow/Large_";
@@ -721,12 +455,89 @@ public class GameManager : MonoBehaviour {
                     objPath += "Snow/Large_";
                     break;
             }
-            objPath += Random.Range(1, 5);
+            objPath += UnityEngine.Random.Range(1, 5);
 
             position = Quaternion.Euler(0, (float)360 / this.borderSteps, 0) * position;
-            var newRock = Instantiate(Resources.Load(objPath), position, Quaternion.Euler(-90, rotation, 0)) as GameObject;
-            newRock.transform.localScale = new Vector3(Random.Range(5.0f, 7.0f), Random.Range(5.0f, 7.0f), Random.Range(5.0f, 7.0f));
+            var newRock = Instantiate(Resources.Load(objPath), position, Quaternion.Euler(-90, rotation, 0), parent) as GameObject;
+            newRock.transform.localScale = new Vector3(UnityEngine.Random.Range(5.0f, 7.0f), UnityEngine.Random.Range(5.0f, 7.0f), UnityEngine.Random.Range(5.0f, 7.0f));
         }
     }
 
+    /// <summary>
+    /// todo: Ist komplett broken, bitte fixen
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
+    private bool IsPositionValid(Vector3 position)
+    {
+        var fixedPosition = position;
+        fixedPosition.y = 0;
+
+        if (Vector3.Distance(Vector3.zero, fixedPosition) > mapSize - 5) return false;
+
+        var blockedPositions = new List<Transform>();
+
+        blockedPositions.AddRange(StartingPoints);
+
+        if (Crates.Count > 0) blockedPositions.AddRange(Crates);
+        if (Trees.Count > 0) blockedPositions.AddRange(Trees);
+        if (Rocks.Count > 0) blockedPositions.AddRange(Rocks);
+
+        foreach (Transform t in StartingPoints)
+            if (Vector3.Distance(fixedPosition, new Vector3(t.position.x, 0, t.position.z)) < startingAreaRadius) return false;
+
+        return true;
+    }
+
+    public Vector3 GetSpawnPoint(int padNumber)
+    {
+        float[] dists = new float[StartingPoints.Count];
+
+        for (int i = 0; i < StartingPoints.Count; i++)
+        {
+            float dist = float.MaxValue;
+
+            for (int j = 0; j < Players.Count; j++)
+            {
+                float tmp = Vector3.Distance(Players[j].position, StartingPoints[i].position);
+                dist = tmp < dist ? tmp : dist;
+            }
+            dists[i] = dist;
+        }
+
+        int idx = 0;
+        float maxDist = float.MinValue;
+        for (int i = 0; i < dists.Length; i++)
+        {
+            if (dists[i] > maxDist)
+            {
+                maxDist = dists[i];
+                idx = i;
+            }
+        }
+
+        return StartingPoints[idx].position;
+    }
+
+    private Vector3 GetValidPosition(Vector3 offset) 
+        => GetValidPosition() + offset;
+
+    private Vector3 GetValidPosition()
+    {
+        Vector3 pos;
+        do
+            pos = GeneratePosition();
+        while (!IsPositionValid(pos));
+        return pos;
+    }
+
+    //private void SpawnGeneratedTree(int type, Vector3 pos, Transform parent)
+    //{
+    //    GameObject tree = TreeGenerator.instance.GenerateTree();
+    //    tree.transform.parent = parent;
+    //    tree.transform.position = GetFixedPosition(pos);
+    //    float scale = UnityEngine.Random.Range(0.5f, 1.0f);
+    //    tree.transform.localScale = new Vector3(scale, scale, scale);
+    //    tree.transform.rotation = Quaternion.Euler(0, pos.y, 0);
+    //}
 }

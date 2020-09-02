@@ -24,7 +24,7 @@ public class Mine : MonoBehaviour
             {
                 Tank tank = other.gameObject.GetComponent<Tank>();
 
-                if (tank.padNumber != owner)
+                if (tank.playerId != owner)
                 {
                     AudioManager.instance.PlayMineDetonationSound();
 
@@ -33,7 +33,7 @@ public class Mine : MonoBehaviour
 
                     other.gameObject.GetComponent<Rigidbody>().velocity*=0.5f;
                     other.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 100, 0), ForceMode.Impulse);
-                    ProjectileManager.instance.createExplosion(transform.position);
+                    ProjectileManager.instance.CreateExplosion(transform.position);
                     Destroy(this.gameObject);
                 }
             }

@@ -28,7 +28,7 @@ namespace Tanks {
             if(specialActive) {
                 specialTimer2 += dTime;
 
-                if (specialTimer2 >= specialDuration || canShoot > 0.0f || health < healthWhenUsed) {
+                if (specialTimer2 >= specialDuration || CanShoot > 0.0f || health < healthWhenUsed) {
                     ShowAgain();
                     specialActive = false;
                     specialTimer2 = 0.0f;
@@ -63,7 +63,7 @@ namespace Tanks {
         public void Update() {
             base.Update();
 
-            if (controller.SpecialDown())
+            if (Controller.SpecialDown())
                 Special();
         }
     }

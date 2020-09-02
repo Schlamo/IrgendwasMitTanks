@@ -5,32 +5,25 @@ using UnityEngine;
 public class LootManager : MonoBehaviour {
 
     public static LootManager instance = null;
-    public Transform speedUp;
-    public Transform damageUp;
-    public Transform armorUp;
-    public Transform repairUp;
-    public Transform mine;
+    private static Transform SpeedUp  { get; set;}
+    private static Transform DamageUp { get; set;}
+    private static Transform ArmorUp  { get; set;}
+    private static Transform RepairUp { get; set;}
+    private static Transform Mine     { get; set;}
 
     void Awake()
     {
         if (instance == null)
-        {
             instance = this;
-        }
         else if (instance != this)
-        {
             Destroy(gameObject);
-        }
-    }
 
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        DamageUp = (Resources.Load("PowerUp/DamageUp")  as GameObject).transform;
+        RepairUp = (Resources.Load("PowerUp/RepairKit") as GameObject).transform;
+        SpeedUp  = (Resources.Load("PowerUp/SpeedUp")   as GameObject).transform;
+        ArmorUp  = (Resources.Load("PowerUp/ArmorUp")   as GameObject).transform;
+        Mine     = (Resources.Load("Obstacles/Mine")    as GameObject).transform;
+    }
 
     public static LootManager Instance
     {
@@ -38,31 +31,25 @@ public class LootManager : MonoBehaviour {
         set { instance = value; }
     }
 
-    public void createLoot(Transform t, float health)
+    public static void CreateLoot(Transform t, float health)
     {
-        int rnd = Random.Range(1, 100);
+        int rnd = Random.Range(1, 101);
         if(rnd < 10)
         {
-            var m = Instantiate(mine, t.position, t.rotation);
+            var m = Instantiate(Mine, t.position, t.rotation);
             m.transform.GetComponent<Mine>().Owner = -1;
             m.transform.Translate(new Vector3(0, -1.5f, 0));
             return;
         }
 
-        //If HP is <10%, the powerUp is guaranteed to be a Repairkit
         if (health < 10.0f)
-        {
-            Instantiate(repairUp, t.position, t.rotation);
-        }
+            Instantiate(RepairUp, t.position, t.rotation);
 
-        //If HP is <=50%, the powerUp ist 1/2 a Repairkit and 1/6 another powerUp  
         else if(health <= 50.0f)
         {
-            rnd = Random.Range(1, 100);
-            if(rnd > 50)
-            {
-                Instantiate(repairUp, t.position, t.rotation);
-            }
+            rnd = Random.Range(0, 2);
+            if(rnd == 1)
+                Instantiate(RepairUp, t.position, t.rotation);
             else
             {
                 rnd = Random.Range(1, 4);
@@ -70,13 +57,13 @@ public class LootManager : MonoBehaviour {
                 switch (rnd)
                 {
                     case 1:
-                        Instantiate(speedUp, t.position, t.rotation);
+                        Instantiate(SpeedUp, t.position, t.rotation);
                         break;
                     case 2:
-                        Instantiate(damageUp, t.position, t.rotation);
+                        Instantiate(DamageUp, t.position, t.rotation);
                         break;
                     case 3:
-                        Instantiate(armorUp, t.position, t.rotation);
+                        Instantiate(ArmorUp, t.position, t.rotation);
                         break;
                 }
             }
@@ -89,13 +76,13 @@ public class LootManager : MonoBehaviour {
             switch (rnd)
             {
                 case 1:
-                    Instantiate(speedUp, t.position, t.rotation);
+                    Instantiate(SpeedUp, t.position, t.rotation);
                     break;
                 case 2:
-                    Instantiate(damageUp, t.position, t.rotation);
+                    Instantiate(DamageUp, t.position, t.rotation);
                     break;
                 case 3:
-                    Instantiate(armorUp, t.position, t.rotation);
+                    Instantiate(ArmorUp, t.position, t.rotation);
                     break;
             }
         }

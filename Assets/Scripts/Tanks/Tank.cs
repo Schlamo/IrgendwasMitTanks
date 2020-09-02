@@ -1,12 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Obstacles;
+using PowerUps;
+using Enumerators;
+using Controllers;
+using System.Linq;
+using System.Collections.Generic;
 
 public abstract class Tank : MonoBehaviour {
-    public TankStats stats;
-    public int padNumber;
+    public ITankController Controller { get; set; }
+
+    public int playerId;
 
     public float powerUpDuration = 30.0f;
     
@@ -48,12 +53,10 @@ public abstract class Tank : MonoBehaviour {
 
     private float currentSpeed;
 
-    private int kills = 0;
-    private int deaths = 0;
+    public int Kills { get; private set; } = 0;
+    public int Deaths { get; private set; } = 0;
 
-    private string name = "";
-
-    private int lastDamage = -1;
+    public int lastDamage { get; set; } = -1;
     private bool died = false;
     public float nitroAmp = 1.5f;
 
@@ -63,14 +66,12 @@ public abstract class Tank : MonoBehaviour {
     XInputDotNetPure.PlayerIndex xIdx;
     // Use this for initialization
 
-    private void PaintTank(int color){}
-
-    void Start()
+    public void Start()
     {
         transform.GetComponent<Rigidbody>().centerOfMass = Vector3.zero;
         SetSpecialImage();
 
-        switch (padNumber)
+        switch (playerId)
         {
             case 1:
                 idx = GamePad.Index.One;
@@ -94,7 +95,7 @@ public abstract class Tank : MonoBehaviour {
         }
     }
 
-    void Update () {
+    public void Update () {
         //canDrive = CheckDistanceToTheMap( 0.5f);
         
 
@@ -107,55 +108,38 @@ public abstract class Tank : MonoBehaviour {
 
         UpdateSpecial(Time.deltaTime, idx);
 
-        float rightTrigger = GamePad.GetTrigger(GamePad.Trigger.RightTrigger, idx);
-        float leftTrigger = GamePad.GetTrigger(GamePad.Trigger.LeftTrigger, idx);
-        float actualRotSpeed;
-
-        actualRotSpeed = rotationSpeed;
-
-        if (GamePad.GetButton(GamePad.Button.X, idx))
-        {
-            actualRotSpeed *= 0.5f;
-        }
-
-        if (canDrive && transform.position.y > -10 
-            && Mathf.Abs((transform.rotation.eulerAngles.x+22.5f)%360) < 45.0f 
+        if (canDrive && transform.position.y > -10
+            && Mathf.Abs((transform.rotation.eulerAngles.x + 22.5f) % 360) < 45.0f
             && Mathf.Abs((transform.rotation.eulerAngles.z + 22.5f) % 360) < 45.0f)
         {
 
             timeToExplode = 0.0f;
-            float triggerDifference = rightTrigger - leftTrigger;
+            float acceleration = Controller.Acceleration();
 
-            if (GamePad.GetButton(GamePad.Button.X, idx) && nitro > 0)
+            if (Controller.Nitro() && nitro > 0)
             {
-                triggerDifference *= nitroAmp;
+                acceleration *= nitroAmp;
                 nitro -= Time.deltaTime;
             }
 
-            if (GamePad.GetButton(GamePad.Button.A, idx) && canShoot <= 0.0f)
+            if (Controller.Shoot() && canShoot <= 0.0f)
             {
-                Shoot(this.launchPosition);
-                GetComponent<Rigidbody>().AddForce(this.launchPosition.position);
+                Shoot(launchPosition);
+                GetComponent<Rigidbody>().AddForce(launchPosition.position);
                 this.transform.Find("ShootParticles").gameObject.GetComponent<ParticleSystem>().Emit(5);
                 canShoot = shootDelay;
-                triggerDifference -= 10.0f;
+                acceleration -= 10.0f;
             }
-            else 
+            else
             {
                 canShoot -= Time.deltaTime;
             }
 
-            var rb = this.gameObject.GetComponent<Rigidbody>();
-			rb.AddForce(transform.forward * speed * triggerDifference * Time.deltaTime * 60, ForceMode.Force);
+            var rb = gameObject.GetComponent<Rigidbody>();
+            rb.AddForce(transform.forward * speed * acceleration * Time.deltaTime * 60, ForceMode.Force);
 
-            this.currentSpeed = (rb.velocity.magnitude);
-
-
-
-            Vector2 leftAxis = GamePad.GetAxis(GamePad.Axis.LeftStick, idx);
-
-            float rot = leftAxis.x * actualRotSpeed * Time.deltaTime;
-            this.transform.Rotate(0, rot, 0);
+            currentSpeed = (rb.velocity.magnitude);
+            transform.Rotate(0, CurrentRotationSpeed(), 0);
 
             ParticleSystem left = this.transform.Find("TracksParticlesLeft").gameObject.GetComponent<ParticleSystem>();
             ParticleSystem right = this.transform.Find("TracksParticlesRight").gameObject.GetComponent<ParticleSystem>();
@@ -218,6 +202,8 @@ public abstract class Tank : MonoBehaviour {
         UpdateStats();
     }
 
+    private float CurrentRotationSpeed() => Controller.Rotation() * rotationSpeed * Time.deltaTime * (Controller.Nitro() ? 0.5f : 1.0f);
+
     public abstract void Special();
 
     public abstract void UpdateSpecialStats();
@@ -230,10 +216,8 @@ public abstract class Tank : MonoBehaviour {
         canvas.Find("Image_Special").GetComponent<Image>().sprite = specialImage;
     }
 
-    public void Shoot(Transform pos)
-    {
-        ProjectileManager.instance.createProjectile(this.transform, pos, this.damage, this.padNumber);
-    }
+    public void Shoot(Transform pos) 
+        => ProjectileManager.instance.CreateProjectile(transform, pos, damage, playerId);
 
     public void TakeDamage(float damage)
     {
@@ -257,15 +241,15 @@ public abstract class Tank : MonoBehaviour {
         rb.velocity = Vector3.zero;
         rb.rotation = Quaternion.Euler(Vector3.zero);
         GameManager.instance.GiveKillToPlayer(lastDamage);
-        ProjectileManager.instance.createExplosion(this.gameObject.transform.position, 3);
-        deaths++;
+        ProjectileManager.instance.CreateExplosion(gameObject.transform.position, ExplosionType.Tank);
+        Deaths++;
         Invoke("Respawn", 0.75f);  
     }
 
     private void Respawn()
     {
         health = maxHealth;
-        Spawn(GameManager.instance.GetSpawnPoint(padNumber));
+        Spawn(GameManager.instance.GetSpawnPoint(playerId));
     }
 
     public void Spawn(Vector3 pos)
@@ -279,8 +263,8 @@ public abstract class Tank : MonoBehaviour {
         speedGained = 0.0f;
         damageGained = 0.0f;
 
-        this.transform.position = new Vector3(pos.x, 0, pos.z);
-        this.transform.rotation = Quaternion.Euler(0, pos.y, 0);
+        transform.position = new Vector3(pos.x, 0, pos.z);
+        transform.rotation = Quaternion.Euler(0, pos.y, 0);
 
         cam.transform.position = new Vector3(pos.x, 0, pos.z);
         cam.transform.rotation = Quaternion.Euler(0, pos.y, 0);
@@ -291,67 +275,67 @@ public abstract class Tank : MonoBehaviour {
     {
         var canvas = transform.Find("Canvas");
         canvas.Find("Health").GetComponent<Text>().text = Mathf.Max(Mathf.Round(health), 0).ToString();
-        canvas.Find("Kills").GetComponent<Text>().text = kills.ToString();
+        canvas.Find("Kills").GetComponent<Text>().text = Kills.ToString();
         canvas.Find("Nitro").GetComponent<Text>().text = Math.Round(nitro, 1).ToString();
         canvas.Find("Damage").GetComponent<Text>().text = Math.Round(damage, 0).ToString();
         canvas.Find("Armor").GetComponent<Text>().text = Math.Round(armor, 0).ToString();
         UpdateSpecialStats();
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider collider)
     {
-        if (other.gameObject.tag == "PowerUp")
+        if (collider.gameObject.CompareTag("PowerUp"))
         {
-            PowerUp powerUp = other.gameObject.GetComponent<PowerUp>();
+            PowerUp powerUp = collider.gameObject.GetComponent<PowerUp>();
 
             AudioManager.instance.PlayPowerUpSound(powerUp.type);
             switch (powerUp.type)
             {
-                case 1:
-                    this.speedGained = 0.0f;
-                    this.speed += powerUp.bonus;
+                case PowerUpType.SpeedUp:
+                    speedGained = 0.0f;
+                    speed += powerUp.bonus;
                     speed = speed > maxSpeed ? maxSpeed : speed;
                     break;
-                case 2:
-                    this.damageGained = 0.0f;
-                    this.damage += powerUp.bonus;
+                case PowerUpType.DamageUp:
+                    damageGained = 0.0f;
+                    damage += powerUp.bonus;
                     damage = damage > maxDamage ? maxDamage : damage;
                     break;
-                case 3:
-                    this.armorGained = 0.0f;
-                    this.armor += powerUp.bonus;
+                case PowerUpType.ArmorUp:
+                    armorGained = 0.0f;
+                    armor += powerUp.bonus;
                     armor = armor > maxArmor ? maxArmor : armor;
                     break;
-                case 4:
+                case PowerUpType.RepairKit:
                     Debug.Log("Healed by: " + (powerUp.bonus / 100) * (maxHealth-health));
-                    this.health += (powerUp.bonus / 100) * (maxHealth - health);
+                    health += (powerUp.bonus / 100) * (maxHealth - health);
                     health = health > maxHealth ? maxHealth : health;
                     break;
-                case 5:
-                    this.nitro += powerUp.bonus;
+                case PowerUpType.Nitro:
+                    nitro += powerUp.bonus;
                     GameManager.instance.DeleteNitro(powerUp);
                     break;
 
             }
 
-            Destroy(other.gameObject);
+            Destroy(collider.gameObject);
         }
-        else if (other.gameObject.tag == "Crate")
+        else if (collider.gameObject.CompareTag("Crate"))
         {
             AudioManager.instance.PlayCrateCollisionSound();
-            other.gameObject.GetComponent<Crate>().Hit(currentSpeed, GetPercentageHealth());
-            ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
-            Rigidbody rb = this.gameObject.GetComponent<Rigidbody>();
+            collider.gameObject.GetComponent<Crate>().Hit(GetPercentageHealth());
+            ProjectileManager.instance.CreateExplosion(collider.gameObject.transform.position, ExplosionType.Wood);
+            var rb = gameObject.GetComponent<Rigidbody>();
             TakeDamage((ramDamage / 100) * rb.velocity.magnitude *0.2f);
             rb.velocity *= 0.5f;
         }
-        else if (other.gameObject.tag == "Tree")
+        else if (collider.gameObject.CompareTag("Tree"))
         {
             AudioManager.instance.PlayCrateCollisionSound();
-            var tree = other.gameObject.GetComponent<Tree>();
+            var tree = collider.gameObject.GetComponent<Obstacles.Tree>();
             tree.Hit(currentSpeed);
-            ProjectileManager.instance.createExplosion(other.gameObject.transform.position, 2);
-            Rigidbody rb = this.gameObject.GetComponent<Rigidbody>();
+            ProjectileManager.instance.CreateExplosion(collider.gameObject.transform.position, ExplosionType.Wood);
+            var rb = gameObject.GetComponent<Rigidbody>();
             TakeDamage((ramDamage / 100) * rb.velocity.magnitude * 0.5f);
             rb.velocity *= 0.5f;
         }
@@ -382,7 +366,7 @@ public abstract class Tank : MonoBehaviour {
             AudioManager.instance.PlayTankCollisionSound();
             try
             {
-                collision.transform.GetComponent<Tank>().LastDamage = padNumber;
+                collision.transform.GetComponent<Tank>().LastDamage = playerId;
                 float totalSpeed = (currentSpeed + collision.gameObject.GetComponent<Tank>().currentSpeed) / 2;
                 TakeDamage(totalSpeed * (ramDamage / 100));
             }
@@ -400,98 +384,23 @@ public abstract class Tank : MonoBehaviour {
         }
     }
 
-    public int Kills
-    {
-        get
-        {
-            return kills;
-        }
-        set
-        {
-            kills = value;
-        }
-    }
+    public int LastDamage { get; set; }
 
-    public int LastDamage
-    {
-        get
-        {
-            return lastDamage;
-        }
-        set
-        {
-            lastDamage = value;
-        }
-    }
+    public string Name { get; set; }
 
-    public string Name
-    {
-        get
-        {
-            return name;
-        }
-        set
-        {
-            name = value;
-        }
-    }
+    public float CanShoot { get; set; }
 
-    public float CanShoot
+    public void Paint (TankColor color)
     {
-        get
-        {
-            return canShoot;
-        }
-        set
-        {
-            canShoot = value;
-        }
-    }
-
-    public void Paint (int color)
-    {
-        Material mat;
-        string path = "Colors/";
-        switch(color)
-        {
-            case 0:
-                path += "red";
-                break;
-            case 1:
-                path += "blue";
-                break;
-            case 2:
-                path += "green";
-                break;
-            case 3:
-                path += "yellow";
-                break;
-            case 4:
-                path += "pink";
-                break;
-            case 5:
-                path += "orange";
-                break;
-            case 6:
-                path += "black";
-                break;
-            case 7:
-                path += "white";
-                break;
-        }
-        mat = Resources.Load(path) as Material;
-
+        Material mat = Resources.Load("Colors/" + color.ToString()) as Material;
+        
         foreach (Transform child in transform)
         {
-            if (child.tag == "Colorized")
-            {
+            if (child.CompareTag("Colorized"))
                 child.GetComponent<Renderer>().material = mat;
-            }
         }
     }
 
-    public float GetPercentageHealth()
-    {
-        return (health / maxHealth)*100.0f;
-    }
+    public void GrantKill() => Kills++;
+    public float GetPercentageHealth() => (health / maxHealth) * 100.0f;
 }
