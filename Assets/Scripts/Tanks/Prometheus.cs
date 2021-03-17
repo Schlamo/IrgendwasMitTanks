@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using System;
+
 public class Prometheus : Tank
 {
     public float specialAccumulated = 1.0f;
@@ -29,16 +27,27 @@ public class Prometheus : Tank
         delta = dTime;
         specialAccumulated = specialAccumulated > specialMax ? specialMax : specialAccumulated + (delta / 10);
 
-		if(GamePad.GetButtonUp(GamePad.Button.B, idx)) 
+		if(Controller.SpecialUp()) 
 		{
 			AudioManager.instance.StopFlameSound ();
 		}
 			
 
-        if (GamePad.GetButton(GamePad.Button.B, idx))
+        if (Controller.Special())
         {
             timeToMaxDamage += dTime;
-            OnButtonSpecial();
+            if (specialAccumulated > delta)
+            {
+                if (specialFrames == 0)
+                {
+                    AudioManager.instance.PlayFlameSound();
+                    float amplifier = 1.0f;
+                    amplifier += Mathf.Min(timeToMaxDamage, 2.0f);
+                    specialAccumulated -= delta * framesToFlame;
+                    ProjectileManager.instance.CreateFlameProjectile(this.gameObject.transform, this.launchPosition, flameDamage * delta * framesToFlame * amplifier, this.PlayerIndex);
+                    specialFrames = framesToFlame;
+                }
+            }
         }
         else
         {
@@ -47,29 +56,11 @@ public class Prometheus : Tank
         }
 
         if(specialFrames > 0)
-        {
             specialFrames--;
-        }
     }
 
     public override void Special()
     {
 
-    }
-
-    public void OnButtonSpecial()
-    {
-        if (specialAccumulated > delta)
-        {
-            if(specialFrames == 0)
-            {
-                AudioManager.instance.PlayFlameSound();
-                float amplifier = 1.0f;
-                amplifier += Mathf.Min(timeToMaxDamage, 2.0f);
-                specialAccumulated -= delta * framesToFlame;
-                ProjectileManager.instance.CreateFlameProjectile(this.gameObject.transform, this.launchPosition, flameDamage * delta * framesToFlame * amplifier, this.playerId);
-                specialFrames = framesToFlame;
-            }
-        }
     }
 }

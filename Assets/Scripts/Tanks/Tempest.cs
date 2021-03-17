@@ -26,7 +26,7 @@ namespace Tanks {
 
         public override void Special() {
             if (mineCount > 0) {
-                Instantiate(mine, transform.position, transform.rotation).transform.GetComponent<Mine>().Owner = playerId;
+                Instantiate(mine, transform.position, transform.rotation).transform.GetComponent<Mine>().Owner = PlayerIndex;
 
                 AudioManager.instance.PlayMinePlacedSound();
                 mineCount--;

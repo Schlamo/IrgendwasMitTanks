@@ -1,4 +1,10 @@
 ﻿namespace Enumerators {
+    public enum ControllerType
+    {
+        Keyboard = 0,
+        Gamepad  = 1
+    }
+
     public enum TankColor {
         Red     = 0,
         Blue    = 1,
@@ -11,45 +17,56 @@
     }
 
     public enum MapType {
-        Undefined = -1,
-        Meadow = 0,
-        Desert = 1,
-        Snow = 2
+        Undefined   = -1,
+        Meadow      = 0,
+        Desert      = 1,
+        Snow        = 2
     }
 
     public enum TankType {
-        Tempest = 0,
-        Viking = 1,
-        Reaper = 2,
-        Prometheus = 3,
-        Cthulu = 4
+        Tempest     = 0,
+        Viking      = 1,
+        Reaper      = 2,
+        Prometheus  = 3,
+        Cthulu      = 4
     }
 
     public enum PowerUpType {
-        SpeedUp = 0,
-        DamageUp = 1,
-        ArmorUp = 2,
-        RepairKit = 3,
-        Nitro = 4
+        SpeedUp     = 0,
+        DamageUp    = 1,
+        ArmorUp     = 2,
+        RepairKit   = 3,
+        Nitro       = 4
     }
 
     public enum ObstacleType {
-        Crate = 0,
-        Tree = 1,
-        Rock = 2
+        Crate   = 0,
+        Tree    = 1,
+        Rock    = 2
     }
 
     public enum ExplosionSize {
-        Small = 0,
-        Medium = 1,
-        Large = 2
+        Small   = 0,
+        Medium  = 1,
+        Large   = 2
     }
 
     public enum ExplosionType
     {
-        Default,
-        Floor,
-        Wood,
-        Tank
+        Default = 0,
+        Floor   = 1,
+        Wood    = 2,
+        Tank    = 3
+    }
+
+    public enum PlayerIndex
+    {
+        Default = 0,
+        First   = 1,
+        Second  = 2,
+        Third   = 3,
+        Fourth  = 4
     }
 }
+
+

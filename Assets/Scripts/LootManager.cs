@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Enumerators;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,9 +37,9 @@ public class LootManager : MonoBehaviour {
         int rnd = Random.Range(1, 101);
         if(rnd < 10)
         {
-            var m = Instantiate(Mine, t.position, t.rotation);
-            m.transform.GetComponent<Mine>().Owner = -1;
-            m.transform.Translate(new Vector3(0, -1.5f, 0));
+            var mine = Instantiate(Mine, t.position, t.rotation);
+            mine.transform.GetComponent<Mine>().Owner = PlayerIndex.Default;
+            mine.transform.Translate(new Vector3(0, -1.5f, 0));
             return;
         }
 

@@ -21,7 +21,7 @@ public class ProjectileManager : MonoBehaviour {
             Destroy(gameObject);
     }
 
-    public void CreateProjectile(Transform tank, Transform launch, float damage, int owner)
+    public void CreateProjectile(Transform tank, Transform launch, float damage, PlayerIndex owner)
     {
         AudioManager.instance.PlayShootSound();
         var projectile = Instantiate(Projectile, launch.position, launch.rotation);
@@ -44,7 +44,7 @@ public class ProjectileManager : MonoBehaviour {
         rb.AddForce(direction * projectileSpeed, ForceMode.Impulse);
     }
 
-    public void CreateFlameProjectile(Transform tank, Transform launch, float damage, int owner)
+    public void CreateFlameProjectile(Transform tank, Transform launch, float damage, PlayerIndex owner)
     {
         var projectile = Instantiate(FlameProjectile, launch.position, launch.rotation);
 

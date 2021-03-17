@@ -39,7 +39,7 @@ namespace Tanks {
                 for (int i = 0; i < 4; i++) {
                     t.RotateAround(this.transform.position, Vector3.up, 10);
                     t.position = new Vector3(t.position.x, launchPosition.position.y, t.position.z);
-                    ProjectileManager.instance.CreateProjectile(this.transform, t, this.damage / 2.0f, this.playerId);
+                    ProjectileManager.instance.CreateProjectile(this.transform, t, this.damage / 2.0f, this.PlayerIndex);
                 }
 
                 t.RotateAround(this.transform.position, Vector3.up, 340);

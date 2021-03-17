@@ -6,13 +6,10 @@ using Enumerators;
 
 public class Projectile : MonoBehaviour {
 
-    private int owner;
-    private float damage = 0.0f;
-    private int type = 0;
+    public PlayerIndex Owner { get; set; }
+    public int Type { get; set; } = 0;
 
     public float Damage { get; set; }
-    public int Type { get; set; }
-    public int Owner { get; set; }
 
     // Update is called once per frame
     void Update() {
@@ -26,10 +23,6 @@ public class Projectile : MonoBehaviour {
         if(collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("Tree")) {
             try {
                 Obstacle obstacle = collision.gameObject.GetComponent<Obstacle>();
-
-                if (obstacle.isDestroyable)
-                    obstacle.Hit(Damage);
-
                 ProjectileManager.instance.CreateExplosion(
                     collision.contacts[0].point,
                     new Gradient[] { obstacle.explosionGradientA, obstacle.explosionGradientB },
@@ -46,24 +39,10 @@ public class Projectile : MonoBehaviour {
             AudioManager.instance.PlayTankImpactSound();
             ProjectileManager.instance.CreateExplosion(position, ExplosionType.Tank);
             var tank = collision.gameObject.GetComponent<Tank>();
-            tank.TakeDamage(damage);
-            tank.lastDamage = owner;
+            tank.TakeDamage(Damage);
+            tank.LastDamage = Owner;
         }
 
         Destroy(gameObject);
-        /*else if(type == 1)
-        {
-            if(collision.gameObject.tag == "Tank")
-            {
-                var tank = collision.gameObject.GetComponent<Tank>();
-                tank.LastDamage = owner;
-                tank.TakeTrueDamage(this.damage);
-            }
-            ProjectileManager.instance.createExplosion(pos);
-            Destroy(this.gameObject.GetComponent<SphereCollider>());
-            Destroy(this.gameObject.GetComponent<Rigidbody>());
-            this.gameObject.GetComponent<ParticleSystem>().Stop();
-            Destroy(this.gameObject, this.gameObject.GetComponent<ParticleSystem>().startLifetime);
-        }*/
     }
 }

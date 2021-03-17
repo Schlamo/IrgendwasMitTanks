@@ -352,8 +352,10 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  isDestroyable: 1
-  isBurning: 0
+  initialHP: 15
+  initialScaling: 1
+  destroyable: 1
+  burnable: 0
 --- !u!1 &1591330647800130
 GameObject:
   m_ObjectHideFlags: 0

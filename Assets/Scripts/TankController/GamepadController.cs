@@ -1,5 +1,9 @@
-﻿namespace Controllers{
+﻿using Enumerators;
+
+namespace Controllers{
     class GamepadController : ITankController {
+        public GamepadController(PlayerIndex index) 
+            => Index = (GamePad.Index)index;
         public GamePad.Index Index { get; set; }
 
         public float Acceleration() {
@@ -10,13 +14,9 @@
             return GamePad.GetAxis(GamePad.Axis.LeftStick, Index).x;
         }
 
-        public bool Shoot() {
-            return false;
-        }
+        public bool Shoot() => GamePad.GetButtonDown(GamePad.Button.A, Index);
 
-        public bool Nitro() {
-            return false;
-        }
+        public bool Nitro() => GamePad.GetButton(GamePad.Button.Y, Index);
 
         public bool Special() => GamePad.GetButton(GamePad.Button.X, Index);
 

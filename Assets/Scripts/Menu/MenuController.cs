@@ -1,117 +1,70 @@
-﻿using System.Collections;
+﻿using Enumerators;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class MenuController : MonoBehaviour {
-
-    public Transform wheel;
-    public float animationDuration = 2.0f;
-    
-
-
-    private bool spinRight = false;
-    private bool spinLeft = false;
-    private float rotationTarget;
-    private float rotationToGo;
-
-    private int currentWheel = 1;
-	// Use this for initialization
-	void Start () {
-        try
-        {
-            wheel = GameObject.Find("MainWheel").transform;
-        }
-        catch(System.Exception)
-        {
-            Application.Quit();
-        }
-
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        float xAxis = 0.0f;
-        xAxis += GamePad.GetAxis(GamePad.Axis.Dpad, GamePad.Index.Any).x;
-        xAxis += GamePad.GetAxis(GamePad.Axis.LeftStick, GamePad.Index.Any).x;
-        xAxis += GamePad.GetAxis(GamePad.Axis.RightStick, GamePad.Index.Any).x;
-
-        if(!spinLeft && !spinRight)
-        { 
-            if (xAxis >= 0.75)
-            {
-                SpinRight();
-            }
-            else if(xAxis <= -0.75)
-            {
-                SpinLeft();
-            }
-        }
-        else if(spinRight)
-        {
-            Vector3 rot = new Vector3(0, 0, 0);
-            switch (wheel.GetComponent<Wheel>().axis)
-            {
-                case 0:
-                    rot = new Vector3(-animationDuration, 0, 0);
-                    break;
-                case 1:
-                    rot = new Vector3(0, -animationDuration, 0);
-                    break;
-                case 2:
-                    rot = new Vector3(0, 0, -animationDuration);
-                    break;
-            }
-
-            wheel.transform.Rotate(rot);
-            rotationToGo += animationDuration;
-
-            if(rotationToGo >= rotationTarget)
-            {
-                spinRight = false;
-                rotationToGo = 0;
-            }
-        }
-        else if (spinLeft)
-        {
-            Vector3 rot = new Vector3(0,0,0);
-            switch(wheel.GetComponent<Wheel>().axis)
-            {
-                case 0:
-                    rot = new Vector3(animationDuration, 0, 0);
-                    break;
-                case 1:
-                    rot = new Vector3(0, animationDuration, 0);
-                    break;
-                case 2:
-                    rot = new Vector3(0, 0, animationDuration);
-                    break;
-            }
-
-            wheel.transform.Rotate(rot);
-            rotationToGo += animationDuration;
-
-            if (rotationToGo >= rotationTarget)
-            {
-                spinLeft = false;
-                rotationToGo = 0;
-            }
-        }
-    }
-
-    private void ChangeWheel(string name)
+namespace Menu
+{
+    public class MenuController : MonoBehaviour 
     {
+        [SerializeField]
+        public float startingRadius     = 5.0f;
+        public float supplyRefill       = 15.0f;
+        public int playerCount          = 2;
+        public int borderSteps          = 72;
+        public int nitroCount           = 15;
+        public int crateAmount          = 15;
+        public int rockCount            = 10;
+        public int treeCount            = 150;
+        public int mapSize              = 100;
+        public int snowIntensity        = 25;
+        public bool useKeyboard         = false;
+        public bool dayNightCycle       = false;
 
-    }
+        public GameSettings GameSettings { get; set; }
 
-    private void SpinLeft()
-    {
-        spinLeft = true;
-        rotationTarget = wheel.GetComponent<Wheel>().Angle;
-    }
+        public void Start() 
+            => DontDestroyOnLoad(transform.gameObject);
 
-    private void SpinRight()
-    {
-        spinRight = true;
-        rotationTarget = wheel.GetComponent<Wheel>().Angle;
+        public void Update() {
+            if (Input.GetKey(KeyCode.Space) || GamePad.GetButton(GamePad.Button.A, GamePad.Index.Any))
+                LaunchGame();
+        }
+
+        public void LaunchGame()
+        {
+            var configs = new List<PlayerConfiguration>
+            {
+                new PlayerConfiguration {
+                    Color       = TankColor.Blue,
+                    PlayerIndex = PlayerIndex.First,
+                    Controller  = ControllerType.Gamepad,
+                    TankType    = TankType.Viking},
+                new PlayerConfiguration {
+                    Color       = TankColor.Green,
+                    PlayerIndex = PlayerIndex.Second,
+                    Controller  = ControllerType.Keyboard,
+                    TankType    = TankType.Viking},
+        };
+            GameSettings = new GameSettings
+            {
+                MapType = MapType.Meadow,
+                BorderSteps = 72,
+                CrateCount = crateAmount,
+                DayNightCycle = dayNightCycle,
+                MapSize = mapSize,
+                NitroCount = nitroCount,
+                PlayerCount = playerCount,
+                RockCount = rockCount,
+                SnowIntensity = snowIntensity,
+                StartingRadius = startingRadius,
+                SupplyRefill = supplyRefill,
+                TreeCount = treeCount,
+                PlayerConfigurations = configs
+            };
+
+            SceneManager.LoadScene("Level");
+        }
     }
 }

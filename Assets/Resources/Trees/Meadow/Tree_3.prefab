@@ -4985,7 +4985,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1737891214209900}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.25
   m_Height: 5
@@ -5061,10 +5061,9 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  initialScaling: 0
-  initialHP: 15
-  isDestroyable: 1
-  isBurning: 0
+  initialHP: 30
+  destroyable: 1
+  burnable: 0
 --- !u!1 &1838984757470930
 GameObject:
   m_ObjectHideFlags: 0

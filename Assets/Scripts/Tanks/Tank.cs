@@ -11,7 +11,7 @@ using System.Collections.Generic;
 public abstract class Tank : MonoBehaviour {
     public ITankController Controller { get; set; }
 
-    public int playerId;
+    public PlayerIndex PlayerIndex { get; set; }
 
     public float powerUpDuration = 30.0f;
     
@@ -49,18 +49,19 @@ public abstract class Tank : MonoBehaviour {
 
     private float canShoot = 0.0f;
 
-    public bool canDrive = false;
+    public bool CanDrive { get; set; }
 
-    private float currentSpeed;
+    public float CurrentSpeed { get; private set; }
 
     public int Kills { get; private set; } = 0;
     public int Deaths { get; private set; } = 0;
 
-    public int lastDamage { get; set; } = -1;
-    private bool died = false;
+    public PlayerIndex LastDamage { get; set; }
+    private bool Died { get; set; } = false;
     public float nitroAmp = 1.5f;
 
     private float timeToExplode = 0.0f;
+    private float funtime = 2.5f;
 
     GamePad.Index idx;
     XInputDotNetPure.PlayerIndex xIdx;
@@ -70,45 +71,22 @@ public abstract class Tank : MonoBehaviour {
     {
         transform.GetComponent<Rigidbody>().centerOfMass = Vector3.zero;
         SetSpecialImage();
-
-        switch (playerId)
-        {
-            case 1:
-                idx = GamePad.Index.One;
-                xIdx = XInputDotNetPure.PlayerIndex.One;
-                break;
-            case 2:
-                idx = GamePad.Index.Two;
-                xIdx = XInputDotNetPure.PlayerIndex.Two;
-                break;
-            case 3:
-                idx = GamePad.Index.Three;
-                xIdx = XInputDotNetPure.PlayerIndex.Three;
-                break;
-            case 4:
-                idx = GamePad.Index.Four;
-                xIdx = XInputDotNetPure.PlayerIndex.Four;
-                break;
-            default:
-                idx = GamePad.Index.Any;
-                break;
-        }
+        idx  = (GamePad.Index)PlayerIndex;
+        xIdx = (XInputDotNetPure.PlayerIndex)PlayerIndex;
     }
 
     public void Update () {
         //canDrive = CheckDistanceToTheMap( 0.5f);
-        
-
-        if (health <= 0.0f && !died)
+        if (health <= 0.0f && !Died)
         {
             Explode();
-            died = true;
+            Died = true;
             return;
         }
 
         UpdateSpecial(Time.deltaTime, idx);
 
-        if (canDrive && transform.position.y > -10
+        if (CanDrive && transform.position.y > -10
             && Mathf.Abs((transform.rotation.eulerAngles.x + 22.5f) % 360) < 45.0f
             && Mathf.Abs((transform.rotation.eulerAngles.z + 22.5f) % 360) < 45.0f)
         {
@@ -126,7 +104,7 @@ public abstract class Tank : MonoBehaviour {
             {
                 Shoot(launchPosition);
                 GetComponent<Rigidbody>().AddForce(launchPosition.position);
-                this.transform.Find("ShootParticles").gameObject.GetComponent<ParticleSystem>().Emit(5);
+                transform.Find("ShootParticles").gameObject.GetComponent<ParticleSystem>().Emit(5);
                 canShoot = shootDelay;
                 acceleration -= 10.0f;
             }
@@ -138,14 +116,14 @@ public abstract class Tank : MonoBehaviour {
             var rb = gameObject.GetComponent<Rigidbody>();
             rb.AddForce(transform.forward * speed * acceleration * Time.deltaTime * 60, ForceMode.Force);
 
-            currentSpeed = (rb.velocity.magnitude);
+            CurrentSpeed = (rb.velocity.magnitude);
             transform.Rotate(0, CurrentRotationSpeed(), 0);
 
             ParticleSystem left = this.transform.Find("TracksParticlesLeft").gameObject.GetComponent<ParticleSystem>();
             ParticleSystem right = this.transform.Find("TracksParticlesRight").gameObject.GetComponent<ParticleSystem>();
 
-            left.Emit((int)currentSpeed / 10);
-            right.Emit((int)currentSpeed / 10);
+            left.Emit((int)CurrentSpeed / 10);
+            right.Emit((int)CurrentSpeed / 10);
         }
         else
         {
@@ -158,9 +136,7 @@ public abstract class Tank : MonoBehaviour {
 
         /* Unique Abilities */
         if(GamePad.GetButtonDown(GamePad.Button.B, idx))
-        {
             Special();
-        }
 
         /* PowerUp Timers */
         if (speed > defaultSpeed)
@@ -194,10 +170,7 @@ public abstract class Tank : MonoBehaviour {
         }
 
         if (health < 25)
-        {
-            int particles = (int)Mathf.Sqrt(25 - health);
-            this.transform.Find("BurningParticles").gameObject.GetComponent<ParticleSystem>().Emit(particles);
-        }
+            transform.Find("BurningParticles").gameObject.GetComponent<ParticleSystem>().Emit((int)Mathf.Sqrt(25 - health));
 
         UpdateStats();
     }
@@ -217,11 +190,11 @@ public abstract class Tank : MonoBehaviour {
     }
 
     public void Shoot(Transform pos) 
-        => ProjectileManager.instance.CreateProjectile(transform, pos, damage, playerId);
+        => ProjectileManager.instance.CreateProjectile(transform, pos, damage, PlayerIndex);
 
     public void TakeDamage(float damage)
     {
-        StartVibration();
+        //StartVibration();
         Invoke("StopVibration", 0.25f);
         float actualDamage = damage - this.armor;
         this.health -= Mathf.Max(actualDamage, 0.0f);
@@ -229,7 +202,7 @@ public abstract class Tank : MonoBehaviour {
 
     public void TakeTrueDamage(float damage)
     {
-        StartVibration();
+        //StartVibration();
         Invoke("StopVibration", 0.25f);
         this.health -= damage;
     }
@@ -237,10 +210,7 @@ public abstract class Tank : MonoBehaviour {
     public void Explode()
     {
         timeToExplode = 0.0f;
-        var rb = transform.GetComponent<Rigidbody>();
-        rb.velocity = Vector3.zero;
-        rb.rotation = Quaternion.Euler(Vector3.zero);
-        GameManager.instance.GiveKillToPlayer(lastDamage);
+        GameManager.GiveKillToPlayer(LastDamage);
         ProjectileManager.instance.CreateExplosion(gameObject.transform.position, ExplosionType.Tank);
         Deaths++;
         Invoke("Respawn", 0.75f);  
@@ -248,19 +218,20 @@ public abstract class Tank : MonoBehaviour {
 
     private void Respawn()
     {
+        var rb = transform.GetComponent<Rigidbody>();
+        rb.velocity = Vector3.zero;
+        rb.rotation = Quaternion.Euler(Vector3.zero);
         health = maxHealth;
-        Spawn(GameManager.instance.GetSpawnPoint(playerId));
+        Initialize(GameManager.GetStartingPoint(PlayerIndex));
     }
 
-    public void Spawn(Vector3 pos)
+    public void Initialize(Vector3 pos)
     {
-        died = false;
-        armor = defaultArmor;
-        damage = defaultDamage;
-        speed = defaultSpeed;
-        lastDamage = -1;
-        armorGained = 0.0f;
-        speedGained = 0.0f;
+        armor        = defaultArmor;
+        damage       = defaultDamage;
+        speed        = defaultSpeed;
+        armorGained  = 0.0f;
+        speedGained  = 0.0f;
         damageGained = 0.0f;
 
         transform.position = new Vector3(pos.x, 0, pos.z);
@@ -313,41 +284,29 @@ public abstract class Tank : MonoBehaviour {
                     break;
                 case PowerUpType.Nitro:
                     nitro += powerUp.bonus;
-                    GameManager.instance.DeleteNitro(powerUp);
+                    GameManager.DeleteNitro(powerUp);
                     break;
 
             }
-
             Destroy(collider.gameObject);
-        }
-        else if (collider.gameObject.CompareTag("Crate"))
-        {
-            AudioManager.instance.PlayCrateCollisionSound();
-            collider.gameObject.GetComponent<Crate>().Hit(GetPercentageHealth());
-            ProjectileManager.instance.CreateExplosion(collider.gameObject.transform.position, ExplosionType.Wood);
-            var rb = gameObject.GetComponent<Rigidbody>();
-            TakeDamage((ramDamage / 100) * rb.velocity.magnitude *0.2f);
-            rb.velocity *= 0.5f;
-        }
-        else if (collider.gameObject.CompareTag("Tree"))
-        {
-            AudioManager.instance.PlayCrateCollisionSound();
-            var tree = collider.gameObject.GetComponent<Obstacles.Tree>();
-            tree.Hit(currentSpeed);
-            ProjectileManager.instance.CreateExplosion(collider.gameObject.transform.position, ExplosionType.Wood);
-            var rb = gameObject.GetComponent<Rigidbody>();
-            TakeDamage((ramDamage / 100) * rb.velocity.magnitude * 0.5f);
-            rb.velocity *= 0.5f;
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.tag == "Map")
+        if (collision.gameObject.CompareTag("Map"))
         {
-            canDrive = false;
+            Invoke("DisableDrive", funtime);
         }
     }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Map"))
+            CanDrive = true;
+    }
+
+    private void DisableDrive() => CanDrive = false;
 
     public void StartVibration()
     {
@@ -366,15 +325,15 @@ public abstract class Tank : MonoBehaviour {
             AudioManager.instance.PlayTankCollisionSound();
             try
             {
-                collision.transform.GetComponent<Tank>().LastDamage = playerId;
-                float totalSpeed = (currentSpeed + collision.gameObject.GetComponent<Tank>().currentSpeed) / 2;
+                collision.transform.GetComponent<Tank>().LastDamage = PlayerIndex;
+                float totalSpeed = (CurrentSpeed + collision.gameObject.GetComponent<Tank>().CurrentSpeed) / 2;
                 TakeDamage(totalSpeed * (ramDamage / 100));
             }
             catch (System.Exception) { }
         }
         else if(collision.gameObject.tag == "Map")
         {
-            canDrive = true;
+            CanDrive = true;
         }
         else if(collision.gameObject.tag == "Rock")
         {
@@ -382,11 +341,24 @@ public abstract class Tank : MonoBehaviour {
             Rigidbody rb = this.gameObject.GetComponent<Rigidbody>();
             TakeTrueDamage((ramDamage / 100) * rb.velocity.magnitude);
         }
+        else if (collision.gameObject.CompareTag("Tree"))
+        {
+            AudioManager.instance.PlayCrateCollisionSound();
+            ProjectileManager.instance.CreateExplosion(collision.gameObject.transform.position, ExplosionType.Wood);
+            var rb = gameObject.GetComponent<Rigidbody>();
+            TakeDamage((ramDamage / 100) * rb.velocity.magnitude * 0.5f);
+            rb.velocity *= 0.5f;
+        }
+        else if (collision.gameObject.CompareTag("Crate"))
+        {
+            AudioManager.instance.PlayCrateCollisionSound();
+            collision.gameObject.GetComponent<Crate>().Hit(GetPercentageHealth());
+            ProjectileManager.instance.CreateExplosion(collision.gameObject.transform.position, ExplosionType.Wood);
+            var rb = gameObject.GetComponent<Rigidbody>();
+            TakeDamage((ramDamage / 100) * rb.velocity.magnitude * 0.2f);
+            rb.velocity *= 0.5f;
+        }
     }
-
-    public int LastDamage { get; set; }
-
-    public string Name { get; set; }
 
     public float CanShoot { get; set; }
 
@@ -401,6 +373,6 @@ public abstract class Tank : MonoBehaviour {
         }
     }
 
-    public void GrantKill() => Kills++;
+    public void AddKill() => Kills++;
     public float GetPercentageHealth() => (health / maxHealth) * 100.0f;
 }

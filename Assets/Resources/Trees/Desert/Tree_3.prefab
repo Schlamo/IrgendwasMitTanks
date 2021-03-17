@@ -198,10 +198,10 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  initialScaling: 0
-  initialHP: 15
-  isDestroyable: 1
-  isBurning: 0
+  initialHP: 5
+  initialScaling: 1
+  destroyable: 1
+  burnable: 0
 --- !u!23 &2989562970320754038
 MeshRenderer:
   m_ObjectHideFlags: 0

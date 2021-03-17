@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-using Tanks;
+using Enumerators;
+
 public class Mine : MonoBehaviour
 {
-
-    private int owner;
+    public PlayerIndex Owner { get; set; }
     private float lifeTime = 20.0f;
 
     private void Update()
@@ -16,40 +16,28 @@ public class Mine : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider collider)
     {
-        if (other.gameObject.tag == "Tank")
+        if (collider.gameObject.CompareTag("Tank"))
         {
             try
             {
-                Tank tank = other.gameObject.GetComponent<Tank>();
+                Tank tank = collider.gameObject.GetComponent<Tank>();
 
-                if (tank.playerId != owner)
+                if (tank.PlayerIndex != Owner)
                 {
                     AudioManager.instance.PlayMineDetonationSound();
 
-                    tank.lastDamage = owner;
+                    tank.LastDamage = Owner;
                     tank.TakeDamage(25);
 
-                    other.gameObject.GetComponent<Rigidbody>().velocity*=0.5f;
-                    other.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 100, 0), ForceMode.Impulse);
+                    collider.gameObject.GetComponent<Rigidbody>().velocity*=0.5f;
+                    collider.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 100, 0), ForceMode.Impulse);
                     ProjectileManager.instance.CreateExplosion(transform.position);
                     Destroy(this.gameObject);
                 }
             }
             catch (System.Exception) { }
-        }
-    }
-
-    public int Owner
-    {
-        get
-        {
-            return owner;
-        }
-        set
-        {
-            owner = value;
         }
     }
 }

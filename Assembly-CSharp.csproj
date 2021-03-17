@@ -67,11 +67,16 @@
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GamePad.cs" />
     <Compile Include="Assets\Scripts\LootManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\MenuCamera.cs" />
     <Compile Include="Assets\Scripts\Menu\MenuController.cs" />
-    <Compile Include="Assets\Scripts\Menu\Wheel.cs" />
+    <Compile Include="Assets\Scripts\Menu\MenuTank.cs" />
+    <Compile Include="Assets\Scripts\Menu\MenuText.cs" />
     <Compile Include="Assets\Scripts\Mine.cs" />
     <Compile Include="Assets\Scripts\Misc\Enumerator.cs" />
     <Compile Include="Assets\Scripts\Misc\GameSettings.cs" />
+    <Compile Include="Assets\Scripts\Misc\Player.cs" />
+    <Compile Include="Assets\Scripts\Misc\PlayerConfiguration.cs" />
+    <Compile Include="Assets\Scripts\Misc\StartingPoint.cs" />
     <Compile Include="Assets\Scripts\Obstacles\Crate.cs" />
     <Compile Include="Assets\Scripts\Obstacles\Obstacle.cs" />
     <Compile Include="Assets\Scripts\Obstacles\Tree.cs" />
@@ -85,6 +90,7 @@
     <Compile Include="Assets\Scripts\TankController\ITankController.cs" />
     <Compile Include="Assets\Scripts\TankController\KeyboardController.cs" />
     <Compile Include="Assets\Scripts\TankController\TankController.cs" />
+    <Compile Include="Assets\Scripts\TankController\TankControllerFactory.cs" />
     <Compile Include="Assets\Scripts\Tanks\Cthulu.cs" />
     <Compile Include="Assets\Scripts\Tanks\Prometheus.cs" />
     <Compile Include="Assets\Scripts\Tanks\Reaper.cs" />
@@ -95,8 +101,13 @@
     <Compile Include="Assets\Scripts\Tanks\WinningTank.cs" />
     <Compile Include="Assets\Scripts\TankStats.cs" />
     <Compile Include="Assets\Scripts\TreeGenerator.cs" />
+    <None Include="Assets\UnityToonShader-skeleton\ProjectSettings\ProjectVersion.txt" />
+    <None Include="Assets\UnityToonShader-skeleton\Assets\Toon.shader" />
     <None Include="Assets\Shader\TerrainShader.shader" />
+    <None Include="Assets\UnityToonShader-skeleton\Assets\Demo\Shaders\ToonComplete.shader" />
     <None Include="Assets\Shader\ImmunityShader.shader" />
+    <None Include="Assets\UnityToonShader-skeleton\Assets\Demo\Shaders\ShadowReceiver.shader" />
+    <None Include="Assets\Shader\Toon.shader" />
     <None Include="Assets\Shader\TShader.shader" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Kreativer Output/Unity Stuff/IrgendwasMitTanks/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
